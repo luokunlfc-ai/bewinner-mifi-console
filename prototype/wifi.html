@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / WiFi 管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/wifi.css" />
+</head>
+<body>
+<div class="stage">
+
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen">
+        <!-- 页面标题 -->
+        <header class="page-header">
+          <h1>WiFi 管理</h1>
+        </header>
+
+        <!-- WiFi 信息卡 -->
+        <article class="wifi-info-card">
+          <div class="wifi-info-visual">
+            <div class="wifi-anim">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="wifi-detail-rows">
+            <div class="wifi-detail-row">
+              <span class="wd-lbl">网络名称</span>
+              <span class="wd-val mono">BW-X9_5G</span>
+            </div>
+            <div class="wifi-detail-row">
+              <span class="wd-lbl">密码</span>
+              <span class="wd-val mono">
+                <span id="wfPwdText" data-pwd="LiveMifi@2026">••••••••••••</span>
+                <button class="eye" id="wfEyeBtn" aria-label="切换密码">
+                  <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </span>
+            </div>
+            <div class="wifi-detail-row">
+              <span class="wd-lbl">安全类型</span>
+              <span class="wd-val">WPA2/WPA3</span>
+            </div>
+            <div class="wifi-detail-row">
+              <span class="wd-lbl">频段</span>
+              <span class="wd-val">5GHz 优先</span>
+            </div>
+          </div>
+
+          <button class="wifi-set-btn" id="btnWifiSetting">
+            <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            WiFi 设置
+          </button>
+        </article>
+
+        <!-- 已连接设备 -->
+        <article class="conn-section">
+          <header class="conn-head">
+            <h3>已连接设备</h3>
+            <span class="conn-count"><b id="devCount">5</b> 台</span>
+          </header>
+
+          <ul class="conn-list">
+            <li class="conn-item">
+              <div class="ci-ico phone-type">
+                <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>
+              </div>
+              <div class="ci-main">
+                <b>iPhone 15 Pro</b>
+                <span class="ci-meta">
+                  <span class="ci-ip mono">192.168.0.101</span>
+                  <span class="ci-dur">已连接 2h 15m</span>
+                </span>
+              </div>
+              <button class="ci-kick" data-name="iPhone 15 Pro">断开</button>
+            </li>
+            <li class="conn-item">
+              <div class="ci-ico laptop-type">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>
+              </div>
+              <div class="ci-main">
+                <b>MacBook Pro</b>
+                <span class="ci-meta">
+                  <span class="ci-ip mono">192.168.0.102</span>
+                  <span class="ci-dur">已连接 4h 03m</span>
+                </span>
+              </div>
+              <button class="ci-kick" data-name="MacBook Pro">断开</button>
+            </li>
+            <li class="conn-item">
+              <div class="ci-ico phone-type">
+                <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>
+              </div>
+              <div class="ci-main">
+                <b>HUAWEI Mate 60</b>
+                <span class="ci-meta">
+                  <span class="ci-ip mono">192.168.0.105</span>
+                  <span class="ci-dur">已连接 1h 42m</span>
+                </span>
+              </div>
+              <button class="ci-kick" data-name="HUAWEI Mate 60">断开</button>
+            </li>
+            <li class="conn-item">
+              <div class="ci-ico cam-type">
+                <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+              </div>
+              <div class="ci-main">
+                <b>直播摄像机 A</b>
+                <span class="ci-meta">
+                  <span class="ci-ip mono">192.168.0.108</span>
+                  <span class="ci-dur">已连接 4h 23m</span>
+                </span>
+              </div>
+              <button class="ci-kick" data-name="直播摄像机 A">断开</button>
+            </li>
+            <li class="conn-item">
+              <div class="ci-ico tablet-type">
+                <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>
+              </div>
+              <div class="ci-main">
+                <b>iPad Air</b>
+                <span class="ci-meta">
+                  <span class="ci-ip mono">192.168.0.110</span>
+                  <span class="ci-dur">已连接 38m</span>
+                </span>
+              </div>
+              <button class="ci-kick" data-name="iPad Air">断开</button>
+            </li>
+          </ul>
+        </article>
+
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 底部 Tabbar -->
+      <nav class="tabbar">
+        <a class="tab" href="index.html">
+          <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg>
+          <span>主页</span>
+        </a>
+        <a class="tab active">
+          <svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg>
+          <span>WiFi</span>
+        </a>
+        <a class="tab center" href="bond.html">
+          <div class="center-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg>
+          </div>
+        </a>
+        <a class="tab" href="plan.html">
+          <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+          <span>套餐</span>
+        </a>
+        <a class="tab" href="mine.html">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          <span>我的</span>
+        </a>
+      </nav>
+
+      <div class="home-indicator"></div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- WiFi 设置抽屉 -->
+      <div class="sheet" id="wifiSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>WiFi 设置</h3>
+          <button class="sheet-close" id="wifiSheetClose">完成</button>
+        </header>
+        <div class="wifi-form">
+          <div class="form-group">
+            <label>WiFi 名称 (SSID)</label>
+            <input type="text" class="form-input mono" value="BW-X9_5G" />
+          </div>
+          <div class="form-group">
+            <label>WiFi 密码</label>
+            <div class="form-input-wrap">
+              <input type="password" class="form-input mono" id="wifiPwdInput" value="LiveMifi@2026" />
+              <button class="eye form-eye" id="formEyeBtn" aria-label="切换密码可见">
+                <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>安全类型</label>
+            <select class="form-input">
+              <option selected>WPA2-PSK / WPA3-SAE</option>
+              <option>WPA2-PSK</option>
+              <option>WPA3-SAE</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>频段</label>
+            <div class="form-seg">
+              <span class="active">5G 优先</span>
+              <span>2.4G</span>
+              <span>双频合一</span>
+            </div>
+          </div>
+          <div class="form-group toggle-row">
+            <label>隐藏 SSID</label>
+            <div class="toggle"><span></span></div>
+          </div>
+          <button class="save-btn">保存设置</button>
+        </div>
+      </div>
+
+      <!-- 设备详情抽屉 -->
+      <div class="sheet" id="devDetailSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3 id="ddName">iPhone 15 Pro</h3>
+          <button class="sheet-close" id="ddClose">关闭</button>
+        </header>
+        <div class="dd-body">
+          <div class="dd-row">
+            <span class="dd-lbl">设备类型</span>
+            <span class="dd-val" id="ddType">智能手机</span>
+          </div>
+          <div class="dd-row">
+            <span class="dd-lbl">IP 地址</span>
+            <span class="dd-val mono" id="ddIp">192.168.0.101</span>
+          </div>
+          <div class="dd-row">
+            <span class="dd-lbl">MAC 地址</span>
+            <span class="dd-val mono" id="ddMac">A4:CF:12:8B:3D:E7</span>
+          </div>
+          <div class="dd-row">
+            <span class="dd-lbl">连接时长</span>
+            <span class="dd-val" id="ddDur">2h 15m</span>
+          </div>
+          <div class="dd-row">
+            <span class="dd-lbl">信号强度</span>
+            <span class="dd-val" id="ddRssi">-42 dBm (优秀)</span>
+          </div>
+          <div class="dd-row">
+            <span class="dd-lbl">已用流量</span>
+            <span class="dd-val mono" id="ddTraffic">1.28 GB</span>
+          </div>
+          <button class="kick-btn" id="ddKick">断开该设备</button>
+        </div>
+      </div>
+
+      <!-- 断开确认弹窗 -->
+      <div class="confirm-mask" id="confirmMask"></div>
+      <div class="confirm-dialog" id="confirmDialog">
+        <div class="cd-ico">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        </div>
+        <p class="cd-msg">确定要断开 <b id="cdDevName">iPhone 15 Pro</b> 吗？</p>
+        <div class="cd-actions">
+          <button class="cd-cancel" id="cdCancel">取消</button>
+          <button class="cd-ok" id="cdOk">确定断开</button>
+        </div>
+      </div>
+
+    </div>
+    <p class="phone-label">WiFi 管理 · WiFi</p>
+  </section>
+
+  <!-- 设计说明 -->
+  <aside class="notes">
+    <div class="notes-head">
+      <span class="dot"></span>
+      <h2>WiFi 管理 · 设计说明</h2>
+    </div>
+
+    <div class="note-block">
+      <h4>① WiFi 信息卡</h4>
+      <ul>
+        <li>顶部 WiFi 信号动画 + "WiFi 已开启"状态</li>
+        <li>SSID / 密码（眼睛切换） / 安全类型 / 频段</li>
+        <li>底部「WiFi 设置」按钮 → 弹出设置抽屉（与主页共用）</li>
+      </ul>
+    </div>
+
+    <div class="note-block">
+      <h4>② 已连接设备列表</h4>
+      <ul>
+        <li>标题右侧显示已连接数量</li>
+        <li>每行：设备图标 + 名称 + IP + 连接时长 + 断开按钮</li>
+        <li>设备图标按类型区分：手机 / 笔记本 / 摄像机 / 平板</li>
+        <li>点击设备行 → 弹出设备详情抽屉（MAC / 信号 / 已用流量等）</li>
+        <li>点击「断开」→ 二次确认弹窗 → 确认后移除设备行并更新计数</li>
+      </ul>
+    </div>
+
+    <div class="note-block">
+      <h4>③ 关键交互</h4>
+      <ul>
+        <li><b>密码切换</b>：与主页一致的眼睛图标交互</li>
+        <li><b>设备详情</b>：点击设备名称区域弹出底部抽屉</li>
+        <li><b>断开设备</b>：点击断开按钮 → 确认弹窗 → 设备行淡出移除</li>
+        <li><b>WiFi 设置</b>：底部抽屉含 SSID / 密码 / 安全类型 / 频段 / 隐藏SSID</li>
+      </ul>
+    </div>
+  </aside>
+
+</div>
+
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo-mark"><span></span><span></span></div>
+    <div>
+      <h1>BE&nbsp;WINNER · MiFi Console</h1>
+      <p>多网聚合直播路由 · 移动端管理 App / WiFi 管理页</p>
+    </div>
+  </div>
+  <div class="brand-right">
+    <span class="meta-pill">📐 390 × 844</span>
+    <span class="meta-pill">🎨 Light · Sky Blue</span>
+    <span class="meta-pill accent">02 / WiFi</span>
+  </div>
+</header>
+
+<script src="js/wifi.js"></script>
+</body>
+</html>

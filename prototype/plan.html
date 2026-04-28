@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 套餐管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/plan.css" />
+</head>
+<body>
+<div class="stage">
+
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen">
+        <header class="page-header">
+          <h1>套餐管理</h1>
+        </header>
+
+        <!-- 实名状态 -->
+        <section class="id-strip">
+          <div class="id-card verified">
+            <div class="id-left">
+              <span class="id-carrier">移动</span>
+              <span class="id-tag done">已实名</span>
+            </div>
+          </div>
+          <div class="id-card unverified">
+            <div class="id-left">
+              <span class="id-carrier tel">电信</span>
+              <span class="id-tag pending">未实名</span>
+            </div>
+            <a class="id-action sm" id="btnIdVerify">去认证 ›</a>
+          </div>
+        </section>
+
+        <!-- 当前套餐概览 -->
+        <article class="cur-plan-card">
+          <header class="cp-head">
+            <h3>当前套餐</h3>
+          </header>
+
+          <div class="cp-item">
+            <div class="cp-top">
+              <span class="cp-tag flow">流量套餐</span>
+              <span class="cp-name">连续包月 · 80GB</span>
+              <span class="cp-expire">有效期至 2026.05.20</span>
+            </div>
+            <div class="cp-usage">
+              <div class="cp-circle-wrap">
+                <svg class="cp-ring" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gFlow)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="111" transform="rotate(-90 40 40)"/>
+                  <defs><linearGradient id="gFlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6feb"/><stop offset="1" stop-color="#3aa0ff"/></linearGradient></defs>
+                </svg>
+                <div class="cp-circle-text">
+                  <b class="mono">38.2</b>
+                  <small>GB 剩余</small>
+                </div>
+              </div>
+              <div class="cp-nums">
+                <div class="cp-num-row"><span class="cpn-lbl">总量</span><span class="cpn-val mono">80 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">已用</span><span class="cpn-val mono">41.8 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">剩余</span><span class="cpn-val mono highlight">38.2 GB</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cp-divider"></div>
+
+          <div class="cp-item">
+            <div class="cp-top">
+              <span class="cp-tag bond">聚合套餐</span>
+              <span class="cp-name">连续包月 · 60GB</span>
+              <span class="cp-expire warn">有效期至 2026.05.10</span>
+            </div>
+            <div class="cp-usage">
+              <div class="cp-circle-wrap">
+                <svg class="cp-ring" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gBond)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="168.7" transform="rotate(-90 40 40)"/>
+                  <defs><linearGradient id="gBond" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
+                </svg>
+                <div class="cp-circle-text">
+                  <b class="mono warn-c">12.6</b>
+                  <small>GB 剩余</small>
+                </div>
+              </div>
+              <div class="cp-nums">
+                <div class="cp-num-row"><span class="cpn-lbl">总量</span><span class="cpn-val mono">60 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">已用</span><span class="cpn-val mono">47.4 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">剩余</span><span class="cpn-val mono highlight warn-c">12.6 GB</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 套餐商城 -->
+        <section class="shop-section">
+          <div class="shop-tabs">
+            <span class="shop-tab active" data-tab="flow">流量套餐</span>
+            <span class="shop-tab" data-tab="bond">聚合套餐</span>
+            <div class="shop-tab-ink"></div>
+          </div>
+
+          <!-- 流量套餐 -->
+          <div class="shop-panel active" id="panelFlow">
+            <h4 class="group-title">月月付 · 零负担</h4>
+            <div class="pkg-grid">
+              <div class="pkg-card" data-price="79" data-label="流量·连续包月 80GB">
+                <div class="pkg-promo">首月减¥10</div>
+                <div class="pkg-name">连续包月</div>
+                <div class="pkg-size mono">80<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">79</b><s class="mono">89</s></div>
+                <div class="pkg-note">到期后89元/月续费</div>
+              </div>
+              <div class="pkg-card" data-price="99" data-label="流量·月包 80GB">
+                <div class="pkg-name">月包</div>
+                <div class="pkg-size mono">80<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">99</b></div>
+                <div class="pkg-note">单次购买 · 不自动续费</div>
+              </div>
+            </div>
+
+            <h4 class="group-title">长期用 · 更省钱</h4>
+            <div class="pkg-grid">
+              <div class="pkg-card" data-price="1199" data-label="流量·两年包 80GB/月">
+                <div class="pkg-promo hot">超值推荐</div>
+                <div class="pkg-name">两年包</div>
+                <div class="pkg-size mono">80<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">50</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥1199</div>
+              </div>
+              <div class="pkg-card" data-price="799" data-label="流量·年包 80GB/月">
+                <div class="pkg-name">年包</div>
+                <div class="pkg-size mono">80<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">67</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥799</div>
+              </div>
+              <div class="pkg-card" data-price="459" data-label="流量·半年包 80GB/月">
+                <div class="pkg-name">半年包</div>
+                <div class="pkg-size mono">80<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">77</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥459</div>
+              </div>
+              <div class="pkg-card" data-price="149" data-label="流量·月包大流量 150GB">
+                <div class="pkg-name">月包 · 大流量</div>
+                <div class="pkg-size mono">150<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">149</b></div>
+                <div class="pkg-note">单月大流量套餐</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 聚合套餐 -->
+          <div class="shop-panel" id="panelBond">
+            <h4 class="group-title">月月付 · 零负担</h4>
+            <div class="pkg-grid">
+              <div class="pkg-card bond-style" data-price="69" data-label="聚合·连续包月 60GB">
+                <div class="pkg-promo">首月减¥10</div>
+                <div class="pkg-name">连续包月</div>
+                <div class="pkg-size mono">60<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">69</b><s class="mono">79</s></div>
+                <div class="pkg-note">到期后79元/月续费</div>
+              </div>
+              <div class="pkg-card bond-style" data-price="89" data-label="聚合·月包 60GB">
+                <div class="pkg-name">月包</div>
+                <div class="pkg-size mono">60<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">89</b></div>
+                <div class="pkg-note">单次购买 · 不自动续费</div>
+              </div>
+            </div>
+
+            <h4 class="group-title">长期用 · 更省钱</h4>
+            <div class="pkg-grid">
+              <div class="pkg-card bond-style" data-price="899" data-label="聚合·两年包 60GB/月">
+                <div class="pkg-promo hot">超值推荐</div>
+                <div class="pkg-name">两年包</div>
+                <div class="pkg-size mono">60<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">38</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥899</div>
+              </div>
+              <div class="pkg-card bond-style" data-price="599" data-label="聚合·年包 60GB/月">
+                <div class="pkg-name">年包</div>
+                <div class="pkg-size mono">60<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">50</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥599</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="bottom-pad-buy"></div>
+      </div>
+
+      <!-- 底部购买栏 -->
+      <div class="buy-bar">
+        <div class="buy-left">
+          <span class="buy-label">合计：</span>
+          <span class="buy-total"><em>¥</em><b class="mono" id="buyPrice">79</b></span>
+          <button class="buy-detail-btn" id="detailBtn">明细 ▴</button>
+        </div>
+        <button class="buy-btn" id="buyBtn">确认购买</button>
+      </div>
+
+      <!-- 明细浮层 -->
+      <div class="detail-popover" id="detailPop">
+        <div class="dp-head">
+          <h4>已选套餐</h4>
+        </div>
+        <div class="dp-body" id="detailBody">
+          <div class="dp-empty">未选择任何套餐</div>
+        </div>
+      </div>
+
+      <!-- Tabbar -->
+      <nav class="tabbar">
+        <a class="tab" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg><span>主页</span></a>
+        <a class="tab" href="wifi.html"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg><span>WiFi</span></a>
+        <a class="tab center" href="bond.html"><div class="center-btn"><svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg></div></a>
+        <a class="tab active"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg><span>套餐</span></a>
+        <a class="tab" href="mine.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>我的</span></a>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+    <p class="phone-label">套餐管理 · Plan</p>
+  </section>
+
+  <!-- 设计说明 -->
+  <aside class="notes">
+    <div class="notes-head"><span class="dot"></span><h2>套餐管理 · 设计说明</h2></div>
+    <div class="note-block">
+      <h4>① 实名状态条</h4>
+      <ul>
+        <li>双卡并排：移动（已实名 · 张**）/ 电信（未实名 · 去认证）</li>
+      </ul>
+    </div>
+    <div class="note-block">
+      <h4>② 当前套餐概览</h4>
+      <ul>
+        <li>流量套餐 / 聚合套餐环形进度图 + 用量明细 + 有效期</li>
+        <li>聚合套餐剩余不足 30% 转橙色警示</li>
+      </ul>
+    </div>
+    <div class="note-block">
+      <h4>③ 套餐商城（参考截图）</h4>
+      <ul>
+        <li>流量套餐 / 聚合套餐 两个 Tab 切换</li>
+        <li>分「月月付」「长期用」两组，<b>双列网格</b>排列</li>
+        <li>选中卡片蓝色边框高亮 + 底部合计价格联动</li>
+        <li>促销角标：橙红色「首月减¥10」「超值推荐」</li>
+        <li>底部固定购买栏：合计 + 「确认购买」按钮</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo-mark"><span></span><span></span></div>
+    <div>
+      <h1>BE&nbsp;WINNER · MiFi Console</h1>
+      <p>多网聚合直播路由 · 移动端管理 App / 套餐管理页</p>
+    </div>
+  </div>
+  <div class="brand-right">
+    <span class="meta-pill">📐 390 × 844</span>
+    <span class="meta-pill">🎨 Light · Sky Blue</span>
+    <span class="meta-pill accent">03 / Plan</span>
+  </div>
+</header>
+<script src="js/plan.js"></script>
+</body>
+</html>
