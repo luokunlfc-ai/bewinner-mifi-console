@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 我的</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/mine.css" />
+</head>
+<body>
+<div class="stage">
+
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen">
+        <!-- 用户信息头部 -->
+        <header class="profile-header">
+          <div class="ph-bg"></div>
+          <div class="ph-content">
+            <div class="ph-avatar" id="btnEditProfile">
+              <img src="https://api.dicebear.com/7.x/notionists/svg?seed=mifi&backgroundColor=cfe8ff" alt="" />
+              <span class="ph-edit-badge">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </span>
+            </div>
+            <div class="ph-info">
+              <h2>主播小王</h2>
+              <span class="ph-id mono">ID: BW-20260128</span>
+            </div>
+            <button class="ph-manage" id="btnAccount">账号管理 ›</button>
+          </div>
+        </header>
+
+        <!-- 快捷入口：我的套餐 / 购买记录 -->
+        <section class="quick-row">
+          <a class="qr-item" href="plan.html">
+            <div class="qr-ico plan">
+              <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+            </div>
+            <span>我的套餐</span>
+          </a>
+          <a class="qr-item">
+            <div class="qr-ico history">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <span>购买记录</span>
+          </a>
+        </section>
+
+        <!-- 功能列表 -->
+        <article class="menu-card">
+          <div class="menu-item" id="btnService">
+            <div class="mi-ico cs">
+              <svg viewBox="0 0 24 24"><path d="M3 11h1a8 8 0 0 1 16 0h1"/><path d="M5 15a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h0a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1zM19 15a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h0a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1z"/><path d="M19 15v1a2 2 0 0 1-2 2h-2"/></svg>
+            </div>
+            <div class="mi-main"><b>客服中心</b><span>在线咨询 · 常见问题</span></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnDataCard">
+            <div class="mi-ico sim">
+              <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h4"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>数据卡管理</b>
+              <span>当前上网卡：<em class="mi-em" id="curCard">移动</em></span>
+            </div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnFirmware">
+            <div class="mi-ico fw">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>固件升级</b>
+              <span>当前版本：<em class="mi-em mono" id="fwVer">v2.4.1</em></span>
+            </div>
+            <span class="mi-badge" id="fwBadge">有更新</span>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnDiag">
+            <div class="mi-ico diag">
+              <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div class="mi-main"><b>网络诊断</b><span>设备连通性 · 端到端检测</span></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </article>
+
+        <article class="menu-card">
+          <div class="menu-item" id="btnPrivacy">
+            <div class="mi-ico pri">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="mi-main"><b>隐私协议</b></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnSettings">
+            <div class="mi-ico set">
+              <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="mi-main"><b>设置</b></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </article>
+
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- 账号管理抽屉 -->
+      <div class="sheet" id="accountSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>账号管理</h3>
+          <button class="sheet-close" id="accountClose">完成</button>
+        </header>
+        <div class="wifi-form">
+          <div class="form-group">
+            <label>用户名</label>
+            <input type="text" class="form-input" value="主播小王" />
+          </div>
+          <div class="form-group">
+            <label>头像</label>
+            <div class="avatar-pick">
+              <div class="ap-current">
+                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=mifi&backgroundColor=cfe8ff" alt="" />
+              </div>
+              <button class="ap-btn">更换头像</button>
+            </div>
+          </div>
+          <button class="save-btn">保存</button>
+        </div>
+      </div>
+
+      <!-- 数据卡管理抽屉 -->
+      <div class="sheet" id="dataCardSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>数据卡管理</h3>
+          <button class="sheet-close" id="dataCardClose">完成</button>
+        </header>
+        <p class="sheet-desc">选择默认上网卡</p>
+        <ul class="card-list">
+          <li class="card-option active" data-card="移动">
+            <span class="co-ico mob"></span>
+            <div class="co-main"><b>移动</b><span>内置卡 · 5G · 已实名</span></div>
+            <span class="co-check">✓</span>
+          </li>
+          <li class="card-option" data-card="电信">
+            <span class="co-ico tel"></span>
+            <div class="co-main"><b>电信</b><span>内置卡 · 5G · 未实名</span></div>
+            <span class="co-check">✓</span>
+          </li>
+          <li class="card-option" data-card="外置卡1">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 1</b><span>外置插拔卡 · 未插入</span></div>
+            <span class="co-check">✓</span>
+          </li>
+          <li class="card-option" data-card="外置卡2">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 2</b><span>外置插拔卡 · 未插入</span></div>
+            <span class="co-check">✓</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 固件升级抽屉 -->
+      <div class="sheet" id="fwSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>固件升级</h3>
+          <button class="sheet-close" id="fwClose">关闭</button>
+        </header>
+        <div class="fw-body">
+          <div class="fw-row"><span class="fw-lbl">当前版本</span><span class="fw-val mono">v2.4.1</span></div>
+          <div class="fw-row"><span class="fw-lbl">最新版本</span><span class="fw-val mono new">v2.5.0</span></div>
+          <div class="fw-row"><span class="fw-lbl">更新大小</span><span class="fw-val mono">28.4 MB</span></div>
+          <div class="fw-changelog">
+            <h4>更新内容</h4>
+            <ul>
+              <li>优化聚合链路切换速度</li>
+              <li>修复高温下 WiFi 断连问题</li>
+              <li>新增外置卡热插拔支持</li>
+              <li>提升 MQTT 连接稳定性</li>
+            </ul>
+          </div>
+          <button class="save-btn fw-update-btn" id="fwUpdateBtn">一键升级</button>
+        </div>
+      </div>
+
+      <!-- 网络诊断抽屉 -->
+      <div class="sheet diag-sheet" id="diagSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>网络诊断</h3>
+          <button class="sheet-close" id="diagClose">关闭</button>
+        </header>
+        <div class="diag-body">
+          <div class="diag-steps" id="diagSteps">
+            <div class="ds" data-idx="0"><span class="ds-dot"></span><div class="ds-main"><b>本地网络检测</b><span class="ds-status">等待中</span></div></div>
+            <div class="ds" data-idx="1"><span class="ds-dot"></span><div class="ds-main"><b>DNS 解析检测</b><span class="ds-status">等待中</span></div></div>
+            <div class="ds" data-idx="2"><span class="ds-dot"></span><div class="ds-main"><b>网络连通性检测</b><span class="ds-status">等待中</span></div></div>
+            <div class="ds" data-idx="3"><span class="ds-dot"></span><div class="ds-main"><b>业务认证验证</b><span class="ds-status">等待中</span></div></div>
+            <div class="ds" data-idx="4"><span class="ds-dot"></span><div class="ds-main"><b>MQTT 上报检测</b><span class="ds-status">等待中</span></div></div>
+            <div class="ds" data-idx="5"><span class="ds-dot"></span><div class="ds-main"><b>云端策略查询</b><span class="ds-status">等待中</span></div></div>
+          </div>
+          <button class="save-btn diag-start-btn" id="diagStart">开始诊断</button>
+        </div>
+      </div>
+
+      <!-- Tabbar -->
+      <nav class="tabbar">
+        <a class="tab" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg><span>主页</span></a>
+        <a class="tab" href="wifi.html"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg><span>WiFi</span></a>
+        <a class="tab center" href="bond.html"><div class="center-btn"><svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg></div></a>
+        <a class="tab" href="plan.html"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg><span>套餐</span></a>
+        <a class="tab active"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>我的</span></a>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+    <p class="phone-label">我的 · Profile</p>
+  </section>
+
+  <!-- 设计说明 -->
+  <aside class="notes">
+    <div class="notes-head"><span class="dot"></span><h2>我的 · 设计说明</h2></div>
+    <div class="note-block">
+      <h4>① 用户信息头部</h4>
+      <ul>
+        <li>头像 + 编辑角标 + 用户名 + ID</li>
+        <li>「账号管理 ›」→ 底部抽屉设置用户名和头像</li>
+      </ul>
+    </div>
+    <div class="note-block">
+      <h4>② 快捷入口</h4>
+      <ul><li>我的套餐（跳 plan.html）/ 购买记录</li></ul>
+    </div>
+    <div class="note-block">
+      <h4>③ 功能列表</h4>
+      <ul>
+        <li><b>客服中心</b>：在线咨询入口</li>
+        <li><b>数据卡管理</b>：展示当前上网卡，抽屉切换（移动/电信/外置卡1/外置卡2）</li>
+        <li><b>固件升级</b>：当前版本 + 红点提示有更新 → 抽屉查看更新日志 + 一键升级</li>
+        <li><b>网络诊断</b>：抽屉展示 6 步诊断（聚合开启时），逐步动画执行</li>
+        <li><b>隐私协议 / 设置</b></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo-mark"><span></span><span></span></div>
+    <div>
+      <h1>BE&nbsp;WINNER · MiFi Console</h1>
+      <p>多网聚合直播路由 · 移动端管理 App / 我的</p>
+    </div>
+  </div>
+  <div class="brand-right">
+    <span class="meta-pill">📐 390 × 844</span>
+    <span class="meta-pill">🎨 Light · Sky Blue</span>
+    <span class="meta-pill accent">05 / Mine</span>
+  </div>
+</header>
+<script src="js/mine.js"></script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 主页</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+<div class="stage">
+
+  <!-- 主页 -->
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen" id="screen-home">
+        <!-- 顶部问候 -->
+        <header class="top-greet">
+          <div>
+            <p class="hello">HELLO ANCHOR</p>
+            <h1 class="title">
+              <span class="status-chip online">
+                <i></i> 设备在线
+              </span>
+            </h1>
+          </div>
+          <div class="avatar">
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=mifi&backgroundColor=cfe8ff" alt="" />
+          </div>
+        </header>
+
+        <!-- 设备主卡 -->
+        <article class="device-card">
+          <div class="bg-grid"></div>
+          <div class="bg-glow"></div>
+
+          <div class="dev-head">
+            <div class="dev-name">
+              <span class="model">BW-X9 Pro</span>
+            </div>
+            <button class="switch-dev" id="btnSwitchDev">切换设备 ⇆</button>
+          </div>
+
+          <div class="dev-body">
+            <div class="device-img">
+              <div class="halo"></div>
+              <svg viewBox="0 0 160 200" class="mifi-svg">
+                <defs>
+                  <linearGradient id="bodyG" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#ffffff"/>
+                    <stop offset="1" stop-color="#dbe9ff"/>
+                  </linearGradient>
+                  <linearGradient id="screenG" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0" stop-color="#3aa0ff"/>
+                    <stop offset="1" stop-color="#7ec3ff"/>
+                  </linearGradient>
+                </defs>
+                <rect x="20" y="10" width="120" height="180" rx="22" fill="url(#bodyG)" stroke="#bcd4ee" stroke-width="1.5"/>
+                <rect x="32" y="24" width="96" height="68" rx="8" fill="#0d2747" stroke="#bcd4ee"/>
+                <rect x="40" y="34" width="80" height="48" rx="4" fill="url(#screenG)" opacity=".95"/>
+                <text x="80" y="62" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono" font-weight="700">BONDED</text>
+                <circle cx="48" cy="108" r="5" fill="#3aa0ff"/>
+                <circle cx="68" cy="108" r="5" fill="#1f6feb"/>
+                <circle cx="88" cy="108" r="5" fill="#9ab8d8" opacity=".6"/>
+                <circle cx="108" cy="108" r="5" fill="#9ab8d8" opacity=".4"/>
+                <rect x="32" y="125" width="96" height="50" rx="6" fill="#f4f8ff" stroke="#bcd4ee"/>
+                <text x="80" y="146" text-anchor="middle" fill="#1f6feb" font-size="8" font-family="Space Grotesk" letter-spacing="2">BE WINNER</text>
+                <text x="80" y="160" text-anchor="middle" fill="#7d9bbf" font-size="6" font-family="JetBrains Mono">DUAL · 5G · BONDED</text>
+              </svg>
+            </div>
+
+            <div class="dev-meta">
+              <div class="status-pill bonded">
+                <i></i> 聚合中
+              </div>
+              <div class="meta-row">
+                <span class="lbl">运行</span>
+                <span class="val mono">04:23:11</span>
+              </div>
+              <div class="meta-row">
+                <span class="lbl">温度</span>
+                <span class="val mono">38.6°C</span>
+              </div>
+              <div class="meta-row">
+                <span class="lbl">电量</span>
+                <span class="val mono">82%</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 信号双卡 -->
+        <section class="sig-strip">
+          <div class="sig-card mob">
+            <div class="sig-head">
+              <span class="carrier">移动 · 5G</span>
+              <span class="sig-bars m"><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+            <div class="sig-num mono">-72<small>dBm</small></div>
+            <div class="sig-bar"><span style="width:78%"></span></div>
+            <div class="sig-foot">
+              <span class="realname-tag done">已实名</span>
+            </div>
+          </div>
+          <div class="sig-card tel unverified">
+            <div class="sig-head">
+              <span class="carrier">电信 · 5G</span>
+              <span class="realname-tag pending">未实名</span>
+            </div>
+            <div class="sig-disabled">
+              <button class="realname-btn" id="btnRealname">实名激活</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 实时速率 -->
+        <article class="rate-card">
+          <header class="rate-head">
+            <h3>实时速率</h3>
+          </header>
+
+          <div class="rate-numbers">
+            <div class="rn down">
+              <span class="arr">↓</span>
+              <span class="num mono" id="downNum">128.4</span>
+              <span class="unit">Mbps</span>
+              <span class="lbl">下行</span>
+            </div>
+            <div class="divider"></div>
+            <div class="rn up">
+              <span class="arr">↑</span>
+              <span class="num mono" id="upNum">42.7</span>
+              <span class="unit">Mbps</span>
+              <span class="lbl">上行</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- WiFi 卡片 -->
+        <article class="info-card wifi-card">
+          <header class="ic-head">
+            <div class="ic-title">
+              <span class="ic-ico wifi">
+                <svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg>
+              </span>
+              <h3>WiFi</h3>
+            </div>
+            <a class="ic-link" id="btnWifiSet">设置 ›</a>
+          </header>
+          <div class="wifi-rows">
+            <div class="wifi-row">
+              <span class="wifi-lbl">SSID</span>
+              <span class="wifi-val mono">BW-X9_5G</span>
+            </div>
+            <div class="wifi-row">
+              <span class="wifi-lbl">密码</span>
+              <span class="wifi-val mono">
+                <span id="pwdText" data-pwd="LiveMifi@2026">••••••••••••</span>
+                <button class="eye" id="eyeBtn" aria-label="切换密码">
+                  <svg id="eyeIcon" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 套餐卡片 -->
+        <article class="info-card plan-card">
+          <header class="ic-head">
+            <div class="ic-title">
+              <span class="ic-ico plan">
+                <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+              </span>
+              <h3>套餐</h3>
+            </div>
+            <a class="ic-link">购买 ›</a>
+          </header>
+
+          <div class="plan-row">
+            <div class="plan-info">
+              <span class="plan-tag flow">流量套餐</span>
+              <span class="plan-rest"><b class="mono">38.2</b><small>GB</small> <em>剩余</em></span>
+            </div>
+            <div class="plan-bar"><span style="width:48%"></span></div>
+            <div class="plan-meta">
+              <span>已用 41.8GB / 80GB</span>
+              <span>有效期至 2026.05.20</span>
+            </div>
+          </div>
+
+          <div class="plan-divider"></div>
+
+          <div class="plan-row">
+            <div class="plan-info">
+              <span class="plan-tag bond">聚合套餐</span>
+              <span class="plan-rest"><b class="mono">12.6</b><small>GB</small> <em>剩余</em></span>
+            </div>
+            <div class="plan-bar bond"><span style="width:21%"></span></div>
+            <div class="plan-meta">
+              <span>已用 47.4GB / 60GB</span>
+              <span>有效期至 2026.05.10</span>
+            </div>
+          </div>
+        </article>
+
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 底部 Tabbar -->
+      <nav class="tabbar">
+        <a class="tab active">
+          <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg>
+          <span>主页</span>
+        </a>
+        <a class="tab" href="wifi.html">
+          <svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg>
+          <span>WiFi</span>
+        </a>
+        <a class="tab center" href="bond.html">
+          <div class="center-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg>
+          </div>
+        </a>
+        <a class="tab" href="plan.html">
+          <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+          <span>套餐</span>
+        </a>
+        <a class="tab" href="mine.html">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          <span>我的</span>
+        </a>
+      </nav>
+
+      <div class="home-indicator"></div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- 设备切换抽屉 -->
+      <div class="sheet" id="devSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>我的设备</h3>
+          <span class="sheet-sub">已绑定 3 台</span>
+        </header>
+        <ul class="dev-list">
+          <li class="dev-item current">
+            <div class="di-ico online"><span></span></div>
+            <div class="di-main">
+              <b>BW-X9 Pro</b>
+              <span>SN: BWX9-2026-00128 · 当前使用</span>
+            </div>
+            <span class="di-flag">✓</span>
+          </li>
+          <li class="dev-item">
+            <div class="di-ico online"><span></span></div>
+            <div class="di-main">
+              <b>BW-X7 户外版</b>
+              <span>SN: BWX7-2025-04412 · 在线</span>
+            </div>
+            <button class="di-switch">切换</button>
+          </li>
+          <li class="dev-item">
+            <div class="di-ico offline"><span></span></div>
+            <div class="di-main">
+              <b>BW-X5 备机</b>
+              <span>SN: BWX5-2025-00076 · 离线 2 小时前</span>
+            </div>
+            <button class="di-switch">切换</button>
+          </li>
+        </ul>
+        <button class="bind-btn">
+          <span class="plus">+</span> 绑定新设备
+        </button>
+      </div>
+
+      <!-- WiFi 设置抽屉 -->
+      <div class="sheet" id="wifiSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>WiFi 设置</h3>
+          <button class="sheet-close" id="wifiSheetClose">完成</button>
+        </header>
+        <div class="wifi-form">
+          <div class="form-group">
+            <label>WiFi 名称 (SSID)</label>
+            <input type="text" class="form-input mono" value="BW-X9_5G" />
+          </div>
+          <div class="form-group">
+            <label>WiFi 密码</label>
+            <div class="form-input-wrap">
+              <input type="password" class="form-input mono" id="wifiPwdInput" value="LiveMifi@2026" />
+              <button class="eye form-eye" id="formEyeBtn" aria-label="切换密码可见">
+                <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>安全类型</label>
+            <select class="form-input">
+              <option selected>WPA2-PSK / WPA3-SAE</option>
+              <option>WPA2-PSK</option>
+              <option>WPA3-SAE</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>频段</label>
+            <div class="form-seg">
+              <span class="active">5G 优先</span>
+              <span>2.4G</span>
+              <span>双频合一</span>
+            </div>
+          </div>
+          <div class="form-group toggle-row">
+            <label>隐藏 SSID</label>
+            <div class="toggle"><span></span></div>
+          </div>
+          <button class="save-btn">保存设置</button>
+        </div>
+      </div>
+    </div>
+    <p class="phone-label">主页 · Home v0.3</p>
+  </section>
+
+  <!-- 设计说明侧栏 -->
+  <aside class="notes">
+    <div class="notes-head">
+      <span class="dot"></span>
+      <h2>主页 · 改版说明</h2>
+    </div>
+
+    <div class="note-block">
+      <h4>① 风格：浅色 × 浅蓝</h4>
+      <p>主背景 <code>#f3f7fc</code>，卡片纯白 + 1px 浅蓝描边，主色 <code>#1f6feb</code>，辅助色 <code>#3aa0ff</code>。整体清爽通透，符合移动端阅读习惯。</p>
+    </div>
+
+    <div class="note-block">
+      <h4>② 信息层级（自上而下）</h4>
+      <ol>
+        <li><b>顶部状态</b>：HELLO ANCHOR + <i>设备在线 / 离线</i> 胶囊（绿/灰）</li>
+        <li><b>设备主卡</b>：型号 + 切换按钮 / 设备图 / 聚合状态 + 运行/温度/电量（去掉别名）</li>
+        <li><b>双卡信号</b>：移动 + 电信 dBm 与强度条</li>
+        <li><b>实时速率</b>：上下行大数字（去掉折线和切换 Tab）+ LIVE 心跳标记</li>
+        <li><b>WiFi 卡片</b>：SSID + 密码（默认 ●●●●，点眼睛切换明文）</li>
+        <li><b>套餐卡片</b>：流量套餐 / 聚合套餐 剩余条 + 已用 / 有效期</li>
+      </ol>
+    </div>
+
+    <div class="note-block">
+      <h4>③ 关键交互</h4>
+      <ul>
+        <li>点击 <b>切换设备 ⇆</b> → 从底部弹出已绑定设备抽屉，列表 + 底部 <b>+ 绑定新设备</b></li>
+        <li>WiFi 密码 <b>👁 眼睛图标</b>：单击切换 ●●●● ↔ 明文</li>
+        <li>套餐进度条颜色：流量蓝、聚合深蓝；剩余少于 30% 自动转橙提示（可后续接入）</li>
+        <li>速率数字每秒滚动刷新（保留），不再绘制曲线</li>
+      </ul>
+    </div>
+
+    <div class="note-block">
+      <h4>④ 待你确认</h4>
+      <ul class="check">
+        <li>浅蓝色调饱和度是否合适，需要更<b>淡</b>还是更<b>鲜艳</b>？</li>
+        <li>设备切换抽屉是否符合预期？是否需要加入"删除/解绑"按钮？</li>
+        <li>套餐卡片是否需要显示<b>价格</b>或<b>续费提醒</b>？</li>
+        <li>确认后我继续设计 WiFi / 套餐 / 设备 / 聚合 4 个 Tab。</li>
+      </ul>
+    </div>
+  </aside>
+
+</div>
+
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo-mark"><span></span><span></span></div>
+    <div>
+      <h1>BE&nbsp;WINNER · MiFi Console</h1>
+      <p>多网聚合直播路由 · 移动端管理 App / Light Theme · v0.2</p>
+    </div>
+  </div>
+  <div class="brand-right">
+    <span class="meta-pill">📐 390 × 844</span>
+    <span class="meta-pill">🎨 Light · Sky Blue</span>
+    <span class="meta-pill accent">DRAFT v0.2</span>
+  </div>
+</header>
+
+<script src="js/app.js"></script>
+</body>
+</html>

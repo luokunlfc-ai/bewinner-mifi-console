@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 聚合管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/bond.css" />
+</head>
+<body>
+<div class="stage">
+
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen">
+        <header class="page-header">
+          <h1>聚合管理</h1>
+        </header>
+
+        <!-- 聚合状态 + 实时速率 -->
+        <article class="bond-status-card">
+          <div class="bs-top">
+            <div class="bs-indicator">
+              <div class="bs-ring">
+                <span class="ring r1"></span>
+                <span class="ring r2"></span>
+                <span class="ring r3"></span>
+                <div class="bs-center-dot"></div>
+              </div>
+            </div>
+            <div class="bs-info">
+              <div class="bs-chip online">
+                <i></i> 聚合中
+              </div>
+              <div class="bs-sub">双链路聚合 · 移动 + 电信</div>
+            </div>
+          </div>
+
+          <!-- 聚合总速率 -->
+          <div class="bs-rate-total">
+            <div class="brt-item down">
+              <span class="brt-arr">↓</span>
+              <span class="brt-num mono" id="bondDown">128.4</span>
+              <span class="brt-unit">Mbps</span>
+              <span class="brt-lbl">聚合下行</span>
+            </div>
+            <div class="brt-divider"></div>
+            <div class="brt-item up">
+              <span class="brt-arr">↑</span>
+              <span class="brt-num mono" id="bondUp">42.7</span>
+              <span class="brt-unit">Mbps</span>
+              <span class="brt-lbl">聚合上行</span>
+            </div>
+          </div>
+
+          <!-- 分卡速率 -->
+          <div class="bs-rate-cards">
+            <div class="brc mob">
+              <div class="brc-head">
+                <span class="brc-carrier">移动 5G</span>
+                <span class="brc-bars"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="brc-nums">
+                <span class="brc-item">↓ <b class="mono" id="mobDown">72.1</b><small>Mbps</small></span>
+                <span class="brc-item">↑ <b class="mono" id="mobUp">24.3</b><small>Mbps</small></span>
+              </div>
+            </div>
+            <div class="brc tel">
+              <div class="brc-head">
+                <span class="brc-carrier">电信 5G</span>
+                <span class="brc-bars"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="brc-nums">
+                <span class="brc-item">↓ <b class="mono" id="telDown">56.3</b><small>Mbps</small></span>
+                <span class="brc-item">↑ <b class="mono" id="telUp">18.4</b><small>Mbps</small></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 聚合网络管理 -->
+        <article class="bond-net-card">
+          <header class="bn-head">
+            <h3>聚合网络管理</h3>
+          </header>
+          <p class="bn-desc">当前参与聚合的网卡</p>
+
+          <div class="bn-slots">
+            <div class="bn-slot" id="slot1">
+              <div class="bn-slot-head">
+                <span class="bn-slot-label">链路 A</span>
+                <span class="bn-slot-status on">已连接</span>
+              </div>
+              <div class="bn-slot-body">
+                <span class="bn-slot-ico mob"></span>
+                <b id="slot1Name">移动</b>
+              </div>
+              <button class="bn-slot-change" data-slot="1">更换 ›</button>
+            </div>
+            <div class="bn-slot-arrow">
+              <svg viewBox="0 0 24 24"><path d="M18 8l4 4-4 4M6 16l-4-4 4-4"/><path d="M2 12h20"/></svg>
+            </div>
+            <div class="bn-slot" id="slot2">
+              <div class="bn-slot-head">
+                <span class="bn-slot-label">链路 B</span>
+                <span class="bn-slot-status on">已连接</span>
+              </div>
+              <div class="bn-slot-body">
+                <span class="bn-slot-ico tel"></span>
+                <b id="slot2Name">电信</b>
+              </div>
+              <button class="bn-slot-change" data-slot="2">更换 ›</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 聚合流量管理 -->
+        <article class="bond-data-card">
+          <header class="bd-head">
+            <h3>聚合流量管理</h3>
+          </header>
+
+          <div class="bd-plan">
+            <div class="bd-plan-top">
+              <span class="bd-tag">聚合套餐 · 连续包月 60GB</span>
+              <span class="bd-expire warn">有效期至 2026.05.10</span>
+            </div>
+            <div class="bd-usage">
+              <div class="bd-circle-wrap">
+                <svg class="bd-ring" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gBd)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="168.7" transform="rotate(-90 40 40)"/>
+                  <defs><linearGradient id="gBd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
+                </svg>
+                <div class="bd-circle-text">
+                  <b class="mono">12.6</b>
+                  <small>GB 剩余</small>
+                </div>
+              </div>
+              <div class="bd-nums">
+                <div class="bd-num-row"><span class="bdn-lbl">总量</span><span class="bdn-val mono">60 GB</span></div>
+                <div class="bd-num-row"><span class="bdn-lbl">已用</span><span class="bdn-val mono">47.4 GB</span></div>
+                <div class="bd-num-row"><span class="bdn-lbl">剩余</span><span class="bdn-val mono highlight">12.6 GB</span></div>
+              </div>
+            </div>
+          </div>
+
+          <a class="bd-buy-link" href="plan.html">
+            <span>购买聚合套餐</span>
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </article>
+
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- 网卡选择抽屉 -->
+      <div class="sheet" id="cardSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3 id="sheetTitle">选择链路 A 网卡</h3>
+          <button class="sheet-close" id="sheetClose">完成</button>
+        </header>
+        <ul class="card-list">
+          <li class="card-option" data-card="移动">
+            <span class="co-ico mob"></span>
+            <div class="co-main"><b>移动</b><span>内置卡 · 5G</span></div>
+            <span class="co-check" id="check-移动">✓</span>
+          </li>
+          <li class="card-option" data-card="电信">
+            <span class="co-ico tel"></span>
+            <div class="co-main"><b>电信</b><span>内置卡 · 5G</span></div>
+            <span class="co-check" id="check-电信">✓</span>
+          </li>
+          <li class="card-option" data-card="外置卡1">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 1</b><span>外置插拔卡</span></div>
+            <span class="co-check" id="check-外置卡1"></span>
+          </li>
+          <li class="card-option" data-card="外置卡2">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 2</b><span>外置插拔卡</span></div>
+            <span class="co-check" id="check-外置卡2"></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tabbar -->
+      <nav class="tabbar">
+        <a class="tab" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg><span>主页</span></a>
+        <a class="tab" href="wifi.html"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg><span>WiFi</span></a>
+        <a class="tab center active">
+          <div class="center-btn"><svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg></div>
+        </a>
+        <a class="tab" href="plan.html"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg><span>套餐</span></a>
+        <a class="tab" href="mine.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>我的</span></a>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+    <p class="phone-label">聚合管理 · Bond</p>
+  </section>
+
+  <!-- 设计说明 -->
+  <aside class="notes">
+    <div class="notes-head"><span class="dot"></span><h2>聚合管理 · 设计说明</h2></div>
+    <div class="note-block">
+      <h4>① 聚合状态 + 实时速率</h4>
+      <ul>
+        <li>顶部「聚合中」状态胶囊 + 脉冲信号动画</li>
+        <li>聚合总速率：上下行大数字（每秒刷新）</li>
+        <li>分卡速率：移动 / 电信分别的上下行速率（自动按比例分配）</li>
+      </ul>
+    </div>
+    <div class="note-block">
+      <h4>② 聚合网络管理</h4>
+      <ul>
+        <li>链路 A / 链路 B 两个卡槽，展示当前参与聚合的卡</li>
+        <li>点击「更换 ›」→ 弹出网卡选择抽屉（移动 / 电信 / 外置卡1 / 外置卡2）</li>
+        <li>选中后更新卡槽显示名称和图标</li>
+      </ul>
+    </div>
+    <div class="note-block">
+      <h4>③ 聚合流量管理</h4>
+      <ul>
+        <li>环形进度图 + 套餐名 / 总量 / 已用 / 剩余 / 有效期</li>
+        <li>底部「购买聚合套餐」链接跳转到套餐管理页</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo-mark"><span></span><span></span></div>
+    <div>
+      <h1>BE&nbsp;WINNER · MiFi Console</h1>
+      <p>多网聚合直播路由 · 移动端管理 App / 聚合管理页</p>
+    </div>
+  </div>
+  <div class="brand-right">
+    <span class="meta-pill">📐 390 × 844</span>
+    <span class="meta-pill">🎨 Light · Sky Blue</span>
+    <span class="meta-pill accent">05 / Bond</span>
+  </div>
+</header>
+<script src="js/bond.js"></script>
+</body>
+</html>
