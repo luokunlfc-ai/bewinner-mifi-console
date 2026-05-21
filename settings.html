@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 设置</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/mine.css" />
+</head>
+<body>
+<div class="stage">
+
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen">
+        <!-- 返回按钮 -->
+        <header class="top-greet">
+          <button class="back-btn" id="btnBack" aria-label="返回">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <h2 class="page-title">设置</h2>
+        </header>
+
+        <!-- 设置菜单 -->
+        <article class="menu-card">
+          <div class="menu-item" id="btnChangePhone">
+            <div class="mi-ico" style="background:#eaf3ff;color:var(--brand);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>更换手机号</b>
+              <span>当前：<em class="mi-em" id="setPhone">138****8888</em></span>
+            </div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnCheckUpdate">
+            <div class="mi-ico" style="background:#ecfdf5;color:#059669;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>检查更新</b>
+              <span>当前版本：<em class="mi-em mono">v2.4.1</em></span>
+            </div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnPrivacy">
+            <div class="mi-ico pri">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="mi-main"><b>隐私协议</b></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnClearCache">
+            <div class="mi-ico" style="background:#fefce8;color:#ca8a04;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4 4l16 16"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>清除缓存</b>
+              <span>当前缓存：<em class="mi-em mono">128.6 MB</em></span>
+            </div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </article>
+
+        <article class="menu-card">
+          <div class="menu-item" id="btnDeleteAccount">
+            <div class="mi-ico" style="background:#fef2f2;color:var(--err);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+            </div>
+            <div class="mi-main"><b>注销账号</b></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" id="btnLogout">
+            <div class="mi-ico logout">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            </div>
+            <div class="mi-main"><b>退出登录</b></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </article>
+
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- 更换手机号抽屉 -->
+      <div class="sheet" id="phoneSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3 id="phoneSheetTitle">更换手机号</h3>
+          <button class="sheet-close" id="phoneClose">取消</button>
+        </header>
+        <!-- Step 1: 验证当前身份 -->
+        <div class="sn-input-body" id="phoneStep1">
+          <p class="sn-desc">为保障账号安全，请先验证当前手机号</p>
+          <div class="sn-input-wrap" style="background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;">
+            <span style="font-size:13px;color:var(--text-2);">当前手机号</span>
+            <span style="font-size:15px;font-weight:600;font-family:'JetBrains Mono',monospace;display:block;margin-top:2px;" id="phoneCurPhone">138****8888</span>
+          </div>
+          <p class="sn-desc" style="margin-top:8px;">验证码</p>
+          <div class="sn-input-wrap" style="display:flex;align-items:center;gap:8px;">
+            <input type="text" class="sn-input mono" id="phoneStep1Sms" placeholder="请输入验证码" maxlength="6" autocomplete="off" style="flex:1;" />
+            <button class="sms-btn" id="phoneStep1SmsBtn" style="white-space:nowrap;flex-shrink:0;">发送验证码</button>
+          </div>
+          <button class="save-btn" id="phoneStep1Btn">下一步</button>
+          <p class="sn-hint" id="phoneStep1Hint"></p>
+        </div>
+        <!-- Step 2: 输入新手机号 -->
+        <div class="sn-input-body" id="phoneStep2" style="display:none;">
+          <p class="sn-desc">请输入新手机号</p>
+          <div class="sn-input-wrap">
+            <input type="text" class="sn-input mono" id="phoneInput" placeholder="请输入新手机号" maxlength="11" autocomplete="off" />
+          </div>
+          <p class="sn-desc" style="margin-top:8px;">验证码</p>
+          <div class="sn-input-wrap" style="display:flex;align-items:center;gap:8px;">
+            <input type="text" class="sn-input mono" id="smsInput" placeholder="请输入验证码" maxlength="6" autocomplete="off" style="flex:1;" />
+            <button class="sms-btn" id="smsBtn" style="white-space:nowrap;flex-shrink:0;">发送验证码</button>
+          </div>
+          <button class="save-btn" id="phoneConfirmBtn">确认更换</button>
+          <p class="sn-hint" id="phoneHint"></p>
+        </div>
+      </div>
+
+      <!-- 退出登录确认弹窗 -->
+      <div class="confirm-mask" id="logoutConfirmMask"></div>
+      <div class="confirm-dialog" id="logoutConfirmDialog">
+        <div class="confirm-dialog-body">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--err)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p>确定要退出当前账号吗？</p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="logoutCancel">取消</button>
+          <button id="logoutOk">退出</button>
+        </div>
+      </div>
+
+      <!-- 清除缓存确认弹窗 -->
+      <div class="confirm-mask" id="cacheConfirmMask"></div>
+      <div class="confirm-dialog" id="cacheConfirmDialog">
+        <div class="confirm-dialog-body">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p>确定要清除所有缓存数据吗？<br/><small style="color:var(--text-3);">不会影响账号和设备绑定信息</small></p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="cacheCancel">取消</button>
+          <button id="cacheOk" style="background:var(--warn);">确认清除</button>
+        </div>
+      </div>
+
+      <!-- 注销账号确认弹窗 -->
+      <div class="confirm-mask" id="deleteAccountMask"></div>
+      <div class="confirm-dialog" id="deleteAccountDialog">
+        <div class="confirm-dialog-body">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--err)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p>确定要注销当前账号吗？<br/><small style="color:var(--err);">此操作不可撤销，所有数据将被清除</small></p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="deleteAccountCancel">取消</button>
+          <button id="deleteAccountOk">确认注销</button>
+        </div>
+      </div>
+
+      <!-- 注销验证码抽屉 -->
+      <div class="sheet" id="deleteVerifySheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>安全验证</h3>
+          <button class="sheet-close" id="deleteVerifyClose">取消</button>
+        </header>
+        <div class="sn-input-body">
+          <p class="sn-desc">为保障账号安全，请先验证身份后再注销</p>
+          <p class="sn-desc" style="margin-top:8px;">验证码</p>
+          <div class="sn-input-wrap" style="display:flex;align-items:center;gap:8px;">
+            <input type="text" class="sn-input mono" id="deleteSmsInput" placeholder="请输入验证码" maxlength="6" autocomplete="off" style="flex:1;" />
+            <button class="sms-btn" id="deleteSmsBtn" style="white-space:nowrap;flex-shrink:0;">发送验证码</button>
+          </div>
+          <button class="save-btn" id="deleteVerifyConfirmBtn">确认注销</button>
+          <p class="sn-hint" id="deleteVerifyHint"></p>
+        </div>
+      </div>
+
+      <!-- Tabbar -->
+      <nav class="tabbar">
+        <a class="tab" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg><span>主页</span></a>
+        <a class="tab" href="wifi.html"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg><span>WiFi</span></a>
+        <a class="tab" href="plan.html"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg><span>套餐</span></a>
+        <a class="tab" href="mine.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>我的</span></a>
+      </nav>
+      <div class="home-indicator"></div>
+
+    </div>
+
+  </div>
+</div>
+<script src="js/device-state.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

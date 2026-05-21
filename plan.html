@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 套餐管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/plan.css" />
+</head>
+<body>
+<div class="stage">
+
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen">
+        <header class="top-greet">
+          <div class="device-title-bar" id="deviceTitleBar">
+            <span class="device-title-name" id="planDeviceModel">BW-X9 Pro</span>
+            <svg class="device-title-arrow" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            <span class="device-title-status online" id="planDeviceStatus">在线</span>
+          </div>
+          <button class="add-device-btn" id="btnAddDevice" aria-label="添加设备">+</button>
+        </header>
+
+        <!-- 无绑定设备空状态 -->
+        <div class="empty-state" id="emptyDevice" style="display:none;">
+          <div class="empty-icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="var(--brand)" stroke-width="1.5"><rect x="8" y="24" width="48" height="32" rx="6"/><path d="M18 24v-4a14 14 0 0 1 14-14h0a14 14 0 0 1 14 14v4"/><circle cx="32" cy="44" r="4"/><path d="M32 30v8"/></svg>
+          </div>
+          <h3>尚未绑定设备</h3>
+          <p>请先添加您的 MiFi 设备<br/>开始享受多网聚合高速网络</p>
+          <button class="empty-btn" id="btnBindDevice">绑定设备</button>
+        </div>
+
+        <div id="planContent">
+
+        <!-- 实名状态 -->
+        <section class="id-strip">
+          <div class="id-card verified">
+            <div class="id-left">
+              <span class="id-carrier">移动</span>
+              <span class="id-tag done">已实名</span>
+            </div>
+          </div>
+          <div class="id-card unverified">
+            <div class="id-left">
+              <span class="id-carrier tel">电信</span>
+              <span class="id-tag pending">未实名</span>
+            </div>
+            <a class="id-action sm" id="btnIdVerify">去认证 ›</a>
+          </div>
+        </section>
+
+        <!-- 当前套餐概览 -->
+        <article class="cur-plan-card">
+          <header class="cp-head">
+            <h3>当前套餐</h3>
+          </header>
+
+          <!-- 套餐内容（已订购） -->
+          <div id="cpContent">
+          <div class="cp-item" id="cpFlowItem">
+            <div class="cp-top">
+              <span class="cp-tag flow">流量套餐</span>
+              <span class="cp-name">月享100GB年包</span>
+              <span class="cp-expire">有效期至 2026.05.20</span>
+            </div>
+            <div class="cp-usage">
+              <div class="cp-circle-wrap">
+                <svg class="cp-ring" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gFlow)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="111" transform="rotate(-90 40 40)"/>
+                  <defs><linearGradient id="gFlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6feb"/><stop offset="1" stop-color="#3aa0ff"/></linearGradient></defs>
+                </svg>
+                <div class="cp-circle-text">
+                  <b class="mono">38.2</b>
+                  <small>GB 剩余</small>
+                </div>
+              </div>
+              <div class="cp-nums">
+                <div class="cp-num-row"><span class="cpn-lbl">总量</span><span class="cpn-val mono">80 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">已用</span><span class="cpn-val mono">41.8 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">剩余</span><span class="cpn-val mono highlight">38.2 GB</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cp-divider" id="cpDivider"></div>
+
+          <div class="cp-item" id="cpBondItem">
+            <div class="cp-top">
+              <span class="cp-tag bond">聚合套餐</span>
+              <span class="cp-name">60G聚合套餐</span>
+              <span class="cp-expire warn">有效期至 2026.05.10</span>
+            </div>
+            <div class="cp-usage">
+              <div class="cp-circle-wrap">
+                <svg class="cp-ring" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gBond)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="168.7" transform="rotate(-90 40 40)"/>
+                  <defs><linearGradient id="gBond" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
+                </svg>
+                <div class="cp-circle-text">
+                  <b class="mono warn-c">12.6</b>
+                  <small>GB 剩余</small>
+                </div>
+              </div>
+              <div class="cp-nums">
+                <div class="cp-num-row"><span class="cpn-lbl">总量</span><span class="cpn-val mono">60 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">已用</span><span class="cpn-val mono">47.4 GB</span></div>
+                <div class="cp-num-row"><span class="cpn-lbl">剩余</span><span class="cpn-val mono highlight warn-c">12.6 GB</span></div>
+              </div>
+            </div>
+          </div>
+          </div><!-- #cpContent -->
+
+          <!-- 未订购套餐空状态 -->
+          <div class="cp-empty" id="cpEmpty" style="display:none;">
+            <div class="empty-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="var(--text-3)" stroke-width="1.5"><circle cx="16" cy="22" r="12"/><path d="M12 22h8M16 18v8"/><rect x="26" y="14" width="18" height="24" rx="3"/><path d="M30 22h10M30 28h7"/></svg>
+            </div>
+            <p class="cp-empty-title">暂无可用套餐</p>
+            <p class="cp-empty-sub">请购买套餐后使用</p>
+          </div>
+        </article>
+
+        <!-- 套餐商城 -->
+        <section class="shop-section">
+          <div class="shop-tabs-scroll" id="shopTabsScroll">
+            <span class="shop-tab-scroll-item active" data-tab="trial">体验套餐</span>
+            <span class="shop-tab-scroll-item" data-tab="main">主套餐</span>
+            <span class="shop-tab-scroll-item" data-tab="vip">会员专享</span>
+            <span class="shop-tab-scroll-item" data-tab="flash">限时特惠</span>
+            <span class="shop-tab-scroll-item" data-tab="bond" id="shopTabBond">聚合套餐</span>
+          </div>
+
+          <!-- 体验套餐 -->
+          <div class="shop-panel active" id="panelTrial">
+            <div class="pkg-grid">
+              <div class="pkg-card" data-price="9.9" data-label="体验·10GB 月包" data-name="10GB体验月包" data-validity="1个月">
+                <div class="pkg-name">体验月包</div>
+                <div class="pkg-size mono">10<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">9.9</b></div>
+                <div class="pkg-note">新用户专享 · 1个月有效</div>
+              </div>
+              <div class="pkg-card" data-price="29" data-label="体验·30GB 月包" data-name="30GB体验月包" data-validity="1个月">
+                <div class="pkg-name">体验月包</div>
+                <div class="pkg-size mono">30<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">29</b></div>
+                <div class="pkg-note">体验更大流量 · 1个月有效</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 主套餐 -->
+          <div class="shop-panel" id="panelMain">
+            <div class="pkg-grid">
+              <div class="pkg-card" data-price="79" data-label="流量·连续包月 80GB" data-name="月享100GB年包" data-validity="12个月">
+                <div class="pkg-promo">首月减¥10</div>
+                <div class="pkg-name">连续包月</div>
+                <div class="pkg-size mono">80<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">79</b><s class="mono">89</s></div>
+                <div class="pkg-note">到期后89元/月续费</div>
+              </div>
+              <div class="pkg-card" data-price="99" data-label="流量·月包 80GB" data-name="月享100GB月包" data-validity="1个月">
+                <div class="pkg-name">月包</div>
+                <div class="pkg-size mono">80<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">99</b></div>
+                <div class="pkg-note">单次购买 · 不自动续费</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 会员专享 -->
+          <div class="shop-panel" id="panelVip">
+            <div class="pkg-grid">
+              <div class="pkg-card" data-price="699" data-label="会员·年包 100GB/月" data-name="会员年包100GB" data-validity="12个月">
+                <div class="pkg-promo hot">会员专享</div>
+                <div class="pkg-name">会员年包</div>
+                <div class="pkg-size mono">100<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">58</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥699 · 会员折扣价</div>
+              </div>
+              <div class="pkg-card" data-price="399" data-label="会员·半年包 100GB/月" data-name="会员半年包100GB" data-validity="6个月">
+                <div class="pkg-name">会员半年包</div>
+                <div class="pkg-size mono">100<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">67</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥399 · 会员折扣价</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 限时特惠 -->
+          <div class="shop-panel" id="panelFlash">
+            <div class="pkg-grid">
+              <div class="pkg-card" data-price="1199" data-label="流量·两年包 80GB/月" data-name="月享100GB年包" data-validity="24个月">
+                <div class="pkg-promo hot">超值推荐</div>
+                <div class="pkg-name">两年包</div>
+                <div class="pkg-size mono">80<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">50</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥1199</div>
+              </div>
+              <div class="pkg-card" data-price="799" data-label="流量·年包 80GB/月" data-name="月享100GB年包" data-validity="12个月">
+                <div class="pkg-name">年包</div>
+                <div class="pkg-size mono">80<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">67</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥799</div>
+              </div>
+              <div class="pkg-card" data-price="459" data-label="流量·半年包 80GB/月" data-name="月享100GB年包" data-validity="6个月">
+                <div class="pkg-name">半年包</div>
+                <div class="pkg-size mono">80<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">77</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥459</div>
+              </div>
+              <div class="pkg-card" data-price="149" data-label="流量·月包大流量 150GB" data-name="150GB大流量月包" data-validity="1个月">
+                <div class="pkg-name">月包 · 大流量</div>
+                <div class="pkg-size mono">150<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">149</b></div>
+                <div class="pkg-note">单月大流量套餐</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 聚合套餐 -->
+          <div class="shop-panel" id="panelBond">
+            <div class="pkg-grid">
+              <div class="pkg-card bond-style" data-price="69" data-label="聚合·连续包月 60GB" data-name="60G聚合套餐" data-validity="1个月">
+                <div class="pkg-promo">首月减¥10</div>
+                <div class="pkg-name">连续包月</div>
+                <div class="pkg-size mono">60<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">69</b><s class="mono">79</s></div>
+                <div class="pkg-note">到期后79元/月续费</div>
+              </div>
+              <div class="pkg-card bond-style" data-price="89" data-label="聚合·月包 60GB" data-name="60G聚合套餐" data-validity="1个月">
+                <div class="pkg-name">月包</div>
+                <div class="pkg-size mono">60<small>GB</small></div>
+                <div class="pkg-price"><em>¥</em><b class="mono">89</b></div>
+                <div class="pkg-note">单次购买 · 不自动续费</div>
+              </div>
+              <div class="pkg-card bond-style" data-price="899" data-label="聚合·两年包 60GB/月" data-name="60G聚合套餐" data-validity="24个月">
+                <div class="pkg-promo hot">超值推荐</div>
+                <div class="pkg-name">两年包</div>
+                <div class="pkg-size mono">60<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">38</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥899</div>
+              </div>
+              <div class="pkg-card bond-style" data-price="599" data-label="聚合·年包 60GB/月" data-name="60G聚合套餐" data-validity="12个月">
+                <div class="pkg-name">年包</div>
+                <div class="pkg-size mono">60<small>GB/月</small></div>
+                <div class="pkg-price"><em>约¥</em><b class="mono">50</b><span>/月</span></div>
+                <div class="pkg-note">价格：¥599</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        </div><!-- #planContent -->
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- 我的设备抽屉 -->
+      <div class="sheet" id="myDevicesSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>我的设备</h3>
+          <button class="sheet-close" id="myDevicesClose">完成</button>
+        </header>
+        <ul class="my-devices-list" id="myDevicesList">
+          <!-- JS 动态填充 -->
+        </ul>
+      </div>
+
+      <!-- 删除设备确认弹窗 -->
+      <div class="confirm-mask" id="deleteConfirmMask"></div>
+      <div class="confirm-dialog" id="deleteConfirmDialog">
+        <div class="confirm-dialog-body">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--err)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p>确定要删除设备 <b id="deleteDevName">--</b> 吗？<br/><small style="color:var(--text-3);">删除后需重新绑定才能使用</small></p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="deleteCancel">取消</button>
+          <button id="deleteOk">确认删除</button>
+        </div>
+      </div>
+
+      <!-- 重命名设备弹窗 -->
+      <div class="confirm-mask" id="renameMask"></div>
+      <div class="confirm-dialog" id="renameDialog">
+        <div class="confirm-dialog-body">
+          <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;">修改设备名称</p>
+          <input type="text" class="rename-input" id="renameInput" maxlength="20" autocomplete="off" />
+          <p class="rename-hint" id="renameHint" style="display:none;"></p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="renameCancel">取消</button>
+          <button id="renameOk" style="background:var(--brand);">确认</button>
+        </div>
+      </div>
+
+      <!-- 支付抽屉 -->
+      <div class="sheet" id="paySheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>确认订单</h3>
+          <button class="sheet-close" id="payClose">关闭</button>
+        </header>
+        <div class="pay-body">
+          <div class="pay-name" id="payName">月享100GB年包 · 80GB</div>
+          <div class="pay-info-rows">
+            <div class="pay-info-row">
+              <span class="pay-info-lbl">充值设备</span>
+              <span class="pay-info-val mono" id="payDeviceSn">BWX9-2026-00128</span>
+            </div>
+            <div class="pay-info-row">
+              <span class="pay-info-lbl">套餐有效期</span>
+              <span class="pay-info-val" id="payValidity">购买后 12 个月有效</span>
+            </div>
+            <div class="pay-info-row pay-price-row">
+              <span class="pay-info-lbl">套餐价格</span>
+              <span class="pay-price" id="payPrice">¥799</span>
+            </div>
+          </div>
+          <div class="coupon-row" id="couponRow">
+            <span class="coupon-label">优惠券</span>
+            <span class="coupon-val" id="couponVal">暂无可用优惠券</span>
+            <svg class="coupon-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="pay-methods">
+            <span class="pay-method-lbl">支付方式</span>
+            <div class="pay-method-options">
+              <button class="pay-method-btn active" data-method="wechat">
+                <span class="pm-ico wechat"></span>
+                <span>微信支付</span>
+              </button>
+              <button class="pay-method-btn" data-method="alipay">
+                <span class="pm-ico alipay"></span>
+                <span>支付宝</span>
+              </button>
+            </div>
+          </div>
+          <button class="pay-confirm-btn" id="payConfirmBtn">确认支付 ¥799</button>
+        </div>
+      </div>
+
+      <!-- 优惠券选择弹窗 -->
+      <div class="sheet" id="couponSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>选择优惠券</h3>
+          <button class="sheet-close" id="couponClose">完成</button>
+        </header>
+        <ul class="coupon-list">
+          <li class="coupon-item" data-discount="20" data-label="新用户专享 ¥20">
+            <div class="coup-left">
+              <b>¥20</b>
+              <span>满 99 可用</span>
+            </div>
+            <div class="coup-right">
+              <span class="coup-tag">新用户专享</span>
+              <span class="coup-expire">有效期至 2026.06.30</span>
+            </div>
+          </li>
+          <li class="coupon-item" data-discount="10" data-label="流量满减 ¥10">
+            <div class="coup-left">
+              <b>¥10</b>
+              <span>满 49 可用</span>
+            </div>
+            <div class="coup-right">
+              <span class="coup-tag">通用券</span>
+              <span class="coup-expire">有效期至 2026.12.31</span>
+            </div>
+          </li>
+          <li class="coupon-item" data-discount="50" data-label="会员专享 ¥50">
+            <div class="coup-left">
+              <b>¥50</b>
+              <span>满 199 可用</span>
+            </div>
+            <div class="coup-right">
+              <span class="coup-tag">会员专享</span>
+              <span class="coup-expire">有效期至 2026.08.15</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tabbar -->
+      <nav class="tabbar">
+        <a class="tab" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg><span>主页</span></a>
+        <a class="tab" href="wifi.html"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg><span>WiFi</span></a>
+<a class="tab active"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg><span>套餐</span></a>
+        <a class="tab" href="mine.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>我的</span></a>
+      </nav>
+      <div class="home-indicator"></div>
+
+      <!-- 添加设备抽屉 -->
+      <div class="sheet" id="addDeviceSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>添加设备</h3>
+          <button class="sheet-close" id="addDeviceClose">取消</button>
+        </header>
+        <div class="add-device-options">
+          <div class="ado-item" id="adoQr">
+            <div class="ado-icon qr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h4v4M18 14v4h-4"/></svg>
+            </div>
+            <div class="ado-main"><b>扫码添加</b><span>扫描设备二维码快速绑定</span></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="ado-item" id="adoSn">
+            <div class="ado-icon sn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h4"/></svg>
+            </div>
+            <div class="ado-main"><b>SN 码添加</b><span>输入设备 SN 码手动绑定</span></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- SN 码输入抽屉 -->
+      <div class="sheet" id="snInputSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>SN 码添加</h3>
+          <button class="sheet-close" id="snInputClose">取消</button>
+        </header>
+        <div class="sn-input-body">
+          <p class="sn-desc">请输入设备底部或包装上的 SN 码</p>
+          <div class="sn-input-wrap">
+            <input type="text" class="sn-input mono" id="snInputField" placeholder="例如：BWX9-2026-00128" maxlength="30" autocomplete="off" />
+          </div>
+          <button class="save-btn sn-confirm-btn" id="snConfirmBtn">确认添加</button>
+          <p class="sn-hint" id="snHint"></p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<script src="js/device-state.js"></script>
+<script src="js/plan.js"></script>
+</body>
+</html>

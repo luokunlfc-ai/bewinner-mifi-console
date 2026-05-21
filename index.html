@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Be Winner · MiFi 控制中心 / 主页</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+<div class="stage">
+
+  <!-- 主页 -->
+  <section class="phone">
+    <div class="phone-shell">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">21:08</span>
+        <span class="status-icons">
+          <span class="sig-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="bat-ico">98<small>%</small></span>
+        </span>
+      </div>
+
+      <div class="screen" id="screen-home">
+        <!-- 顶部设备标题栏 -->
+        <header class="top-greet">
+          <div class="device-title-bar" id="deviceTitleBar">
+            <span class="device-title-name" id="deviceTitleName">BW-X9 Pro</span>
+            <svg class="device-title-arrow" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            <span class="device-title-status online" id="deviceTitleStatus">在线</span>
+          </div>
+          <button class="add-device-btn" id="btnAddDevice" aria-label="添加设备">+</button>
+        </header>
+
+        <!-- 无绑定设备空状态 -->
+        <div class="empty-state" id="emptyDevice" style="display:none;">
+          <div class="empty-icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="var(--brand)" stroke-width="1.5"><rect x="8" y="24" width="48" height="32" rx="6"/><path d="M18 24v-4a14 14 0 0 1 14-14h0a14 14 0 0 1 14 14v4"/><circle cx="32" cy="44" r="4"/><path d="M32 30v8"/></svg>
+          </div>
+          <h3>尚未绑定设备</h3>
+          <p>请先添加您的 MiFi 设备<br/>开始享受多网聚合高速网络</p>
+          <button class="empty-btn" id="btnBindDevice">绑定设备</button>
+        </div>
+
+        <!-- 主内容区 -->
+        <div id="homeContent">
+
+        <!-- 设备主卡 -->
+        <article class="device-card">
+          <div class="bg-grid"></div>
+          <div class="bg-glow"></div>
+
+          <div class="dev-body">
+            <div class="device-img">
+              <div class="halo"></div>
+              <svg viewBox="0 0 160 200" class="mifi-svg">
+                <defs>
+                  <linearGradient id="bodyG" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#ffffff"/>
+                    <stop offset="1" stop-color="#dbe9ff"/>
+                  </linearGradient>
+                  <linearGradient id="screenG" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0" stop-color="#3aa0ff"/>
+                    <stop offset="1" stop-color="#7ec3ff"/>
+                  </linearGradient>
+                </defs>
+                <rect x="20" y="10" width="120" height="180" rx="22" fill="url(#bodyG)" stroke="#bcd4ee" stroke-width="1.5"/>
+                <rect x="32" y="24" width="96" height="68" rx="8" fill="#0d2747" stroke="#bcd4ee"/>
+                <rect x="40" y="34" width="80" height="48" rx="4" fill="url(#screenG)" opacity=".95"/>
+                <text x="80" y="62" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono" font-weight="700">BONDED</text>
+                <circle cx="48" cy="108" r="5" fill="#3aa0ff"/>
+                <circle cx="68" cy="108" r="5" fill="#1f6feb"/>
+                <circle cx="88" cy="108" r="5" fill="#9ab8d8" opacity=".6"/>
+                <circle cx="108" cy="108" r="5" fill="#9ab8d8" opacity=".4"/>
+                <rect x="32" y="125" width="96" height="50" rx="6" fill="#f4f8ff" stroke="#bcd4ee"/>
+                <text x="80" y="146" text-anchor="middle" fill="#1f6feb" font-size="8" font-family="Space Grotesk" letter-spacing="2">BE WINNER</text>
+                <text x="80" y="160" text-anchor="middle" fill="#7d9bbf" font-size="6" font-family="JetBrains Mono">DUAL · 5G · BONDED</text>
+              </svg>
+            </div>
+
+            <div class="dev-meta">
+              <div class="status-pill bonded" id="statusPillBonded">
+                <i></i> 聚合中
+              </div>
+              <div class="meta-row">
+                <span class="lbl">运行</span>
+                <span class="val mono" id="devRunTime">04:23:11</span>
+              </div>
+              <div class="meta-row">
+                <span class="lbl">温度</span>
+                <span class="val mono" id="devTemp">38.6°C</span>
+              </div>
+              <div class="meta-row">
+                <span class="lbl">电量</span>
+                <span class="val mono" id="devBatt">82%</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 信号双卡 -->
+        <section class="sig-strip">
+          <div class="sig-card mob">
+            <div class="sig-head">
+              <span class="carrier">移动 · 5G</span>
+              <span class="sig-bars m"><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+            <div class="sig-num mono" id="sigMobVal">-72<small>dBm</small></div>
+            <div class="sig-bar"><span style="width:78%"></span></div>
+            <div class="sig-foot">
+              <span class="realname-tag done">已实名</span>
+            </div>
+          </div>
+          <div class="sig-card tel unverified">
+            <div class="sig-head">
+              <span class="carrier">电信 · 5G</span>
+              <span class="realname-tag pending">未实名</span>
+            </div>
+            <div class="sig-disabled">
+              <button class="realname-btn" id="btnRealname">实名激活</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 实时速率 -->
+        <article class="rate-card">
+          <header class="rate-head">
+            <h3>实时速率</h3>
+          </header>
+
+          <div class="rate-numbers">
+            <div class="rn down">
+              <span class="arr">↓</span>
+              <span class="num mono" id="downNum">128.4</span>
+              <span class="unit">Mbps</span>
+              <span class="lbl">下行</span>
+            </div>
+            <div class="divider"></div>
+            <div class="rn up">
+              <span class="arr">↑</span>
+              <span class="num mono" id="upNum">42.7</span>
+              <span class="unit">Mbps</span>
+              <span class="lbl">上行</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 套餐卡片 -->
+        <article class="info-card plan-card">
+          <header class="ic-head">
+            <div class="ic-title">
+              <span class="ic-ico plan">
+                <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+              </span>
+              <h3>套餐</h3>
+            </div>
+            <a class="ic-link" href="plan.html">购买 ›</a>
+          </header>
+
+          <div id="planContent">
+          <div class="plan-row">
+            <div class="plan-info">
+              <span class="plan-tag flow">流量套餐</span>
+              <span class="plan-name">月享100GB年包</span>
+              <span class="plan-rest"><b class="mono">38.2</b><small>GB</small> <em>剩余</em></span>
+            </div>
+            <div class="plan-bar"><span style="width:48%"></span></div>
+            <div class="plan-meta">
+              <span>已用 41.8GB / 80GB</span>
+              <span>有效期至 2026.05.20</span>
+            </div>
+          </div>
+
+          <div class="plan-divider" id="planDivider"></div>
+
+          <div class="plan-row" id="planRowBond">
+            <div class="plan-info">
+              <span class="plan-tag bond">聚合套餐</span>
+              <span class="plan-name">60G聚合套餐</span>
+              <span class="plan-rest"><b class="mono">12.6</b><small>GB</small> <em>剩余</em></span>
+            </div>
+            <div class="plan-bar bond"><span style="width:21%"></span></div>
+            <div class="plan-meta">
+              <span>已用 47.4GB / 60GB</span>
+              <span>有效期至 2026.05.10</span>
+            </div>
+          </div>
+          </div><!-- #planContent -->
+
+          <!-- 未订购套餐空状态 -->
+          <div class="plan-empty" id="planEmpty" style="display:none;">
+            <div class="empty-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="var(--text-3)" stroke-width="1.5"><circle cx="16" cy="22" r="12"/><path d="M12 22h8M16 18v8"/><rect x="26" y="14" width="18" height="24" rx="3"/><path d="M30 22h10M30 28h7"/></svg>
+            </div>
+            <p class="plan-empty-title">暂无可用套餐</p>
+            <p class="plan-empty-sub">请购买套餐后使用</p>
+            <a class="empty-btn" href="plan.html">去购买</a>
+          </div>
+        </article>
+
+        <!-- 聚合网络管理卡片（仅聚合设备可见） -->
+        <article class="info-card bond-net-card" id="bondNetCard">
+          <header class="ic-head">
+            <div class="ic-title">
+              <span class="ic-ico" style="background:#fff1ec;color:#ea580c;">
+                <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg>
+              </span>
+              <h3>聚合网络管理</h3>
+            </div>
+          </header>
+          <p class="bn-desc">当前参与聚合的网卡</p>
+          <div class="bn-slots">
+            <div class="bn-slot" id="slot1">
+              <div class="bn-slot-head">
+                <span class="bn-slot-label">链路 A</span>
+                <span class="bn-slot-status on">已连接</span>
+              </div>
+              <div class="bn-slot-body">
+                <span class="bn-slot-ico mob"></span>
+                <b id="slot1Name">移动</b>
+              </div>
+              <button class="bn-slot-change" data-slot="1">更换 ›</button>
+            </div>
+            <div class="bn-slot-arrow">
+              <svg viewBox="0 0 24 24"><path d="M18 8l4 4-4 4M6 16l-4-4 4-4"/><path d="M2 12h20"/></svg>
+            </div>
+            <div class="bn-slot" id="slot2">
+              <div class="bn-slot-head">
+                <span class="bn-slot-label">链路 B</span>
+                <span class="bn-slot-status on">已连接</span>
+              </div>
+              <div class="bn-slot-body">
+                <span class="bn-slot-ico tel"></span>
+                <b id="slot2Name">电信</b>
+              </div>
+              <button class="bn-slot-change" data-slot="2">更换 ›</button>
+            </div>
+          </div>
+        </article>
+
+        </div><!-- #homeContent -->
+        <div class="bottom-pad"></div>
+      </div>
+
+      <!-- 底部 Tabbar -->
+      <nav class="tabbar">
+        <a class="tab active">
+          <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg>
+          <span>主页</span>
+        </a>
+        <a class="tab" href="wifi.html">
+          <svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M2 8a14 14 0 0 1 20 0M8 16a6 6 0 0 1 8 0M12 20h.01"/></svg>
+          <span>WiFi</span>
+        </a>
+<a class="tab" href="plan.html">
+          <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+          <span>套餐</span>
+        </a>
+        <a class="tab" href="mine.html">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          <span>我的</span>
+        </a>
+      </nav>
+
+      <div class="home-indicator"></div>
+
+      <!-- 通用遮罩 -->
+      <div class="sheet-mask" id="sheetMask"></div>
+
+      <!-- 我的设备抽屉 -->
+      <div class="sheet" id="myDevicesSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>我的设备</h3>
+          <button class="sheet-close" id="myDevicesClose">完成</button>
+        </header>
+        <ul class="my-devices-list" id="myDevicesList">
+          <!-- JS 动态填充 -->
+        </ul>
+        <button class="bind-btn">
+          <span class="plus">+</span> 绑定新设备
+        </button>
+      </div>
+
+      <!-- 删除设备确认弹窗 -->
+      <div class="confirm-mask" id="deleteConfirmMask"></div>
+      <div class="confirm-dialog" id="deleteConfirmDialog">
+        <div class="confirm-dialog-body">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--err)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p>确定要删除设备 <b id="deleteDevName">--</b> 吗？<br/><small style="color:var(--text-3);">删除后需重新绑定才能使用</small></p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="deleteCancel">取消</button>
+          <button id="deleteOk">确认删除</button>
+        </div>
+      </div>
+
+      <!-- 重命名设备弹窗 -->
+      <div class="confirm-mask" id="renameMask"></div>
+      <div class="confirm-dialog" id="renameDialog">
+        <div class="confirm-dialog-body">
+          <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;">修改设备名称</p>
+          <input type="text" class="rename-input" id="renameInput" maxlength="20" autocomplete="off" />
+          <p class="rename-hint" id="renameHint" style="display:none;"></p>
+        </div>
+        <div class="confirm-dialog-btns">
+          <button id="renameCancel">取消</button>
+          <button id="renameOk" style="background:var(--brand);">确认</button>
+        </div>
+      </div>
+
+      <!-- WiFi 设置抽屉 -->
+      <div class="sheet" id="wifiSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>WiFi 设置</h3>
+          <button class="sheet-close" id="wifiSheetClose">完成</button>
+        </header>
+        <div class="wifi-form">
+          <div class="form-group">
+            <label>WiFi 名称 (SSID)</label>
+            <input type="text" class="form-input mono" value="BW-X9_5G" />
+          </div>
+          <div class="form-group">
+            <label>WiFi 密码</label>
+            <div class="form-input-wrap">
+              <input type="password" class="form-input mono" id="wifiPwdInput" value="LiveMifi@2026" />
+              <button class="eye form-eye" id="formEyeBtn" aria-label="切换密码可见">
+                <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>安全类型</label>
+            <select class="form-input">
+              <option selected>WPA2-PSK / WPA3-SAE</option>
+              <option>WPA2-PSK</option>
+              <option>WPA3-SAE</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>频段</label>
+            <div class="form-seg">
+              <span class="active">5G 优先</span>
+              <span>2.4G</span>
+              <span>双频合一</span>
+            </div>
+          </div>
+          <div class="form-group toggle-row">
+            <label>隐藏 SSID</label>
+            <div class="toggle"><span></span></div>
+          </div>
+          <button class="save-btn">保存设置</button>
+        </div>
+      </div>
+
+      <!-- 网卡选择抽屉（聚合用） -->
+      <div class="sheet" id="cardSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3 id="sheetTitle">选择链路 A 网卡</h3>
+          <button class="sheet-close" id="sheetClose">完成</button>
+        </header>
+        <ul class="card-list">
+          <li class="card-option" data-card="移动">
+            <span class="co-ico mob"></span>
+            <div class="co-main"><b>移动</b><span>内置卡 · 5G</span></div>
+            <span class="co-check" id="check-移动">✓</span>
+          </li>
+          <li class="card-option" data-card="电信">
+            <span class="co-ico tel"></span>
+            <div class="co-main"><b>电信</b><span>内置卡 · 5G</span></div>
+            <span class="co-check" id="check-电信">✓</span>
+          </li>
+          <li class="card-option" data-card="外置卡1">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 1</b><span>外置插拔卡</span></div>
+            <span class="co-check" id="check-外置卡1"></span>
+          </li>
+          <li class="card-option" data-card="外置卡2">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 2</b><span>外置插拔卡</span></div>
+            <span class="co-check" id="check-外置卡2"></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 添加设备抽屉 -->
+      <div class="sheet" id="addDeviceSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>添加设备</h3>
+          <button class="sheet-close" id="addDeviceClose">取消</button>
+        </header>
+        <div class="add-device-options">
+          <div class="ado-item" id="adoQr">
+            <div class="ado-icon qr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h4v4M18 14v4h-4"/></svg>
+            </div>
+            <div class="ado-main"><b>扫码添加</b><span>扫描设备二维码快速绑定</span></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="ado-item" id="adoSn">
+            <div class="ado-icon sn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h4"/></svg>
+            </div>
+            <div class="ado-main"><b>SN 码添加</b><span>输入设备 SN 码手动绑定</span></div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- SN 码输入抽屉 -->
+      <div class="sheet" id="snInputSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>SN 码添加</h3>
+          <button class="sheet-close" id="snInputClose">取消</button>
+        </header>
+        <div class="sn-input-body">
+          <p class="sn-desc">请输入设备底部或包装上的 SN 码</p>
+          <div class="sn-input-wrap">
+            <input type="text" class="sn-input mono" id="snInputField" placeholder="例如：BWX9-2026-00128" maxlength="30" autocomplete="off" />
+          </div>
+          <button class="save-btn sn-confirm-btn" id="snConfirmBtn">确认添加</button>
+          <p class="sn-hint" id="snHint"></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<script src="js/device-state.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

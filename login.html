@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>登录 · Be Winner MiFi</title>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+
+<div class="login-stage">
+
+  <!-- ====== Header ====== -->
+  <div class="login-header">
+    <div class="login-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12a10 10 0 0 1 14 0"/>
+        <path d="M2 8a14 14 0 0 1 20 0"/>
+        <path d="M8 16a6 6 0 0 1 8 0"/>
+        <path d="M12 20h.01"/>
+      </svg>
+    </div>
+    <h1 class="login-brand">Be <span>Winner</span> MiFi</h1>
+    <p class="login-sub"></p>
+  </div>
+
+  <!-- ====== 登录区域 ====== -->
+  <div id="loginBlock">
+
+    <!-- Tabs -->
+    <div class="login-tabs">
+      <div class="login-tab active" data-form="code">验证码登录</div>
+      <div class="login-tab" data-form="pwd">密码登录</div>
+    </div>
+
+    <!-- 验证码登录表单 -->
+    <form class="login-form active" id="formCode" autocomplete="off" onsubmit="return false">
+      <div class="input-group">
+        <span class="input-prefix">+86</span>
+        <input type="tel" id="codePhone" placeholder="请输入手机号" maxlength="13" />
+      </div>
+      <div class="code-row">
+        <div class="input-group">
+          <input type="text" id="codeInput" placeholder="验证码" maxlength="6" />
+        </div>
+        <button class="code-btn" type="button">发送验证码</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);padding-left:4px;">演示验证码：123456</p>
+    </form>
+
+    <!-- 密码登录表单 -->
+    <form class="login-form" id="formPwd" autocomplete="off" onsubmit="return false">
+      <div class="input-group">
+        <span class="input-prefix">+86</span>
+        <input type="tel" id="pwdPhone" placeholder="请输入手机号" maxlength="13" />
+      </div>
+      <div class="input-group">
+        <input type="password" id="pwdInput" placeholder="请输入密码" />
+        <button class="eye-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);padding-left:4px;">演示环境任意密码均可登录</p>
+    </form>
+
+    <!-- 登录按钮 -->
+    <button class="login-btn" id="codeSubmit" style="margin-top:4px;">登 录</button>
+    <button class="login-btn" id="pwdSubmit" style="display:none;margin-top:4px;">登 录</button>
+
+    <!-- 微信登录 -->
+    <div class="divider-row"><span>其他方式登录</span></div>
+    <button class="wechat-btn" id="wechatBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.69 11.35c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm3.31 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-3.31 0"/><path d="M21.5 16.5c0 3.04-3.36 5.5-7.5 5.5-1.23 0-2.4-.24-3.45-.67l-4.2 1.35.98-3.6C5.63 17.8 4.5 16 4.5 14c0-3.04 3.36-5.5 7.5-5.5s7.5 2.46 7.5 5.5z"/><path d="M15.5 8.5c0-2.49-2.91-4.5-6.5-4.5S2.5 6.01 2.5 8.5c0 1.39.9 2.66 2.35 3.5l-.67 2.47 2.87-.93c.74.21 1.54.33 2.37.33"/></svg>
+      微信快捷登录
+    </button>
+
+    <!-- 注册入口 -->
+    <div class="link-row" style="margin-top:20px;">
+      还没有账号？<a class="to-register" href="#">立即注册</a>
+    </div>
+
+  </div>
+
+  <!-- ====== 注册区域 ====== -->
+  <div id="registerBlock" style="display:none;">
+
+    <div style="text-align:center;padding-bottom:24px;">
+      <h2 style="font-size:20px;font-weight:700;">创建账号</h2>
+      <p style="font-size:13px;color:var(--text-3);margin-top:4px;">注册后即可绑定管理您的 MiFi 设备</p>
+    </div>
+
+    <form class="login-form active" id="formReg" autocomplete="off" onsubmit="return false">
+      <div class="input-group">
+        <span class="input-prefix">+86</span>
+        <input type="tel" id="regPhone" placeholder="请输入手机号" maxlength="13" />
+      </div>
+      <div class="code-row">
+        <div class="input-group">
+          <input type="text" id="regCode" placeholder="验证码" maxlength="6" />
+        </div>
+        <button class="code-btn" type="button">发送验证码</button>
+      </div>
+      <div class="input-group">
+        <input type="password" id="regPwd" placeholder="设置密码（至少6位）" />
+        <button class="eye-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+      <div class="input-group">
+        <input type="password" id="regPwd2" placeholder="确认密码" />
+      </div>
+      <div class="agree-row">
+        <input type="checkbox" id="regAgree" checked />
+        <span>已阅读并同意 <a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a></span>
+      </div>
+    </form>
+
+    <button class="login-btn" id="regSubmit" style="margin-top:4px;">注 册</button>
+
+    <div class="link-row" style="margin-top:20px;">
+      已有账号？<a class="to-login" href="#">立即登录</a>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/device-state.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>
