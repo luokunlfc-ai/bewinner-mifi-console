@@ -144,6 +144,14 @@
               <span class="lbl">上行</span>
             </div>
           </div>
+
+          <!-- 子卡速率（聚合设备） -->
+          <div class="rate-subcards" id="rateSubCards" style="display:none;">
+            <div class="rate-sub-head">子卡速率</div>
+            <div class="rate-sub-list" id="rateSubList">
+              <!-- JS 动态填充 -->
+            </div>
+          </div>
         </article>
 
         <!-- 套餐卡片 -->
@@ -362,6 +370,7 @@
           <h3 id="sheetTitle">选择链路 A 网卡</h3>
           <button class="sheet-close" id="sheetClose">完成</button>
         </header>
+        <p class="card-hint" id="cardHint" style="display:none;"></p>
         <ul class="card-list">
           <li class="card-option" data-card="移动">
             <span class="co-ico mob"></span>
