@@ -43,8 +43,8 @@
     }
     if (titleWifi) {
       var wifiOn = MiFiDevice.isWifiConnected();
-      titleWifi.className = 'device-title-wifi' + (wifiOn ? ' connected' : ' disconnected');
-      titleWifi.textContent = wifiOn ? 'WiFi' : 'WiFi';
+      titleWifi.className = 'device-title-wifi' + (wifiOn ? ' connected' : '');
+      titleWifi.textContent = 'WiFi';
     }
 
     // 同步频段独立 SSID 到当前设备

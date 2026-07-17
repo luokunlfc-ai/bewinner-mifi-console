@@ -40,8 +40,8 @@
     }
     if (wifiEl) {
       var wifiOn = MiFiDevice.isWifiConnected();
-      wifiEl.className = 'device-title-wifi' + (wifiOn ? ' connected' : ' disconnected');
-      wifiEl.textContent = wifiOn ? 'WiFi' : 'WiFi';
+      wifiEl.className = 'device-title-wifi' + (wifiOn ? ' connected' : '');
+      wifiEl.textContent = 'WiFi';
     }
 
     // 聚合套餐项显隐

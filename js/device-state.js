@@ -61,7 +61,8 @@
 
   function isWifiConnected() {
     var dev = getCurrentDevice();
-    return dev && dev.wifiConnected === true;
+    // wifiConnected 字段不存在时默认为 true（向后兼容旧缓存）
+    return dev ? dev.wifiConnected !== false : false;
   }
 
   function getDisplayName(dev) {
