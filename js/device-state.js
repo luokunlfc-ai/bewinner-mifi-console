@@ -7,9 +7,9 @@
   var CURRENT_KEY = 'mifi_current_device_id';
 
   var DEFAULT_DEVICES = [
-    { id: 'bwx9', model: 'BW-X9 Pro', name: '', type: 'bonding', sn: 'BWX9-2026-00128', online: true  },
-    { id: 'bwx7', model: 'BW-X7',     name: '', type: 'mifi',    sn: 'BWX7-2025-04412', online: true  },
-    { id: 'bwn7', model: 'BW-N7',     name: '', type: 'mifi',    sn: 'BWN7-2025-00076', online: false }
+    { id: 'bwx9', model: 'BW-X9 Pro', name: '', type: 'bonding', sn: 'BWX9-2026-00128', online: true,  wifiConnected: true  },
+    { id: 'bwx7', model: 'BW-X7',     name: '', type: 'mifi',    sn: 'BWX7-2025-04412', online: true,  wifiConnected: true  },
+    { id: 'bwn7', model: 'BW-N7',     name: '', type: 'mifi',    sn: 'BWN7-2025-00076', online: false, wifiConnected: false }
   ];
 
   var SSID_MAP = {
@@ -57,6 +57,11 @@
   function isBondingDevice() {
     var dev = getCurrentDevice();
     return dev && dev.type === 'bonding';
+  }
+
+  function isWifiConnected() {
+    var dev = getCurrentDevice();
+    return dev && dev.wifiConnected === true;
   }
 
   function getDisplayName(dev) {
@@ -146,6 +151,7 @@
     getCurrent: getCurrentDevice,
     setCurrent: setCurrentDevice,
     isBonding: isBondingDevice,
+    isWifiConnected: isWifiConnected,
     getDisplayName: getDisplayName,
     renameDevice: renameDevice,
     getSsid: getSsid,

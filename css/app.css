@@ -226,6 +226,18 @@ body::before {
   color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0;
 }
 
+/* 设备标题栏 WiFi 连接状态标签 */
+.device-title-wifi {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+  letter-spacing: .5px; flex-shrink: 0;
+}
+.device-title-wifi.connected {
+  color: #1f6feb; background: #eaf3ff; border: 1px solid #c8def9;
+}
+.device-title-wifi.disconnected {
+  color: #b45309; background: #fffbeb; border: 1px solid #fde68a;
+}
+
 /* ============ 套餐名称 ============ */
 .plan-name {
   font-size: 11px; color: var(--text-2); font-weight: 600;

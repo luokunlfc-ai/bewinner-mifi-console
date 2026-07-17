@@ -28,6 +28,7 @@
           <div class="device-title-bar" id="deviceTitleBar">
             <span class="device-title-name" id="wifiDeviceModel">BW-X9 Pro</span>
             <svg class="device-title-arrow" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            <span class="device-title-wifi connected" id="wifiDeviceWifi">WiFi</span>
             <span class="device-title-status online" id="wifiDeviceStatus">在线</span>
           </div>
           <button class="add-device-btn" id="btnAddDevice" aria-label="添加设备">+</button>
@@ -72,7 +73,7 @@
             </div>
             <div class="wifi-detail-row">
               <span class="wd-lbl">频段</span>
-              <span class="wd-val" id="wifiBand">5GHz 优先</span>
+              <span class="wd-val" id="wifiBand">5GHz</span>
             </div>
           </div>
 
@@ -203,7 +204,7 @@
         <div class="wifi-form">
           <div class="form-group">
             <label>WiFi 名称 (SSID)</label>
-            <input type="text" class="form-input mono" value="BW-X9_5G" />
+            <input type="text" class="form-input mono" id="wifiSsidInput" value="BW-X9_5G" />
           </div>
           <div class="form-group">
             <label>WiFi 密码</label>
@@ -216,7 +217,7 @@
           </div>
           <div class="form-group">
             <label>安全类型</label>
-            <select class="form-input">
+            <select class="form-input" id="wifiSecInput">
               <option selected>WPA2-PSK / WPA3-SAE</option>
               <option>WPA2-PSK</option>
               <option>WPA3-SAE</option>
@@ -224,10 +225,9 @@
           </div>
           <div class="form-group">
             <label>频段</label>
-            <div class="form-seg">
-              <span class="active">5G 优先</span>
-              <span>2.4G</span>
-              <span>双频合一</span>
+            <div class="form-seg" id="wifiBandSeg">
+              <span class="active" data-band="5G">5G</span>
+              <span data-band="2.4G">2.4G</span>
             </div>
           </div>
           <div class="form-group toggle-row">

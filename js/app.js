@@ -30,6 +30,7 @@
     // 设备标题栏
     var titleName = document.getElementById('deviceTitleName');
     var titleStatus = document.getElementById('deviceTitleStatus');
+    var titleWifi = document.getElementById('deviceTitleWifi');
     if (titleName) titleName.textContent = MiFiDevice.getDisplayName(dev);
     if (titleStatus) {
       if (online) {
@@ -39,6 +40,20 @@
         titleStatus.className = 'device-title-status offline';
         titleStatus.textContent = '离线';
       }
+    }
+    if (titleWifi) {
+      var wifiOn = MiFiDevice.isWifiConnected();
+      titleWifi.className = 'device-title-wifi' + (wifiOn ? ' connected' : ' disconnected');
+      titleWifi.textContent = wifiOn ? 'WiFi' : 'WiFi';
+    }
+
+    // 同步频段独立 SSID 到当前设备
+    var ssid = MiFiDevice.getSsid(dev.id);
+    if (typeof wifiBandConfig !== 'undefined') {
+      wifiBandConfig['5G'].ssid = ssid;
+      wifiBandConfig['2.4G'].ssid = ssid.replace(/_5G$/, '') + '_2.4G';
+      var ssidInput = document.getElementById('wifiSsidInput');
+      if (ssidInput) ssidInput.value = wifiBandConfig[currentWifiBand].ssid;
     }
 
     var isBonding = dev.type === 'bonding';
@@ -101,10 +116,12 @@
     var runEl = document.getElementById('devRunTime');
     var tempEl = document.getElementById('devTemp');
     var battEl = document.getElementById('devBatt');
+    var usageEl = document.getElementById('devUsage');
     if (!online) {
       if (runEl) runEl.textContent = dash;
       if (tempEl) tempEl.textContent = dash;
       if (battEl) battEl.textContent = dash;
+      if (usageEl) usageEl.textContent = dash;
       // 信号值
       var sigMob = document.getElementById('sigMobVal');
       if (sigMob) sigMob.innerHTML = dash + '<small>dBm</small>';
@@ -115,6 +132,7 @@
       if (runEl) runEl.textContent = '04:23:11';
       if (tempEl) tempEl.textContent = '38.6°C';
       if (battEl) battEl.textContent = '82%';
+      if (usageEl) usageEl.textContent = '1.28GB';
       var sigMob = document.getElementById('sigMobVal');
       if (sigMob) sigMob.innerHTML = '-72<small>dBm</small>';
       document.querySelectorAll('.sig-card').forEach(function(c) { c.classList.remove('offline'); });
@@ -586,7 +604,48 @@
     });
   }
 
+  // ===== WiFi 频段切换：独立配置 5G / 2.4G =====
+  var wifiBandConfig = {
+    '5G':   { ssid: 'BW-X9_5G',   password: 'LiveMifi@2026' },
+    '2.4G': { ssid: 'BW-X9_2.4G', password: 'LiveMifi@2026' }
+  };
+  var currentWifiBand = '5G';
+
+  function updateWifiFormForBand(band) {
+    currentWifiBand = band;
+    var cfg = wifiBandConfig[band];
+    var ssidInput = document.getElementById('wifiSsidInput');
+    var pwdInput  = document.getElementById('wifiPwdInput');
+    if (ssidInput) ssidInput.value = cfg.ssid;
+    if (pwdInput)  pwdInput.value  = cfg.password;
+  }
+
+  function saveCurrentWifiForm() {
+    var ssidInput = document.getElementById('wifiSsidInput');
+    var pwdInput  = document.getElementById('wifiPwdInput');
+    if (ssidInput) wifiBandConfig[currentWifiBand].ssid = ssidInput.value;
+    if (pwdInput)  wifiBandConfig[currentWifiBand].password = pwdInput.value;
+  }
+
+  var wifiBandSeg = document.getElementById('wifiBandSeg');
+  if (wifiBandSeg) {
+    wifiBandSeg.querySelectorAll('span').forEach(function(s) {
+      s.addEventListener('click', function() {
+        var band = s.dataset.band;
+        if (!band || band === currentWifiBand) return;
+        // 保存当前频段的表单内容
+        saveCurrentWifiForm();
+        // 切换到新频段
+        wifiBandSeg.querySelectorAll('span').forEach(function(x) { x.classList.remove('active'); });
+        s.classList.add('active');
+        updateWifiFormForBand(band);
+      });
+    });
+  }
+
+  // 保留其余 .form-seg 的通用点击处理（排除已绑定过的 wifiBandSeg）
   document.querySelectorAll('.form-seg').forEach(function(seg) {
+    if (seg === wifiBandSeg) return;
     seg.querySelectorAll('span').forEach(function(s) {
       s.addEventListener('click', function() {
         seg.querySelectorAll('span').forEach(function(x) { x.classList.remove('active'); });

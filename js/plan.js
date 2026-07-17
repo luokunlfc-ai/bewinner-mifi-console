@@ -27,6 +27,7 @@
     // 设备标题栏
     var modelEl = document.getElementById('planDeviceModel');
     var statusEl = document.getElementById('planDeviceStatus');
+    var wifiEl = document.getElementById('planDeviceWifi');
     if (modelEl) modelEl.textContent = MiFiDevice.getDisplayName(dev);
     if (statusEl) {
       if (dev.online) {
@@ -36,6 +37,11 @@
         statusEl.className = 'device-title-status offline';
         statusEl.textContent = '离线';
       }
+    }
+    if (wifiEl) {
+      var wifiOn = MiFiDevice.isWifiConnected();
+      wifiEl.className = 'device-title-wifi' + (wifiOn ? ' connected' : ' disconnected');
+      wifiEl.textContent = wifiOn ? 'WiFi' : 'WiFi';
     }
 
     // 聚合套餐项显隐

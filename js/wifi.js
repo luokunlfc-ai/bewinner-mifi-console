@@ -26,6 +26,7 @@
     // 设备标题栏
     var modelEl = document.getElementById('wifiDeviceModel');
     var statusEl = document.getElementById('wifiDeviceStatus');
+    var wifiEl = document.getElementById('wifiDeviceWifi');
     if (modelEl) modelEl.textContent = MiFiDevice.getDisplayName(dev);
     if (statusEl) {
       if (online) {
@@ -35,6 +36,11 @@
         statusEl.className = 'device-title-status offline';
         statusEl.textContent = '离线';
       }
+    }
+    if (wifiEl) {
+      var wifiOn = MiFiDevice.isWifiConnected();
+      wifiEl.className = 'device-title-wifi' + (wifiOn ? ' connected' : ' disconnected');
+      wifiEl.textContent = wifiOn ? 'WiFi' : 'WiFi';
     }
 
     // 更新 SSID
@@ -73,7 +79,7 @@
       if (anim) anim.classList.add('paused');
     } else {
       if (secEl) secEl.textContent = 'WPA2/WPA3';
-      if (bandEl) bandEl.textContent = '5GHz 优先';
+      if (bandEl) bandEl.textContent = '5GHz';
       if (anim) anim.classList.remove('paused');
     }
 
@@ -98,10 +104,14 @@
         el.childNodes[0].textContent = ssid;
       }
     });
-    var ssidInput = document.querySelector('#wifiSheet .form-input');
-    if (ssidInput && ssidInput.value && ssidInput.value.indexOf('BW-') === 0) {
-      ssidInput.value = ssid;
-    }
+    // 同步频段独立 SSID 配置
+    wifiBandConfig['5G'].ssid = ssid;
+    // 2.4G SSID：基础名去掉 _5G 后缀，加上 _2.4G
+    var ssid24 = ssid.replace(/_5G$/, '') + '_2.4G';
+    wifiBandConfig['2.4G'].ssid = ssid24;
+    // 更新表单中的 SSID 输入框
+    var ssidInput = document.getElementById('wifiSsidInput');
+    if (ssidInput) ssidInput.value = wifiBandConfig[currentWifiBand].ssid;
   }
 
   // ===== 通用遮罩 & 抽屉控制 =====
@@ -423,7 +433,45 @@
     });
   }
 
+  // ===== WiFi 频段切换：独立配置 5G / 2.4G =====
+  var wifiBandConfig = {
+    '5G':   { ssid: 'BW-X9_5G',   password: 'LiveMifi@2026' },
+    '2.4G': { ssid: 'BW-X9_2.4G', password: 'LiveMifi@2026' }
+  };
+  var currentWifiBand = '5G';
+
+  function updateWifiFormForBand(band) {
+    currentWifiBand = band;
+    var cfg = wifiBandConfig[band];
+    var ssidInput = document.getElementById('wifiSsidInput');
+    var pwdInput  = document.getElementById('wifiPwdInput');
+    if (ssidInput) ssidInput.value = cfg.ssid;
+    if (pwdInput)  pwdInput.value  = cfg.password;
+  }
+
+  function saveCurrentWifiForm() {
+    var ssidInput = document.getElementById('wifiSsidInput');
+    var pwdInput  = document.getElementById('wifiPwdInput');
+    if (ssidInput) wifiBandConfig[currentWifiBand].ssid = ssidInput.value;
+    if (pwdInput)  wifiBandConfig[currentWifiBand].password = pwdInput.value;
+  }
+
+  var wifiBandSeg = document.getElementById('wifiBandSeg');
+  if (wifiBandSeg) {
+    wifiBandSeg.querySelectorAll('span').forEach(function(s) {
+      s.addEventListener('click', function() {
+        var band = s.dataset.band;
+        if (!band || band === currentWifiBand) return;
+        saveCurrentWifiForm();
+        wifiBandSeg.querySelectorAll('span').forEach(function(x) { x.classList.remove('active'); });
+        s.classList.add('active');
+        updateWifiFormForBand(band);
+      });
+    });
+  }
+
   document.querySelectorAll('.form-seg').forEach(function(seg) {
+    if (seg === wifiBandSeg) return;
     seg.querySelectorAll('span').forEach(function(s) {
       s.addEventListener('click', function() {
         seg.querySelectorAll('span').forEach(function(x) { x.classList.remove('active'); });
