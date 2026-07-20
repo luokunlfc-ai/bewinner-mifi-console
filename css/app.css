@@ -422,10 +422,16 @@ body::before {
 .sig-bars.lg i.off { opacity: .25; }
 
 .sig-detail { display: flex; flex-direction: column; gap: 3px; }
+/* 质量文案按信号等级着色（语义色，与运营商色解耦，双卡通用） */
 .sig-quality {
-  font-size: 15px; font-weight: 700; color: var(--text);
-  letter-spacing: .5px; line-height: 1.2;
+  font-size: 15px; font-weight: 700;
+  letter-spacing: 1px; line-height: 1.2;
 }
+.sig-quality.lv5 { color: var(--mob); } /* 极佳 · 与信号格同色 */
+.sig-quality.lv4 { color: #0ea5e9; } /* 良好 · 天蓝 */
+.sig-quality.lv3 { color: #f59e0b; } /* 一般 · 琥珀 */
+.sig-quality.lv2 { color: #f97316; } /* 较差 · 橙 */
+.sig-quality.lv1 { color: #ef4444; } /* 极差 · 红 */
 .sig-rsrp { font-size: 11px; font-weight: 500; color: var(--text-3); }
 .sig-rsrp small { font-size: 10px; margin-left: 2px; color: var(--text-3); }
 .realname-tag {
