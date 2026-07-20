@@ -109,14 +109,17 @@
           <div class="sig-card mob">
             <div class="sig-head">
               <span class="carrier">移动 · 5G</span>
-              <span class="sig-bars m"><i></i><i></i><i></i><i></i><i></i></span>
-            </div>
-            <div class="sig-num mono" id="sigMobVal">-72<small>dBm</small></div>
-            <div class="sig-bar"><span style="width:78%"></span></div>
-            <div class="sig-foot">
               <span class="realname-tag done">已实名</span>
             </div>
+            <div class="sig-main">
+              <span class="sig-bars lg m"><i></i><i></i><i></i><i></i><i></i></span>
+              <div class="sig-detail">
+                <span class="sig-quality">信号极佳</span>
+                <span class="sig-rsrp mono" id="sigMobVal">-72<small>dBm</small></span>
+              </div>
+            </div>
           </div>
+          <!-- 电信卡实名后：去掉 unverified，结构同移动卡（sig-bars lg t + 质量文案 + RSRP） -->
           <div class="sig-card tel unverified">
             <div class="sig-head">
               <span class="carrier">电信 · 5G</span>

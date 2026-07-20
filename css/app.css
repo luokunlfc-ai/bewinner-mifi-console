@@ -401,40 +401,33 @@ body::before {
 }
 .carrier { font-size: 11px; color: var(--text-2); letter-spacing: 1px; font-weight: 600; }
 
-.sig-bars.m i, .sig-bars.t i {
-  width: 2.5px; background: var(--mob); border-radius: 1px;
+/* 大号信号格：已实名卡片主视觉
+   格数与 RSRP 建议映射（联调参考）：
+   5格 ≥-80 极佳 / 4格 -80~-90 良好 / 3格 -90~-100 一般 / 2格 -100~-110 较差 / 1格 <-110 极差
+   未点亮的格加 .off 即可（如 4 格：第 5 根 <i class="off">） */
+.sig-main {
+  margin-top: 14px;
+  display: flex; align-items: center; gap: 12px;
 }
-.sig-bars.t i { background: var(--tel); }
-.sig-bars.m i:nth-child(1), .sig-bars.t i:nth-child(1) { height: 3px; }
-.sig-bars.m i:nth-child(2), .sig-bars.t i:nth-child(2) { height: 5px; }
-.sig-bars.m i:nth-child(3), .sig-bars.t i:nth-child(3) { height: 7px; }
-.sig-bars.m i:nth-child(4), .sig-bars.t i:nth-child(4) { height: 9px; }
-.sig-bars.m i:nth-child(5), .sig-bars.t i:nth-child(5) { height: 11px; opacity: .35; }
+.sig-bars.lg { height: 30px; gap: 3px; }
+.sig-bars.lg i { opacity: 1; } /* 覆盖基础样式 .sig-bars i:nth-child(4) 的半透明 */
+.sig-bars.lg.m i, .sig-bars.lg.t i { width: 5px; border-radius: 2px; }
+.sig-bars.lg.m i { background: var(--mob); }
+.sig-bars.lg.t i { background: var(--tel); }
+.sig-bars.lg i:nth-child(1) { height: 8px; }
+.sig-bars.lg i:nth-child(2) { height: 13px; }
+.sig-bars.lg i:nth-child(3) { height: 18px; }
+.sig-bars.lg i:nth-child(4) { height: 24px; }
+.sig-bars.lg i:nth-child(5) { height: 30px; }
+.sig-bars.lg i.off { opacity: .25; }
 
-.sig-num {
-  margin-top: 8px;
-  font-size: 22px; font-weight: 700; color: var(--text);
-  letter-spacing: -.5px;
+.sig-detail { display: flex; flex-direction: column; gap: 3px; }
+.sig-quality {
+  font-size: 15px; font-weight: 700; color: var(--text);
+  letter-spacing: .5px; line-height: 1.2;
 }
-.sig-num small { font-size: 11px; color: var(--text-3); margin-left: 4px; font-weight: 400; }
-
-.sig-bar {
-  margin-top: 8px; height: 4px; border-radius: 2px;
-  background: #eef4fb; overflow: hidden;
-}
-.sig-bar span {
-  display: block; height: 100%;
-  background: linear-gradient(90deg, var(--mob), var(--brand-2));
-  border-radius: 2px;
-}
-.sig-bar.tel span {
-  background: linear-gradient(90deg, var(--tel), #ffb499);
-}
-
-.sig-foot {
-  margin-top: 8px;
-  display: flex; align-items: center;
-}
+.sig-rsrp { font-size: 11px; font-weight: 500; color: var(--text-3); }
+.sig-rsrp small { font-size: 10px; margin-left: 2px; color: var(--text-3); }
 .realname-tag {
   font-size: 10px; font-weight: 600; letter-spacing: .5px;
   padding: 3px 8px; border-radius: 999px;
@@ -714,8 +707,8 @@ body::before {
 }
 
 /* ============ 离线状态 ============ */
-.sig-card.offline .sig-num { color: var(--text-3); }
-.sig-card.offline .sig-bar span { background: var(--line); }
+.sig-card.offline .sig-quality,
+.sig-card.offline .sig-rsrp { color: var(--text-3); }
 .sig-bars.dim i { background: var(--line) !important; }
 .device-card.offline .dev-meta .val { color: var(--text-3); }
 
