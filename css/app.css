@@ -240,12 +240,6 @@ body::before {
   display: none;
 }
 
-/* ============ 套餐名称 ============ */
-.plan-name {
-  font-size: 11px; color: var(--text-2); font-weight: 600;
-  letter-spacing: .3px; margin-left: 6px;
-}
-
 /* ============ 横向滑动 Tab ============ */
 .shop-tabs-scroll {
   display: flex; gap: 8px; overflow-x: auto;
