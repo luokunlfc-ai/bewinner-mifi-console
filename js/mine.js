@@ -252,7 +252,7 @@
     bondLinkSheet.querySelectorAll('.link-change').forEach(function (btn) {
       btn.addEventListener('click', function () {
         pendingBondSlot = btn.dataset.slot;
-        if (bondSheetTitle) bondSheetTitle.textContent = '更换链路网卡';
+        if (bondSheetTitle) bondSheetTitle.textContent = '选择链路 ' + (pendingBondSlot === '1' ? 'A' : 'B') + ' 网卡';
         var slots = MiFiBond.getSlotCards();
         var curName = slots[pendingBondSlot];
         var otherCard = slots[pendingBondSlot === '1' ? '2' : '1'];
@@ -280,7 +280,7 @@
         if (bondCardHint) {
           if (otherGroup) {
             var groupCards = otherGroup === 'A' ? '移动 / 外置卡1' : '电信 / 外置卡2';
-            bondCardHint.textContent = '另一链路已占用 ' + groupCards + ' 组，同组卡不可重复选择';
+            bondCardHint.textContent = '链路 ' + (pendingBondSlot === '1' ? 'B' : 'A') + ' 已占用 ' + groupCards + ' 组，同组卡不可重复选择';
             bondCardHint.style.display = '';
           } else if (hasUninserted) {
             bondCardHint.textContent = '灰色选项为未插入的外置卡，插入设备后再选择';
@@ -306,7 +306,7 @@
         renderBondLinkRow(pendingBondSlot);
         updateBondLinkEntry();
         closeSheet();
-        MiFiUI.showToast('链路已切换为 ' + cardName);
+        MiFiUI.showToast('链路 ' + (pendingBondSlot === '1' ? 'A' : 'B') + ' 已切换为 ' + cardName);
         // 回到链路管理抽屉，展示更新后的组合
         setTimeout(function () {
           renderBondLinkRow('1');
@@ -319,24 +319,11 @@
 
   updateBondLinkEntry();
 
-  // === 二次认证管理 ===
-  var devAuthSheet = document.getElementById('devAuthSheet');
+  // === 二次认证管理（点击直达认证页） ===
   var btnDevAuth = document.getElementById('btnDevAuth');
-  var daDevName = document.getElementById('daDevName');
-  var btnDaGo = document.getElementById('btnDaGo');
-
-  if (btnDevAuth && devAuthSheet) {
+  if (btnDevAuth) {
     btnDevAuth.addEventListener('click', function () {
       if (!requireDevice()) return;
-      var dev = MiFiDevice.getCurrent();
-      if (daDevName && dev) {
-        daDevName.textContent = MiFiDevice.getDisplayName(dev) + (dev.sn ? ' · ' + dev.sn : '');
-      }
-      openSheet(devAuthSheet);
-    });
-  }
-  if (btnDaGo) {
-    btnDaGo.addEventListener('click', function () {
       window.open(MiFiDevice.DEV_AUTH_URL || 'https://eca.189.cn/', '_blank');
     });
   }

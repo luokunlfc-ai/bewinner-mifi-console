@@ -65,34 +65,40 @@
 
         <!-- 当前套餐概览 -->
         <article class="cur-plan-card">
-          <header class="cp-head">
-            <h3>当前套餐</h3>
-          </header>
 
           <!-- 套餐内容（已订购） -->
           <div id="cpContent">
           <div class="cp-item" id="cpFlowItem">
             <div class="cp-top">
               <span class="cp-tag flow">流量套餐</span>
-              <span class="cp-name">月享100GB年包</span>
-              <span class="cp-expire">有效期至 2026.05.20</span>
             </div>
-            <div class="cp-usage">
-              <div class="cp-circle-wrap">
-                <svg class="cp-ring" viewBox="0 0 80 80">
-                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
-                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gFlow)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="111" transform="rotate(-90 40 40)"/>
-                  <defs><linearGradient id="gFlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6feb"/><stop offset="1" stop-color="#3aa0ff"/></linearGradient></defs>
-                </svg>
-                <div class="cp-circle-text">
-                  <b class="mono">38.2</b>
-                  <small>GB 剩余</small>
+            <div class="cp-body">
+              <!-- 环形图：套餐已用百分比，点击弹出套餐列表抽屉 -->
+              <div class="cp-ring-area" id="cpFlowRing">
+                <div class="cp-circle-wrap">
+                  <svg class="cp-ring" viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gFlow)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="102.5" transform="rotate(-90 40 40)"/>
+                    <defs><linearGradient id="gFlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6feb"/><stop offset="1" stop-color="#3aa0ff"/></linearGradient></defs>
+                  </svg>
+                  <div class="cp-circle-text">
+                    <b class="mono">52<small>%</small></b>
+                    <small>已用流量</small>
+                  </div>
                 </div>
               </div>
-              <div class="cp-nums">
-                <div class="cp-num-row"><span class="cpn-lbl">总量</span><span class="cpn-val mono">80 GB</span></div>
-                <div class="cp-num-row"><span class="cpn-lbl">已用</span><span class="cpn-val mono">41.8 GB</span></div>
-                <div class="cp-num-row"><span class="cpn-lbl">剩余</span><span class="cpn-val mono highlight">38.2 GB</span></div>
+              <!-- 三统计：剩余流量=正使用+待生效剩余之和 / 已用流量=正使用已用 / 剩余有效期=正使用剩余天数 -->
+              <div class="cp-stats">
+                <div class="cp-stat-row"><span>剩余流量</span><b class="mono">118.2<small>GB</small></b></div>
+                <div class="cp-stat-row"><span>已用流量</span><b class="mono">41.8<small>GB</small></b></div>
+                <div class="cp-stat-row"><span>剩余有效期</span><b class="mono">116<small>天</small></b></div>
+              </div>
+            </div>
+            <div class="cp-current">
+              <span class="cpc-lbl">当前套餐</span>
+              <div class="cpc-right">
+                <span class="cpc-name">月享100GB年包</span>
+                <span class="cpc-validity mono">2025/11/14 至 2026/11/14</span>
               </div>
             </div>
           </div>
@@ -102,25 +108,32 @@
           <div class="cp-item" id="cpBondItem">
             <div class="cp-top">
               <span class="cp-tag bond">聚合套餐</span>
-              <span class="cp-name">60G聚合套餐</span>
-              <span class="cp-expire warn">有效期至 2026.05.10</span>
             </div>
-            <div class="cp-usage">
-              <div class="cp-circle-wrap">
-                <svg class="cp-ring" viewBox="0 0 80 80">
-                  <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
-                  <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gBond)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="168.7" transform="rotate(-90 40 40)"/>
-                  <defs><linearGradient id="gBond" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
-                </svg>
-                <div class="cp-circle-text">
-                  <b class="mono warn-c">12.6</b>
-                  <small>GB 剩余</small>
+            <div class="cp-body">
+              <div class="cp-ring-area" id="cpBondRing">
+                <div class="cp-circle-wrap">
+                  <svg class="cp-ring" viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="#eef4fb" stroke-width="7"/>
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gBond)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="44.9" transform="rotate(-90 40 40)"/>
+                    <defs><linearGradient id="gBond" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
+                  </svg>
+                  <div class="cp-circle-text">
+                    <b class="mono warn-c">79<small>%</small></b>
+                    <small>已用流量</small>
+                  </div>
                 </div>
               </div>
-              <div class="cp-nums">
-                <div class="cp-num-row"><span class="cpn-lbl">总量</span><span class="cpn-val mono">60 GB</span></div>
-                <div class="cp-num-row"><span class="cpn-lbl">已用</span><span class="cpn-val mono">47.4 GB</span></div>
-                <div class="cp-num-row"><span class="cpn-lbl">剩余</span><span class="cpn-val mono highlight warn-c">12.6 GB</span></div>
+              <div class="cp-stats">
+                <div class="cp-stat-row"><span>剩余流量</span><b class="mono">72.6<small>GB</small></b></div>
+                <div class="cp-stat-row"><span>已用流量</span><b class="mono">47.4<small>GB</small></b></div>
+                <div class="cp-stat-row"><span>剩余有效期</span><b class="mono warn-c">10<small>天</small></b></div>
+              </div>
+            </div>
+            <div class="cp-current">
+              <span class="cpc-lbl">当前套餐</span>
+              <div class="cpc-right">
+                <span class="cpc-name">60G聚合套餐</span>
+                <span class="cpc-validity mono">2026/07/01 至 2026/07/31</span>
               </div>
             </div>
           </div>
@@ -395,6 +408,19 @@
               <span class="coup-expire">有效期至 2026.08.15</span>
             </div>
           </li>
+        </ul>
+      </div>
+
+      <!-- 套餐列表抽屉（点击环形图进入：当前卡当前周期全部套餐） -->
+      <div class="sheet" id="planListSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3 id="planListTitle">流量套餐</h3>
+          <button class="sheet-close" id="planListClose">完成</button>
+        </header>
+        <p class="pl-desc">当前卡当前周期内的全部套餐</p>
+        <ul class="pl-list" id="planListUl">
+          <!-- JS 动态填充 -->
         </ul>
       </div>
 

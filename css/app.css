@@ -509,6 +509,11 @@ body::before {
 .link-row .bn-slot-ico { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; }
 .link-name { font-size: 14px; font-weight: 700; color: var(--text); }
 .link-net { font-size: 11px; color: var(--text-3); margin-left: -4px; }
+.link-badge {
+  font-size: 10px; color: var(--text-3); font-weight: 600;
+  padding: 1px 5px; border: 1px dashed var(--line); border-radius: 6px;
+  flex-shrink: 0;
+}
 .link-spacer { flex: 1; }
 
 /* 行内信号格：比标准 .lg 小一档（配合单行布局），色跟随运营商变量 */

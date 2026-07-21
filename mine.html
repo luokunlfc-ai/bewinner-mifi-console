@@ -94,7 +94,7 @@
             </div>
             <div class="mi-main">
               <b>二次认证管理</b>
-              <span>状态：<em class="mi-em" id="devAuthStatus">未认证</em></span>
+              <span>设备二次实人认证</span>
             </div>
             <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
@@ -222,11 +222,12 @@
           <button class="sheet-close" id="bondLinkClose">完成</button>
         </header>
 
-        <!-- 链路 1（当前卡由 JS 渲染，默认移动） -->
+        <!-- 链路 A（当前卡由 JS 渲染，默认移动） -->
         <div class="link-row" id="slot1" data-slot="1" data-carrier="mob">
           <span class="bn-slot-ico mob" id="slot1Ico"></span>
           <b class="link-name" id="slot1Name">移动</b>
           <span class="link-net" id="slot1Net">· 5G</span>
+          <span class="link-badge">链路 A</span>
           <span class="sig-bars lg" id="slot1Bars"><i></i><i></i><i></i><i></i></span>
           <span class="link-spacer"></span>
           <span class="realname-tag done" id="slot1RnTag">已实名</span>
@@ -236,11 +237,12 @@
 
         <div class="link-divider"></div>
 
-        <!-- 链路 2（默认电信，未实名 → 信号格换为去实名按钮） -->
+        <!-- 链路 B（默认电信，未实名 → 信号格换为去实名按钮） -->
         <div class="link-row unverified" id="slot2" data-slot="2" data-carrier="tel">
           <span class="bn-slot-ico tel" id="slot2Ico"></span>
           <b class="link-name" id="slot2Name">电信</b>
           <span class="link-net" id="slot2Net">· 5G</span>
+          <span class="link-badge">链路 B</span>
           <span class="sig-bars lg" id="slot2Bars" style="display:none;"><i></i><i></i><i></i><i></i></span>
           <span class="link-spacer"></span>
           <span class="realname-tag done" id="slot2RnTag" style="display:none;">已实名</span>
@@ -250,11 +252,12 @@
 
         <div class="link-divider"></div>
 
-        <!-- USB网卡（固定第三链路，插入即聚合，无实名/更换） -->
+        <!-- 链路 C：USB网卡（固定第三链路，插入即聚合，无实名/更换） -->
         <div class="link-row" id="slot3" data-carrier="ext">
           <span class="bn-slot-ico ext"></span>
           <b class="link-name">USB网卡</b>
           <span class="link-net">· 5G</span>
+          <span class="link-badge">链路 C</span>
           <span class="sig-bars lg"><i></i><i></i><i></i><i></i></span>
         </div>
       </div>
@@ -263,7 +266,7 @@
       <div class="sheet" id="bondCardSheet">
         <div class="sheet-handle"></div>
         <header class="sheet-head">
-          <h3 id="bondSheetTitle">更换链路网卡</h3>
+          <h3 id="bondSheetTitle">选择链路 A 网卡</h3>
           <button class="sheet-close" id="bondSheetClose">完成</button>
         </header>
         <p class="card-hint" id="bondCardHint" style="display:none;"></p>
@@ -324,27 +327,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- 二次认证管理抽屉 -->
-      <div class="sheet" id="devAuthSheet">
-        <div class="sheet-handle"></div>
-        <header class="sheet-head">
-          <h3>二次认证管理</h3>
-          <button class="sheet-close" id="devAuthClose">完成</button>
-        </header>
-        <div class="da-panel">
-          <div class="da-ico">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg>
-          </div>
-          <b class="da-state">未认证</b>
-          <p class="da-desc">按工信部要求，上网设备需完成二次实人认证<br/>认证通过后可继续正常上网</p>
-        </div>
-        <div class="fw-row">
-          <span class="fw-lbl">认证设备</span>
-          <span class="fw-val" id="daDevName">--</span>
-        </div>
-        <button class="save-btn da-go-btn" id="btnDaGo">去认证</button>
       </div>
 
       <!-- 购买记录抽屉 -->

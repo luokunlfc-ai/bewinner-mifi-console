@@ -108,6 +108,58 @@
   }
   if (mask) mask.addEventListener('click', closeSheet);
 
+  // === 套餐列表抽屉（点击当前套餐环形图进入） ===
+  // 当前卡当前周期内的全部套餐（原型 mock，联调时按设备+卡拉取）
+  var PLAN_STATUS_META = {
+    using:   { label: '正使用', cls: 'using' },
+    usedup:  { label: '已用尽', cls: 'usedup' },
+    expired: { label: '已到期', cls: 'expired' },
+    pending: { label: '待生效', cls: 'pending' }
+  };
+  var PLAN_LIST_DATA = {
+    flow: [
+      { name: '月享100GB年包', status: 'using',   validity: '2025/11/14 至 2026/11/14', total: '80 GB',  remain: '38.2 GB' },
+      { name: '30GB加油包',    status: 'usedup',  validity: '2026/06/01 至 2026/06/30', total: '30 GB',  remain: '0 GB' },
+      { name: '10GB体验月包',  status: 'expired', validity: '2026/04/03 至 2026/05/03', total: '10 GB',  remain: '4.1 GB' },
+      { name: '月享100GB年包', status: 'pending', validity: '2026/11/14 至 2027/11/14', total: '80 GB',  remain: '80 GB' }
+    ],
+    bond: [
+      { name: '60G聚合套餐',   status: 'using',   validity: '2026/07/01 至 2026/07/31', total: '60 GB',  remain: '12.6 GB' },
+      { name: '60G聚合月包',   status: 'expired', validity: '2026/06/01 至 2026/06/30', total: '60 GB',  remain: '8.3 GB' },
+      { name: '60G聚合套餐',   status: 'pending', validity: '2026/08/01 至 2026/08/31', total: '60 GB',  remain: '60 GB' }
+    ]
+  };
+
+  var planListSheet = document.getElementById('planListSheet');
+  var planListTitle = document.getElementById('planListTitle');
+  var planListUl = document.getElementById('planListUl');
+
+  function renderPlanList(type) {
+    if (!planListUl) return;
+    if (planListTitle) planListTitle.textContent = type === 'bond' ? '聚合套餐' : '流量套餐';
+    planListUl.innerHTML = '';
+    (PLAN_LIST_DATA[type] || []).forEach(function(p) {
+      var st = PLAN_STATUS_META[p.status];
+      var li = document.createElement('li');
+      li.className = 'pl-item';
+      li.innerHTML = '<span class="pl-status ' + st.cls + '">' + st.label + '</span>'
+        + '<b class="pl-name">' + p.name + '</b>'
+        + '<div class="pl-row"><span>有效期限</span><span class="mono">' + p.validity + '</span></div>'
+        + '<div class="pl-row"><span>总流量</span><span class="mono">' + p.total + '</span></div>'
+        + '<div class="pl-row"><span>剩余流量</span><span class="mono">' + p.remain + '</span></div>';
+      planListUl.appendChild(li);
+    });
+  }
+
+  var cpFlowRing = document.getElementById('cpFlowRing');
+  var cpBondRing = document.getElementById('cpBondRing');
+  if (cpFlowRing && planListSheet) {
+    cpFlowRing.addEventListener('click', function() { renderPlanList('flow'); openSheet(planListSheet); });
+  }
+  if (cpBondRing && planListSheet) {
+    cpBondRing.addEventListener('click', function() { renderPlanList('bond'); openSheet(planListSheet); });
+  }
+
   // === 滑动 Tab 切换 ===
   var tabsScroll = document.getElementById('shopTabsScroll');
   var panels = document.querySelectorAll('.shop-panel');

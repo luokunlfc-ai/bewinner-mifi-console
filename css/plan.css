@@ -40,16 +40,10 @@
   box-shadow: var(--shadow-card);
   margin-bottom: 16px;
 }
-.cp-head {
-  padding-bottom: 10px;
-  border-bottom: 1px dashed var(--line);
-}
-.cp-head h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 15px; font-weight: 700; color: var(--text);
-}
 
 .cp-item { padding: 12px 0; }
+.cp-item:first-child { padding-top: 4px; }
+.cp-item:last-child { padding-bottom: 4px; }
 .cp-top {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 10px;
@@ -60,44 +54,88 @@
 }
 .cp-tag.flow { background: var(--brand-bg); color: var(--brand); border: 1px solid #c8def9; }
 .cp-tag.bond { background: #fff1ec; color: #ea580c; border: 1px solid #ffd6c4; }
-.cp-expire { font-size: 11px; color: var(--text-3); }
-.cp-expire.warn { color: #b45309; }
 
-.cp-top { flex-wrap: wrap; gap: 4px; }
-.cp-name {
-  font-size: 12px; color: var(--text); font-weight: 600;
-  flex-basis: 100%; margin-top: 2px;
+/* 环形图 + 三统计行：左环右数紧凑布局，点击环形图弹套餐列表抽屉 */
+.cp-body {
+  display: flex; align-items: center; gap: 16px;
 }
-
-.cp-usage {
-  display: grid; grid-template-columns: 80px 1fr; gap: 16px;
-  align-items: center;
-}
+.cp-ring-area { flex-shrink: 0; cursor: pointer; }
 .cp-circle-wrap {
   position: relative; width: 80px; height: 80px;
+  transition: transform .2s;
 }
+.cp-ring-area:active .cp-circle-wrap { transform: scale(.94); }
 .cp-ring { width: 100%; height: 100%; }
 .cp-circle-text {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 .cp-circle-text b {
-  font-size: 18px; font-weight: 700; color: var(--brand); line-height: 1;
+  font-size: 17px; font-weight: 700; color: var(--brand); line-height: 1;
 }
+.cp-circle-text b small { font-size: 10px; font-weight: 600; margin-left: 1px; }
 .cp-circle-text b.warn-c { color: #f59e0b; }
-.cp-circle-text small { font-size: 9px; color: var(--text-3); margin-top: 2px; }
+.cp-circle-text > small { font-size: 9px; color: var(--text-3); margin-top: 2px; }
 
-.cp-nums { display: flex; flex-direction: column; gap: 4px; }
-.cp-num-row {
+/* 三统计行：剩余流量 / 已用流量 / 剩余有效期 */
+.cp-stats { flex: 1; display: flex; flex-direction: column; }
+.cp-stat-row {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 4px 0; border-bottom: 1px dashed var(--line);
 }
-.cp-num-row:last-child { border-bottom: none; }
-.cpn-lbl { font-size: 11px; color: var(--text-3); letter-spacing: 1px; }
-.cpn-val { font-size: 13px; color: var(--text); font-weight: 600; }
-.cpn-val.highlight { color: var(--brand); }
-.cpn-val.warn-c { color: #f59e0b !important; }
+.cp-stat-row:last-child { border-bottom: none; }
+.cp-stat-row > span { font-size: 11px; color: var(--text-3); letter-spacing: 1px; }
+.cp-stat-row > b { font-size: 13px; font-weight: 700; color: var(--text); }
+.cp-stat-row > b small { font-size: 10px; font-weight: 500; color: var(--text-3); margin-left: 2px; }
+.cp-stat-row > b.warn-c { color: #f59e0b; }
+
+/* 底部当前套餐：标签居左，名称+有效期靠右 */
+.cp-current {
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+}
+.cpc-lbl { font-size: 10px; color: var(--text-3); letter-spacing: 2px; flex-shrink: 0; }
+.cpc-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  min-width: 0;
+}
+.cpc-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.cpc-validity { font-size: 11px; color: var(--text-3); }
+
 .cp-divider { height: 1px; background: var(--line); }
+
+/* ============ 套餐列表抽屉（点击环形图进入） ============ */
+.pl-desc { font-size: 11px; color: var(--text-3); margin: 6px 0 2px; }
+.pl-list {
+  list-style: none; margin-top: 6px;
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: 380px; overflow-y: auto;
+}
+.pl-item {
+  position: relative;
+  border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 12px 14px; background: #fff;
+}
+.pl-name {
+  display: block; font-size: 14px; font-weight: 700; color: var(--text);
+  margin-bottom: 8px; padding-right: 64px;
+}
+.pl-status {
+  position: absolute; top: 12px; right: 12px;
+  font-size: 10px; font-weight: 600; letter-spacing: .5px;
+  padding: 2px 8px; border-radius: 999px;
+}
+.pl-status.using   { color: var(--brand); background: var(--brand-bg); border: 1px solid #c8def9; }
+.pl-status.pending { color: #b45309; background: #fffbeb; border: 1px solid #fde68a; }
+.pl-status.usedup  { color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; }
+.pl-status.expired { color: var(--text-3); background: #f1f5f9; border: 1px solid var(--line); }
+.pl-row {
+  display: flex; gap: 8px; align-items: baseline;
+  font-size: 11px; color: var(--text-3); padding: 2px 0;
+}
+.pl-row span:first-child { flex-shrink: 0; letter-spacing: 1px; }
+.pl-row span:last-child { color: var(--text-2); }
 
 /* ============ 套餐商城 ============ */
 .shop-section { margin-bottom: 12px; }
