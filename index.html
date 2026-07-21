@@ -47,6 +47,9 @@
         <!-- 主内容区 -->
         <div id="homeContent">
 
+        <!-- 实名警示横幅（未实名内置卡合并为一条，JS 生成） -->
+        <div id="rnBanners"></div>
+
         <!-- 设备主卡 -->
         <article class="device-card">
           <div class="bg-grid"></div>
@@ -103,33 +106,6 @@
             </div>
           </div>
         </article>
-
-        <!-- 信号双卡 -->
-        <section class="sig-strip">
-          <div class="sig-card mob">
-            <div class="sig-head">
-              <span class="carrier">移动 · 5G</span>
-              <span class="realname-tag done">已实名</span>
-            </div>
-            <div class="sig-main">
-              <span class="sig-bars lg m"><i></i><i></i><i></i><i></i></span>
-              <div class="sig-detail">
-                <span class="sig-quality lv5">信号极佳</span>
-                <span class="sig-rsrp mono" id="sigMobVal">-72<small>dBm</small></span>
-              </div>
-            </div>
-          </div>
-          <!-- 电信卡实名后：去掉 unverified，结构同移动卡（sig-bars lg t + 质量文案 + RSRP） -->
-          <div class="sig-card tel unverified">
-            <div class="sig-head">
-              <span class="carrier">电信 · 5G</span>
-              <span class="realname-tag pending">未实名</span>
-            </div>
-            <div class="sig-disabled">
-              <button class="realname-btn" id="btnRealname">实名激活</button>
-            </div>
-          </div>
-        </section>
 
         <!-- 实时速率 -->
         <article class="rate-card">
@@ -215,46 +191,6 @@
           </div>
         </article>
 
-        <!-- 聚合网络管理卡片（仅聚合设备可见） -->
-        <article class="info-card bond-net-card" id="bondNetCard">
-          <header class="ic-head">
-            <div class="ic-title">
-              <span class="ic-ico" style="background:#fff1ec;color:#ea580c;">
-                <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg>
-              </span>
-              <h3>聚合网络管理</h3>
-            </div>
-          </header>
-          <p class="bn-desc">当前参与聚合的网卡</p>
-          <div class="bn-slots">
-            <div class="bn-slot" id="slot1">
-              <div class="bn-slot-head">
-                <span class="bn-slot-label">链路 A</span>
-                <span class="bn-slot-status on">已连接</span>
-              </div>
-              <div class="bn-slot-body">
-                <span class="bn-slot-ico mob"></span>
-                <b id="slot1Name">移动</b>
-              </div>
-              <button class="bn-slot-change" data-slot="1">更换 ›</button>
-            </div>
-            <div class="bn-slot-arrow">
-              <svg viewBox="0 0 24 24"><path d="M18 8l4 4-4 4M6 16l-4-4 4-4"/><path d="M2 12h20"/></svg>
-            </div>
-            <div class="bn-slot" id="slot2">
-              <div class="bn-slot-head">
-                <span class="bn-slot-label">链路 B</span>
-                <span class="bn-slot-status on">已连接</span>
-              </div>
-              <div class="bn-slot-body">
-                <span class="bn-slot-ico tel"></span>
-                <b id="slot2Name">电信</b>
-              </div>
-              <button class="bn-slot-change" data-slot="2">更换 ›</button>
-            </div>
-          </div>
-        </article>
-
         </div><!-- #homeContent -->
         <div class="bottom-pad"></div>
       </div>
@@ -297,6 +233,19 @@
         <button class="bind-btn">
           <span class="plus">+</span> 绑定新设备
         </button>
+      </div>
+
+      <!-- 实名信息抽屉（合并横幅「去实名」入口，逐卡状态+分别去实名） -->
+      <div class="sheet" id="rnInfoSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>实名认证</h3>
+          <button class="sheet-close" id="rnInfoClose">完成</button>
+        </header>
+        <p class="rn-info-desc">内置卡需完成实名认证后才能接入网络</p>
+        <ul class="rn-info-list" id="rnInfoList">
+          <!-- JS 动态填充 -->
+        </ul>
       </div>
 
       <!-- 删除设备确认弹窗 -->
@@ -368,38 +317,6 @@
           </div>
           <button class="save-btn">保存设置</button>
         </div>
-      </div>
-
-      <!-- 网卡选择抽屉（聚合用） -->
-      <div class="sheet" id="cardSheet">
-        <div class="sheet-handle"></div>
-        <header class="sheet-head">
-          <h3 id="sheetTitle">选择链路 A 网卡</h3>
-          <button class="sheet-close" id="sheetClose">完成</button>
-        </header>
-        <p class="card-hint" id="cardHint" style="display:none;"></p>
-        <ul class="card-list">
-          <li class="card-option" data-card="移动">
-            <span class="co-ico mob"></span>
-            <div class="co-main"><b>移动</b><span>内置卡 · 5G</span></div>
-            <span class="co-check" id="check-移动">✓</span>
-          </li>
-          <li class="card-option" data-card="电信">
-            <span class="co-ico tel"></span>
-            <div class="co-main"><b>电信</b><span>内置卡 · 5G</span></div>
-            <span class="co-check" id="check-电信">✓</span>
-          </li>
-          <li class="card-option" data-card="外置卡1">
-            <span class="co-ico ext"></span>
-            <div class="co-main"><b>外置卡 1</b><span>外置插拔卡</span></div>
-            <span class="co-check" id="check-外置卡1"></span>
-          </li>
-          <li class="card-option" data-card="外置卡2">
-            <span class="co-ico ext"></span>
-            <div class="co-main"><b>外置卡 2</b><span>外置插拔卡</span></div>
-            <span class="co-check" id="check-外置卡2"></span>
-          </li>
-        </ul>
       </div>
 
       <!-- 添加设备抽屉 -->

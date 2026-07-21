@@ -271,7 +271,8 @@
     { id: 'mob', name: '移动', type: 'builtin', inserted: true },
     { id: 'tel', name: '电信', type: 'builtin', inserted: true },
     { id: 'ext1', name: '外置卡1', type: 'external', inserted: true },
-    { id: 'ext2', name: '外置卡2', type: 'external', inserted: false }
+    { id: 'ext2', name: '外置卡2', type: 'external', inserted: false },
+    { id: 'usb', name: 'USB网卡', type: 'external', inserted: true } // 第三路：插入即默认聚合，不参与链路A/B切换
   ];
 
   function getSimCards() {
@@ -302,6 +303,86 @@
     getAll: getSimCards,
     getActive: getActiveSimCards,
     setInserted: setSimCardInserted
+  };
+
+  // ========== 聚合链路状态（换卡组合 + 卡实名状态，跨页共享） ==========
+  var SLOT_CARDS_KEY = 'mifi_slot_cards';    // {1:'移动',2:'电信'}
+  var VERIFIED_KEY   = 'mifi_card_verified'; // {卡名: bool} 覆盖默认值
+
+  // 卡元数据：实名状态归属"卡"而非链路（原型中移动/电信默认均未实名）
+  // 联调时模拟实名完成：MiFiBond.setVerified('电信', true)
+  var BOND_CARD_META = {
+    '移动':    { carrier: 'mob', net: '· 5G', verified: false, builtin: true },
+    '电信':    { carrier: 'tel', net: '· 5G', verified: false, builtin: true },
+    '外置卡1': { carrier: 'ext', net: '· 5G', verified: true },
+    '外置卡2': { carrier: 'ext', net: '· 5G', verified: true },
+    'USB网卡': { carrier: 'ext', net: '· 5G', verified: true }
+  };
+
+  // 各运营商实名认证入口（占位地址）
+  var REALNAME_URL = {
+    '电信': 'https://eca.189.cn/',
+    '移动': 'https://www.10086.cn/'
+  };
+
+  function getBondMeta(name) {
+    return BOND_CARD_META[name] || { carrier: 'ext', net: '· 5G', verified: true };
+  }
+
+  function loadVerifiedOverrides() {
+    try {
+      var raw = localStorage.getItem(VERIFIED_KEY);
+      if (raw) { var obj = JSON.parse(raw); if (obj && typeof obj === 'object') return obj; }
+    } catch(e) {}
+    return {};
+  }
+
+  function isCardVerified(name) {
+    var overrides = loadVerifiedOverrides();
+    if (Object.prototype.hasOwnProperty.call(overrides, name)) return !!overrides[name];
+    return getBondMeta(name).verified !== false;
+  }
+
+  function setCardVerified(name, v) {
+    var overrides = loadVerifiedOverrides();
+    overrides[name] = !!v;
+    localStorage.setItem(VERIFIED_KEY, JSON.stringify(overrides));
+  }
+
+  function getSlotCards() {
+    try {
+      var raw = localStorage.getItem(SLOT_CARDS_KEY);
+      if (raw) {
+        var obj = JSON.parse(raw);
+        if (obj && obj['1'] && obj['2']) return obj;
+      }
+    } catch(e) {}
+    return { '1': '移动', '2': '电信' };
+  }
+
+  function setSlotCard(slot, cardName) {
+    var cards = getSlotCards();
+    cards[String(slot)] = cardName;
+    localStorage.setItem(SLOT_CARDS_KEY, JSON.stringify(cards));
+  }
+
+  // 未实名的内置卡（首页横幅 / 数据卡管理实名按钮用）
+  function getUnverifiedBuiltin() {
+    var result = [];
+    Object.keys(BOND_CARD_META).forEach(function(name) {
+      if (BOND_CARD_META[name].builtin && !isCardVerified(name)) result.push(name);
+    });
+    return result;
+  }
+
+  global.MiFiBond = {
+    getMeta: getBondMeta,
+    isVerified: isCardVerified,
+    setVerified: setCardVerified,
+    getSlotCards: getSlotCards,
+    setSlotCard: setSlotCard,
+    getUnverifiedBuiltin: getUnverifiedBuiltin,
+    REALNAME_URL: REALNAME_URL
   };
 
   // ========== UI 工具 ==========

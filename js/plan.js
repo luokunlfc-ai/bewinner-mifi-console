@@ -541,7 +541,13 @@
   var idBtn = document.getElementById('btnIdVerify');
   if (idBtn) {
     idBtn.addEventListener('click', function() {
-      window.open('https://eca.189.cn/', '_blank');
+      window.open(MiFiBond.REALNAME_URL['电信'] || 'https://eca.189.cn/', '_blank');
+    });
+  }
+  var idBtnMob = document.getElementById('btnIdVerifyMob');
+  if (idBtnMob) {
+    idBtnMob.addEventListener('click', function() {
+      window.open(MiFiBond.REALNAME_URL['移动'] || 'https://www.10086.cn/', '_blank');
     });
   }
 

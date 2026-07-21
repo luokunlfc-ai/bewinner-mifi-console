@@ -109,6 +109,7 @@
   var curCardEl = document.getElementById('curCard');
   if (btnDataCard) btnDataCard.addEventListener('click', function () {
     if (!requireDevice()) return;
+    renderDataCardStates();
     openSheet(dataCardSheet);
   });
 
@@ -122,6 +123,201 @@
       });
     });
   }
+
+  // === 数据卡管理：内置卡实名状态（副标题 + 去实名按钮） ===
+  function renderDataCardStates() {
+    if (!dataCardSheet) return;
+    ['移动', '电信'].forEach(function (name) {
+      var opt = dataCardSheet.querySelector('.card-option[data-card="' + name + '"]');
+      if (!opt) return;
+      var verified = MiFiBond.isVerified(name);
+      var sub = opt.querySelector('.co-main span');
+      if (sub) sub.textContent = '内置卡 · 5G · ' + (verified ? '已实名' : '未实名');
+      var btn = opt.querySelector('.co-rn-btn');
+      if (btn) btn.style.display = verified ? 'none' : '';
+    });
+  }
+
+  // 去实名按钮：不触发选中，直接跳运营商认证页
+  if (dataCardSheet) {
+    dataCardSheet.querySelectorAll('.co-rn-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var url = MiFiBond.REALNAME_URL[btn.dataset.card] || 'https://eca.189.cn/';
+        window.open(url, '_blank');
+      });
+    });
+  }
+
+  // === 聚合链路管理（仅聚合设备可见） ===
+  var btnBondLink = document.getElementById('btnBondLink');
+  var bondLinkSub = document.getElementById('bondLinkSub');
+  var bondLinkSheet = document.getElementById('bondLinkSheet');
+  var bondCardSheet = document.getElementById('bondCardSheet');
+  var bondSheetTitle = document.getElementById('bondSheetTitle');
+  var bondCardHint = document.getElementById('bondCardHint');
+  var pendingBondSlot = null;
+
+  // 网卡分组：同组卡共享同一物理 Modem，两条链路不可同时使用同组卡
+  var CARD_GROUP = {
+    '移动': 'A',
+    '外置卡1': 'A',
+    '电信': 'B',
+    '外置卡2': 'B'
+  };
+
+  // 抽屉选项副标题（未插入时追加标注）
+  var CARD_SUBTITLE = {
+    '移动': '内置卡 · 5G',
+    '电信': '内置卡 · 5G',
+    '外置卡1': '外置插拔卡',
+    '外置卡2': '外置插拔卡'
+  };
+
+  function getSimInsertedMap() {
+    var map = {};
+    MiFiSim.getAll().forEach(function (c) { map[c.name] = c.inserted !== false; });
+    return map;
+  }
+
+  // 入口显隐 + 副标题（当前链路组合）
+  function updateBondLinkEntry() {
+    if (!btnBondLink) return;
+    var dev = MiFiDevice.getCurrent();
+    var isBonding = dev && dev.type === 'bonding';
+    btnBondLink.style.display = isBonding ? '' : 'none';
+    if (isBonding && bondLinkSub) {
+      var slots = MiFiBond.getSlotCards();
+      bondLinkSub.textContent = slots['1'] + ' + ' + slots['2'] + ' + USB网卡';
+    }
+  }
+
+  function renderBondLinkRow(slot) {
+    var row = document.getElementById('slot' + slot);
+    if (!row) return;
+    var cardName = MiFiBond.getSlotCards()[slot];
+    var meta = MiFiBond.getMeta(cardName);
+    var verified = MiFiBond.isVerified(cardName);
+
+    row.dataset.carrier = meta.carrier;
+    var ico = document.getElementById('slot' + slot + 'Ico');
+    if (ico) ico.className = 'bn-slot-ico ' + meta.carrier;
+    var nameEl = document.getElementById('slot' + slot + 'Name');
+    if (nameEl) nameEl.textContent = cardName;
+    var netEl = document.getElementById('slot' + slot + 'Net');
+    if (netEl) netEl.textContent = meta.net;
+
+    // SIM 插拔状态（未插入的卡不应出现在链路上，此处为防御性处理）
+    var insertedMap = getSimInsertedMap();
+    var inserted = insertedMap[cardName] !== false;
+
+    row.classList.toggle('unverified', inserted && !verified);
+
+    // 行内三态元素（预置节点 display 切换，不重建 DOM）：
+    // 信号格：已实名（或未插入的防御态）时显示；未实名 → 隐藏信号格，换为「去实名」按钮
+    var bars = document.getElementById('slot' + slot + 'Bars');
+    var rnTag = document.getElementById('slot' + slot + 'RnTag');
+    var rnBtn = document.getElementById('slot' + slot + 'RnBtn');
+    if (bars) bars.style.display = (verified || !inserted) ? '' : 'none';
+    if (rnTag) rnTag.style.display = verified ? '' : 'none';
+    if (rnBtn) rnBtn.style.display = (inserted && !verified) ? '' : 'none';
+
+    // 未插入：信号格全部灰显
+    if (bars) {
+      bars.querySelectorAll('i').forEach(function (el) { el.classList.toggle('off', !inserted); });
+    }
+  }
+
+  if (btnBondLink && bondLinkSheet) {
+    btnBondLink.addEventListener('click', function () {
+      if (!requireDevice()) return;
+      renderBondLinkRow('1');
+      renderBondLinkRow('2');
+      openSheet(bondLinkSheet);
+    });
+  }
+
+  // 链路行内 去实名 按钮（事件委托，按链路当前卡跳转对应运营商）
+  if (bondLinkSheet) {
+    bondLinkSheet.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.realname-btn') : null;
+      if (!btn) return;
+      var row = btn.closest('.link-row');
+      var slot = row ? row.dataset.slot : null;
+      var cardName = slot ? MiFiBond.getSlotCards()[slot] : '电信';
+      window.open(MiFiBond.REALNAME_URL[cardName] || 'https://eca.189.cn/', '_blank');
+    });
+
+    // 更换 › → 打开选卡抽屉
+    bondLinkSheet.querySelectorAll('.link-change').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        pendingBondSlot = btn.dataset.slot;
+        if (bondSheetTitle) bondSheetTitle.textContent = '更换链路网卡';
+        var slots = MiFiBond.getSlotCards();
+        var curName = slots[pendingBondSlot];
+        var otherCard = slots[pendingBondSlot === '1' ? '2' : '1'];
+        var otherGroup = CARD_GROUP[otherCard] || '';
+        var insertedMap = getSimInsertedMap();
+        var hasUninserted = false;
+
+        // 更新各选项状态
+        bondCardSheet.querySelectorAll('.card-option').forEach(function (opt) {
+          var cardName = opt.dataset.card;
+          opt.classList.toggle('active', cardName === curName);
+          var inserted = insertedMap[cardName] !== false;
+          var sub = opt.querySelector('.co-main span');
+          if (sub) sub.textContent = CARD_SUBTITLE[cardName] + (inserted ? '' : ' · 未插入');
+          // 禁用：未插入的卡，或与另一链路同组的卡
+          if (!inserted || (otherGroup && CARD_GROUP[cardName] === otherGroup && cardName !== curName)) {
+            opt.classList.add('disabled');
+            if (!inserted) hasUninserted = true;
+          } else {
+            opt.classList.remove('disabled');
+          }
+        });
+
+        // 提示文字：同组互斥优先，其次未插入提示
+        if (bondCardHint) {
+          if (otherGroup) {
+            var groupCards = otherGroup === 'A' ? '移动 / 外置卡1' : '电信 / 外置卡2';
+            bondCardHint.textContent = '另一链路已占用 ' + groupCards + ' 组，同组卡不可重复选择';
+            bondCardHint.style.display = '';
+          } else if (hasUninserted) {
+            bondCardHint.textContent = '灰色选项为未插入的外置卡，插入设备后再选择';
+            bondCardHint.style.display = '';
+          } else {
+            bondCardHint.style.display = 'none';
+          }
+        }
+
+        openSheet(bondCardSheet);
+      });
+    });
+  }
+
+  // 选卡抽屉：选中 → 更新状态 → 回到链路管理抽屉
+  if (bondCardSheet) {
+    bondCardSheet.querySelectorAll('.card-option').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        if (!pendingBondSlot) return;
+        if (opt.classList.contains('disabled')) return;
+        var cardName = opt.dataset.card;
+        MiFiBond.setSlotCard(pendingBondSlot, cardName);
+        renderBondLinkRow(pendingBondSlot);
+        updateBondLinkEntry();
+        closeSheet();
+        MiFiUI.showToast('链路已切换为 ' + cardName);
+        // 回到链路管理抽屉，展示更新后的组合
+        setTimeout(function () {
+          renderBondLinkRow('1');
+          renderBondLinkRow('2');
+          openSheet(bondLinkSheet);
+        }, 350);
+      });
+    });
+  }
+
+  updateBondLinkEntry();
 
   // === 固件升级（双状态） ===
   var fwSheet = document.getElementById('fwSheet');
@@ -376,6 +572,8 @@
         MiFiDevice.setCurrent(deviceId);
         closeSheet();
         MiFiUI.showToast('已切换设备');
+        updateBondLinkEntry();
+        updateDeviceSubtitle();
         setTimeout(renderMyDevices, 300);
       });
     });

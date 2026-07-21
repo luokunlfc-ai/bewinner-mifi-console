@@ -376,63 +376,83 @@ body::before {
 .val { color: var(--text); font-size: 13px; font-weight: 600; }
 .mono { font-family: 'JetBrains Mono', monospace; }
 
-/* ============ 信号双卡 ============ */
-.sig-strip {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  margin-top: 12px;
-}
-.sig-card {
-  border-radius: var(--r-md);
-  border: 1px solid var(--line);
-  padding: 12px;
-  background: var(--bg-card);
-  position: relative; overflow: hidden;
-  box-shadow: var(--shadow-card);
-}
-.sig-card.mob::before, .sig-card.tel::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px;
-}
-.sig-card.mob::before { background: var(--mob); }
-.sig-card.tel::before { background: var(--tel); }
-
-.sig-head {
-  display: flex; justify-content: space-between; align-items: center;
-}
-.carrier { font-size: 11px; color: var(--text-2); letter-spacing: 1px; font-weight: 600; }
-
-/* 大号信号格：已实名卡片主视觉（4 格制，同手机状态栏习惯）
+/* ============ 信号格 / 质量（网络链路卡共用） ============ */
+/* 大号信号格（4 格制，同手机状态栏习惯）
    格数与 RSRP 建议映射（联调参考）：
    4格 ≥-80 极佳 / 3格 -80~-90 良好 / 2格 -90~-100 一般 / 1格 <-100 较差
-   未点亮的格加 .off 即可（如 3 格：第 4 根 <i class="off">） */
-.sig-main {
-  margin-top: 14px;
-  display: flex; align-items: center; gap: 12px;
-}
+   未点亮的格加 .off 即可（如 3 格：第 4 根 <i class="off">）
+   宽度与颜色由 .link-row 按运营商变量 --carrier-c 注入 */
 .sig-bars.lg { height: 30px; gap: 3px; }
 .sig-bars.lg i { opacity: 1; } /* 覆盖基础样式 .sig-bars i:nth-child(4) 的半透明 */
-.sig-bars.lg.m i, .sig-bars.lg.t i { width: 5px; border-radius: 2px; }
-.sig-bars.lg.m i { background: var(--mob); }
-.sig-bars.lg.t i { background: var(--tel); }
 .sig-bars.lg i:nth-child(1) { height: 9px; }
 .sig-bars.lg i:nth-child(2) { height: 15px; }
 .sig-bars.lg i:nth-child(3) { height: 21px; }
 .sig-bars.lg i:nth-child(4) { height: 27px; }
 .sig-bars.lg i.off { opacity: .25; }
 
-.sig-detail { display: flex; flex-direction: column; gap: 3px; }
-/* 质量文案按信号等级着色（语义色，与运营商色解耦，双卡通用） */
-.sig-quality {
-  font-size: 15px; font-weight: 700;
-  letter-spacing: 1px; line-height: 1.2;
+/* 小号信号格（子卡速率行用）：几何沿用基础样式，仅补色彩与档位 */
+/* 配色对齐 .rate-sub-cname/.rate-sub-bar 既有调色板：移动蓝/电信紫/外置琥珀 */
+.sig-bars.sm i { opacity: 1; } /* 覆盖基础样式 4 格半透明 */
+.sig-bars.sm i.off { opacity: .25; }
+.sig-bars.sm.mob i { background: #1f6feb; }
+.sig-bars.sm.tel i { background: #7c3aed; }
+.sig-bars.sm.ext i { background: #f59e0b; }
+
+/* ============ 实名警示横幅（首页，未实名内置卡合并为一条） ============ */
+#rnBanners { display: flex; flex-direction: column; gap: 8px; }
+#rnBanners:not(:empty) { margin-bottom: 12px; }
+.rn-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: var(--r-md, 14px);
 }
-.sig-quality.lv5 { color: var(--mob); } /* 极佳 · 与信号格同色 */
-.sig-quality.lv4 { color: #0ea5e9; } /* 良好 · 天蓝 */
-.sig-quality.lv3 { color: #f59e0b; } /* 一般 · 琥珀 */
-.sig-quality.lv2 { color: #f97316; } /* 较差 · 橙 */
-.sig-quality.lv1 { color: #ef4444; } /* 极差 · 红 */
-.sig-rsrp { font-size: 11px; font-weight: 500; color: var(--text-3); }
-.sig-rsrp small { font-size: 10px; margin-left: 2px; color: var(--text-3); }
+.rn-banner-ico {
+  width: 20px; height: 20px; flex-shrink: 0; color: #f59e0b;
+}
+.rn-banner-main { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.rn-banner-main b { font-size: 13px; font-weight: 700; color: #92400e; }
+.rn-banner-main span { font-size: 11px; color: #b45309; }
+.rn-banner-btn {
+  flex-shrink: 0; padding: 6px 14px;
+  background: #f59e0b; color: #fff; border: none;
+  border-radius: 9px; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: .2s;
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+}
+.rn-banner-btn:hover { background: #d97706; }
+.rn-banner-close {
+  flex-shrink: 0; width: 22px; height: 22px;
+  display: grid; place-items: center;
+  background: none; border: none; cursor: pointer;
+  font-size: 16px; line-height: 1; color: #d6b47b;
+  border-radius: 6px; transition: .15s;
+}
+.rn-banner-close:hover { color: #92400e; background: rgba(245,158,11,.12); }
+
+/* 实名信息抽屉（合并横幅「去实名」入口，逐卡状态列表） */
+.rn-info-desc { font-size: 12px; color: var(--text-3); margin: 4px 0 2px; }
+.rn-info-list { list-style: none; margin: 4px 0; }
+.rn-info-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 2px; border-bottom: 1px dashed var(--line);
+}
+.rn-info-item:last-child { border-bottom: none; }
+.rn-info-ico { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; }
+.rn-info-ico.mob { background: linear-gradient(135deg, #1f6feb, #3aa0ff); }
+.rn-info-ico.tel { background: linear-gradient(135deg, #ea580c, #f97316); }
+.rn-info-main { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.rn-info-main b { font-size: 14px; font-weight: 700; color: var(--text); }
+.rn-info-main span { font-size: 11px; color: var(--text-3); }
+.rn-info-btn {
+  flex-shrink: 0; padding: 6px 14px;
+  background: #f59e0b; color: #fff; border: none;
+  border-radius: 8px; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: .2s;
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+}
+.rn-info-btn:hover { background: #d97706; }
+
 .realname-tag {
   font-size: 10px; font-weight: 600; letter-spacing: .5px;
   padding: 3px 8px; border-radius: 999px;
@@ -444,30 +464,6 @@ body::before {
   color: #b45309; background: #fffbeb; border: 1px solid #fde68a;
 }
 
-/* 未实名卡片 */
-.sig-card.unverified {
-  background: #fafbfc;
-}
-.sig-disabled {
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center;
-  padding: 18px 0 4px;
-}
-.sig-disabled-ico {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: #f1f5f9;
-  display: grid; place-items: center;
-  margin-bottom: 8px;
-}
-.sig-disabled-ico svg {
-  width: 16px; height: 16px;
-  fill: none; stroke: #94a3b8; stroke-width: 1.8;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.sig-disabled p {
-  font-size: 10px; color: var(--text-3); line-height: 1.5;
-  margin-bottom: 10px;
-}
 .realname-btn {
   padding: 7px 24px;
   background: linear-gradient(135deg, #f59e0b, #f97316);
@@ -482,6 +478,61 @@ body::before {
   box-shadow: 0 6px 18px rgba(245,158,11,.45);
   transform: translateY(-1px);
 }
+
+/* ============ 聚合链路行（我的-聚合链路管理抽屉用） ============ */
+/* 运营商色由每行 data-carrier 经 --carrier-c 一处驱动：色条/信号格/质量文案自动跟随 */
+.link-row[data-carrier="mob"] { --carrier-c: var(--mob); }
+.link-row[data-carrier="tel"] { --carrier-c: var(--tel); }
+.link-row[data-carrier="ext"] { --carrier-c: #7c3aed; }
+
+/* 单行链路布局：图标 + 卡名 + 网络 + 信号格 + 实名标签/激活按钮 + 更换 */
+.link-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 0; position: relative;
+}
+.link-row::before {
+  content: ''; position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 28px; border-radius: 2px; background: var(--carrier-c, var(--mob));
+}
+
+.link-row .bn-slot-ico { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; }
+.link-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.link-net { font-size: 11px; color: var(--text-3); margin-left: -4px; }
+.link-spacer { flex: 1; }
+
+/* 行内信号格：比标准 .lg 小一档（配合单行布局），色跟随运营商变量 */
+.link-row .sig-bars.lg { height: 16px; gap: 2px; flex-shrink: 0; margin-left: 4px; }
+.link-row .sig-bars.lg i { width: 4px; border-radius: 2px; background: var(--carrier-c); }
+.link-row .sig-bars.lg i:nth-child(1) { height: 5px; }
+.link-row .sig-bars.lg i:nth-child(2) { height: 8px; }
+.link-row .sig-bars.lg i:nth-child(3) { height: 11px; }
+.link-row .sig-bars.lg i:nth-child(4) { height: 14px; }
+
+/* 行内去实名按钮（未实名时替代信号格出现）：紧凑化 */
+.link-row .realname-btn {
+  padding: 5px 12px; font-size: 12px; flex-shrink: 0;
+  border-radius: 8px; box-shadow: none;
+}
+.link-row .realname-btn:hover { transform: none; box-shadow: 0 4px 12px rgba(245,158,11,.3); }
+
+/* 更换按钮：紧凑文字按钮（替代原全宽 bn-slot-change） */
+.link-change {
+  padding: 6px 12px; flex-shrink: 0;
+  background: var(--brand-bg); border: 1px solid #c8def9;
+  color: var(--brand); font-size: 12px; font-weight: 600;
+  border-radius: 10px; cursor: pointer; transition: .2s;
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+}
+.link-change:hover { background: var(--brand); color: #fff; }
+
+.link-divider { border-top: 1px dashed var(--line); }
+
+/* 未实名行（灰底向卡片边缘铺满，色条收回到灰底内缘） */
+.link-row.unverified {
+  background: #fafbfc;
+  margin: 0 -18px; padding: 12px 18px;
+}
+.link-row.unverified::before { left: 0; }
 
 /* ============ 速率卡 ============ */
 .rate-card {
@@ -712,9 +763,6 @@ body::before {
 }
 
 /* ============ 离线状态 ============ */
-.sig-card.offline .sig-quality,
-.sig-card.offline .sig-rsrp { color: var(--text-3); }
-.sig-bars.dim i { background: var(--line) !important; }
 .device-card.offline .dev-meta .val { color: var(--text-3); }
 
 /* ============ Toast ============ */
@@ -1002,33 +1050,7 @@ select.form-input {
 .save-btn:hover { box-shadow: 0 10px 24px rgba(31,111,235,.45); transform: translateY(-1px); }
 .save-btn:active { transform: translateY(0); }
 
-/* ============ 聚合网络管理卡片 ============ */
-.bond-net-card { margin-top: 12px; }
-.bn-desc { font-size: 11px; color: var(--text-3); margin: 0 0 12px; letter-spacing: .5px; }
-
-.bn-slots {
-  display: grid; grid-template-columns: 1fr 36px 1fr;
-  gap: 0; align-items: center;
-}
-.bn-slot {
-  border-radius: var(--r-md); border: 1px solid var(--line);
-  padding: 12px; background: var(--bg-soft);
-  text-align: center;
-}
-.bn-slot-head {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 10px;
-}
-.bn-slot-label { font-size: 10px; color: var(--text-3); letter-spacing: 1px; font-weight: 600; }
-.bn-slot-status {
-  font-size: 9px; padding: 2px 6px; border-radius: 999px; font-weight: 600;
-}
-.bn-slot-status.on { color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; }
-
-.bn-slot-body {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 8px 0;
-}
+/* ============ 运营商图标（网络链路卡 / 换卡抽屉共用） ============ */
 .bn-slot-ico {
   width: 36px; height: 36px; border-radius: 10px;
   display: block;
@@ -1036,29 +1058,6 @@ select.form-input {
 .bn-slot-ico.mob { background: linear-gradient(135deg, #1f6feb, #3aa0ff); }
 .bn-slot-ico.tel { background: linear-gradient(135deg, #ea580c, #f97316); }
 .bn-slot-ico.ext { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
-
-.bn-slot-body b { font-size: 14px; font-weight: 700; color: var(--text); }
-
-.bn-slot-change {
-  width: 100%; margin-top: 10px; padding: 7px;
-  background: var(--brand-bg); border: 1px solid #c8def9;
-  color: var(--brand); font-size: 12px; font-weight: 600;
-  border-radius: 10px; cursor: pointer;
-  font-family: 'Space Grotesk', sans-serif;
-  transition: .2s;
-}
-.bn-slot-change:hover {
-  background: var(--brand); color: #fff; border-color: var(--brand);
-}
-
-.bn-slot-arrow {
-  display: grid; place-items: center;
-}
-.bn-slot-arrow svg {
-  width: 24px; height: 24px;
-  fill: none; stroke: var(--text-3); stroke-width: 1.5;
-  stroke-linecap: round; stroke-linejoin: round;
-}
 
 /* ============ 网卡选择抽屉 ============ */
 .card-list { list-style: none; margin: 8px 0; }

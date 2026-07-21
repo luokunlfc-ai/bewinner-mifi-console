@@ -88,6 +88,17 @@
             <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
 
+          <div class="menu-item" id="btnBondLink" style="display:none;">
+            <div class="mi-ico bond">
+              <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>聚合链路管理</b>
+              <span id="bondLinkSub">移动 + 电信 + USB网卡</span>
+            </div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
           <div class="menu-item" id="btnFirmware">
             <div class="mi-ico fw">
               <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -170,11 +181,13 @@
           <li class="card-option active" data-card="移动">
             <span class="co-ico mob"></span>
             <div class="co-main"><b>移动</b><span>内置卡 · 5G · 已实名</span></div>
+            <button class="co-rn-btn" data-card="移动" style="display:none;">去实名</button>
             <span class="co-check">✓</span>
           </li>
           <li class="card-option" data-card="电信">
             <span class="co-ico tel"></span>
             <div class="co-main"><b>电信</b><span>内置卡 · 5G · 未实名</span></div>
+            <button class="co-rn-btn" data-card="电信" style="display:none;">去实名</button>
             <span class="co-check">✓</span>
           </li>
           <li class="card-option" data-card="外置卡1">
@@ -186,6 +199,83 @@
             <span class="co-ico ext"></span>
             <div class="co-main"><b>外置卡 2</b><span>外置插拔卡 · 未插入</span></div>
             <span class="co-check">✓</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 聚合链路管理抽屉（仅聚合设备入口可达） -->
+      <div class="sheet" id="bondLinkSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>聚合链路管理</h3>
+          <button class="sheet-close" id="bondLinkClose">完成</button>
+        </header>
+
+        <!-- 链路 1（当前卡由 JS 渲染，默认移动） -->
+        <div class="link-row" id="slot1" data-slot="1" data-carrier="mob">
+          <span class="bn-slot-ico mob" id="slot1Ico"></span>
+          <b class="link-name" id="slot1Name">移动</b>
+          <span class="link-net" id="slot1Net">· 5G</span>
+          <span class="sig-bars lg" id="slot1Bars"><i></i><i></i><i></i><i></i></span>
+          <span class="link-spacer"></span>
+          <span class="realname-tag done" id="slot1RnTag">已实名</span>
+          <button class="realname-btn" id="slot1RnBtn" type="button" style="display:none;">去实名</button>
+          <button class="link-change" type="button" data-slot="1">更换 ›</button>
+        </div>
+
+        <div class="link-divider"></div>
+
+        <!-- 链路 2（默认电信，未实名 → 信号格换为去实名按钮） -->
+        <div class="link-row unverified" id="slot2" data-slot="2" data-carrier="tel">
+          <span class="bn-slot-ico tel" id="slot2Ico"></span>
+          <b class="link-name" id="slot2Name">电信</b>
+          <span class="link-net" id="slot2Net">· 5G</span>
+          <span class="sig-bars lg" id="slot2Bars" style="display:none;"><i></i><i></i><i></i><i></i></span>
+          <span class="link-spacer"></span>
+          <span class="realname-tag done" id="slot2RnTag" style="display:none;">已实名</span>
+          <button class="realname-btn" id="slot2RnBtn" type="button">去实名</button>
+          <button class="link-change" type="button" data-slot="2">更换 ›</button>
+        </div>
+
+        <div class="link-divider"></div>
+
+        <!-- USB网卡（固定第三链路，插入即聚合，无实名/更换） -->
+        <div class="link-row" id="slot3" data-carrier="ext">
+          <span class="bn-slot-ico ext"></span>
+          <b class="link-name">USB网卡</b>
+          <span class="link-net">· 5G</span>
+          <span class="sig-bars lg"><i></i><i></i><i></i><i></i></span>
+        </div>
+      </div>
+
+      <!-- 链路换卡抽屉（聚合用） -->
+      <div class="sheet" id="bondCardSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3 id="bondSheetTitle">更换链路网卡</h3>
+          <button class="sheet-close" id="bondSheetClose">完成</button>
+        </header>
+        <p class="card-hint" id="bondCardHint" style="display:none;"></p>
+        <ul class="card-list">
+          <li class="card-option" data-card="移动">
+            <span class="co-ico mob"></span>
+            <div class="co-main"><b>移动</b><span>内置卡 · 5G</span></div>
+            <span class="co-check">✓</span>
+          </li>
+          <li class="card-option" data-card="电信">
+            <span class="co-ico tel"></span>
+            <div class="co-main"><b>电信</b><span>内置卡 · 5G</span></div>
+            <span class="co-check">✓</span>
+          </li>
+          <li class="card-option" data-card="外置卡1">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 1</b><span>外置插拔卡</span></div>
+            <span class="co-check"></span>
+          </li>
+          <li class="card-option" data-card="外置卡2">
+            <span class="co-ico ext"></span>
+            <div class="co-main"><b>外置卡 2</b><span>外置插拔卡</span></div>
+            <span class="co-check"></span>
           </li>
         </ul>
       </div>

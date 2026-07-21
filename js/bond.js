@@ -1,4 +1,7 @@
 /* Be Winner MiFi · 聚合管理页交互 */
+/* ⚠️ 已废弃（2026-07）：本文件未被任何页面引用。
+   换卡等交互已并入 app.js「网络链路」区块（CARD_META / slotCards / renderLinkRow）。
+   本文件保留仅供历史参考，请勿引用。 */
 
 (function () {
   // === 实时速率滚动 ===

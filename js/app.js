@@ -68,9 +68,8 @@
     if (bondRow) bondRow.style.display = isBonding ? '' : 'none';
     if (planDivider) planDivider.style.display = isBonding ? '' : 'none';
 
-    // 聚合网络管理卡片
-    var bondNetCard = document.getElementById('bondNetCard');
-    if (bondNetCard) bondNetCard.style.display = (isBonding && online) ? '' : 'none';
+    // 实名警示横幅（每张未实名内置卡一条，与机型/在线状态无关）
+    renderRnBanners();
 
     // 子卡速率（聚合设备）
     var rateSubCards = document.getElementById('rateSubCards');
@@ -122,23 +121,13 @@
       if (tempEl) tempEl.textContent = dash;
       if (battEl) battEl.textContent = dash;
       if (usageEl) usageEl.textContent = dash;
-      // 信号值
-      var sigMob = document.getElementById('sigMobVal');
-      if (sigMob) sigMob.innerHTML = dash + '<small>dBm</small>';
-      // 信号条变灰
-      document.querySelectorAll('.sig-card').forEach(function(c) { c.classList.add('offline'); });
-      document.querySelectorAll('.sig-bars').forEach(function(b) { b.classList.add('dim'); });
     } else {
       if (runEl) runEl.textContent = '04:23:11';
       if (tempEl) tempEl.textContent = '38.6°C';
       if (battEl) battEl.textContent = '82%';
       if (usageEl) usageEl.textContent = '1.28GB';
-      var sigMob = document.getElementById('sigMobVal');
-      if (sigMob) sigMob.innerHTML = '-72<small>dBm</small>';
-      document.querySelectorAll('.sig-card').forEach(function(c) { c.classList.remove('offline'); });
-      document.querySelectorAll('.sig-bars').forEach(function(b) { b.classList.remove('dim'); });
     }
-    // 电信卡实名状态始终展示（与设备在线/离线无关）
+    // 实名横幅始终展示（与设备在线/离线无关）
   }
 
   // ===== 套餐订购状态 =====
@@ -172,6 +161,9 @@
   }
 
   // ===== 子卡速率渲染 =====
+  // 各子卡信号档位 mock（1~4 格）
+  var SIG_LEVEL = { mob: 4, tel: 3, ext1: 4, ext2: 2, usb: 4 };
+
   function renderSubCardRows() {
     var list = document.getElementById('rateSubList');
     if (!list) return;
@@ -179,8 +171,14 @@
     var html = '';
     cards.forEach(function(card) {
       var cls = card.id === 'mob' ? 'mob' : (card.id === 'tel' ? 'tel' : 'ext');
+      var level = SIG_LEVEL[card.id] || 4;
+      var bars = '';
+      for (var i = 1; i <= 4; i++) {
+        bars += '<i' + (i > level ? ' class="off"' : '') + '></i>';
+      }
       html += '<div class="rate-sub-item" data-card="' + card.id + '">'
         + '<span class="rate-sub-cname ' + cls + '">' + card.name + '</span>'
+        + '<span class="sig-bars sm ' + cls + '">' + bars + '</span>'
         + '<span class="rate-sub-dir"><span class="arr down">↓</span><span class="val mono" id="subDown_' + card.id + '">--</span><span class="unit">Mbps</span></span>'
         + '<span class="rate-sub-dir"><span class="arr up">↑</span><span class="val mono" id="subUp_' + card.id + '">--</span><span class="unit">Mbps</span></span>'
         + '<div class="rate-sub-bar"><span class="' + cls + '" id="subBar_' + card.id + '" style="width:0%"></span></div>'
@@ -505,84 +503,78 @@
     });
   }
 
-  // ===== 聚合网络管理 · 网卡切换 =====
-  var cardSheet = document.getElementById('cardSheet');
-  var sheetTitle = document.getElementById('sheetTitle');
-  var cardHint = document.getElementById('cardHint');
-  var pendingSlot = null;
+  // ===== 实名警示横幅 =====
+  // 聚合设备：移动+电信双内置卡，两张都未实名时合并为一条横幅，
+  //   「去实名」打开实名信息抽屉（各卡状态+分别去实名）；
+  // 单卡设备（X7/N7）：仅内置电信卡，单卡横幅「去实名」直达运营商认证页。
+  // × 关闭仅本次会话有效（不持久化），刷新后重新出现
+  var rnBannerDismissed = {};
+  var BUILTIN_CARDS = ['移动', '电信']; // 聚合设备内置卡，与 MiFiBond 元数据一致
+  var SINGLE_CARD = '电信';            // 单卡设备的内置卡
 
-  // 网卡分组：同组卡共享同一物理 Modem，两条链路不可同时使用同组卡
-  var CARD_GROUP = {
-    '移动': 'A',
-    '外置卡1': 'A',
-    '电信': 'B',
-    '外置卡2': 'B'
-  };
+  var rnInfoSheet = document.getElementById('rnInfoSheet');
+  var rnInfoList = document.getElementById('rnInfoList');
+  var rnInfoClose = document.getElementById('rnInfoClose');
+  if (rnInfoClose) rnInfoClose.addEventListener('click', closeSheet);
 
-  function getOtherSlotCard() {
-    if (!pendingSlot) return '';
-    var other = pendingSlot === '1' ? '2' : '1';
-    var el = document.getElementById('slot' + other + 'Name');
-    return el ? el.textContent.trim() : '';
+  // 实名信息抽屉：逐卡展示实名状态，未实名的卡给出去实名入口
+  function renderRnInfoSheet() {
+    if (!rnInfoList) return;
+    rnInfoList.innerHTML = '';
+    BUILTIN_CARDS.forEach(function(name) {
+      var meta = MiFiBond.getMeta(name);
+      var verified = MiFiBond.isVerified(name);
+      var li = document.createElement('li');
+      li.className = 'rn-info-item';
+      li.innerHTML = '<span class="rn-info-ico ' + meta.carrier + '"></span>'
+        + '<div class="rn-info-main"><b>' + name + '</b>'
+        + '<span>内置卡 ' + meta.net + ' · ' + (verified ? '已实名' : '未实名') + '</span></div>'
+        + (verified
+            ? '<span class="realname-tag done">已实名</span>'
+            : '<button class="rn-info-btn" type="button">去实名</button>');
+      var btn = li.querySelector('.rn-info-btn');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          window.open(MiFiBond.REALNAME_URL[name] || 'https://eca.189.cn/', '_blank');
+        });
+      }
+      rnInfoList.appendChild(li);
+    });
   }
 
-  document.querySelectorAll('.bn-slot-change').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      pendingSlot = btn.dataset.slot;
-      if (sheetTitle) sheetTitle.textContent = '选择链路 ' + (pendingSlot === '1' ? 'A' : 'B') + ' 网卡';
-      var curName = document.getElementById('slot' + pendingSlot + 'Name').textContent;
-      var otherCard = getOtherSlotCard();
-      var otherGroup = CARD_GROUP[otherCard] || '';
+  function renderRnBanners() {
+    var box = document.getElementById('rnBanners');
+    if (!box) return;
+    box.innerHTML = '';
+    if (!MiFiUser.isDeviceBound()) return;
 
-      // 更新 cardSheet 中各选项的状态
-      document.querySelectorAll('#cardSheet .card-option').forEach(function(opt) {
-        var cardName = opt.dataset.card;
-        opt.classList.toggle('active', cardName === curName);
-        // 禁用与另一链路同组的卡
-        if (otherGroup && CARD_GROUP[cardName] === otherGroup && cardName !== curName) {
-          opt.classList.add('disabled');
-        } else {
-          opt.classList.remove('disabled');
-        }
-      });
+    // 聚合设备关注全部内置卡（移动+电信）；单卡设备只关注内置电信卡
+    var watchCards = MiFiDevice.isBonding() ? BUILTIN_CARDS : [SINGLE_CARD];
+    var pending = MiFiBond.getUnverifiedBuiltin().filter(function(name) {
+      return watchCards.indexOf(name) >= 0 && !rnBannerDismissed[name];
+    });
+    if (!pending.length) return;
 
-      // 提示文字
-      if (cardHint) {
-        if (otherGroup) {
-          var groupCards = otherGroup === 'A' ? '移动 / 外置卡1' : '电信 / 外置卡2';
-          cardHint.textContent = '链路 ' + (pendingSlot === '1' ? 'B' : 'A') + ' 已占用 ' + groupCards + ' 组，同组卡不可重复选择';
-          cardHint.style.display = '';
-        } else {
-          cardHint.style.display = 'none';
-        }
+    var merged = pending.length > 1;
+    var el = document.createElement('div');
+    el.className = 'rn-banner';
+    el.innerHTML = '<svg class="rn-banner-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>'
+      + '<div class="rn-banner-main"><b>' + (merged ? pending.join('、') : pending[0]) + '卡未实名</b><span>完成实名认证后才能接入网络</span></div>'
+      + '<button class="rn-banner-btn" type="button">去实名</button>'
+      + '<button class="rn-banner-close" type="button" aria-label="关闭">×</button>';
+    el.querySelector('.rn-banner-btn').addEventListener('click', function() {
+      if (merged) {
+        renderRnInfoSheet();
+        if (rnInfoSheet) openSheet(rnInfoSheet);
+      } else {
+        window.open(MiFiBond.REALNAME_URL[pending[0]] || 'https://eca.189.cn/', '_blank');
       }
-
-      openSheet(cardSheet);
     });
-  });
-
-  if (cardSheet) {
-    var sheetClose = document.getElementById('sheetClose');
-    if (sheetClose) sheetClose.addEventListener('click', closeSheet);
-    cardSheet.querySelectorAll('.card-option').forEach(function(opt) {
-      opt.addEventListener('click', function() {
-        if (!pendingSlot) return;
-        if (opt.classList.contains('disabled')) return;
-        var cardName = opt.dataset.card;
-        cardSheet.querySelectorAll('.card-option').forEach(function(o) { o.classList.remove('active'); });
-        opt.classList.add('active');
-        var slotNameEl = document.getElementById('slot' + pendingSlot + 'Name');
-        if (slotNameEl) slotNameEl.textContent = cardName;
-        var icoEl = document.querySelector('#slot' + pendingSlot + ' .bn-slot-ico');
-        if (icoEl) {
-          icoEl.className = 'bn-slot-ico';
-          if (cardName === '移动') icoEl.classList.add('mob');
-          else if (cardName === '电信') icoEl.classList.add('tel');
-          else icoEl.classList.add('ext');
-        }
-        setTimeout(closeSheet, 200);
-      });
+    el.querySelector('.rn-banner-close').addEventListener('click', function() {
+      pending.forEach(function(name) { rnBannerDismissed[name] = true; });
+      renderRnBanners();
     });
+    box.appendChild(el);
   }
 
   // ===== WiFi 设置抽屉 =====
@@ -672,11 +664,7 @@
     });
   }
 
-  // ===== 实名激活 =====
-  var realnameBtn = document.getElementById('btnRealname');
-  if (realnameBtn) {
-    realnameBtn.addEventListener('click', function() { window.open('https://eca.189.cn/', '_blank'); });
-  }
+  // ===== 实名横幅渲染在 applyAllStates 中调用；链路换卡已迁移至「我的-聚合链路管理」 =====
 
   if (btnAddDevice && addDeviceSheet) {
     btnAddDevice.addEventListener('click', function() { openSheet(addDeviceSheet); });
