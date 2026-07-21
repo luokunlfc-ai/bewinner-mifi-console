@@ -88,6 +88,17 @@
             <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
 
+          <div class="menu-item" id="btnDevAuth">
+            <div class="mi-ico da">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div class="mi-main">
+              <b>二次认证管理</b>
+              <span>状态：<em class="mi-em" id="devAuthStatus">未认证</em></span>
+            </div>
+            <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+
           <div class="menu-item" id="btnBondLink" style="display:none;">
             <div class="mi-ico bond">
               <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16M6 6l12 12M18 6L6 18"/></svg>
@@ -313,6 +324,27 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- 二次认证管理抽屉 -->
+      <div class="sheet" id="devAuthSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>二次认证管理</h3>
+          <button class="sheet-close" id="devAuthClose">完成</button>
+        </header>
+        <div class="da-panel">
+          <div class="da-ico">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg>
+          </div>
+          <b class="da-state">未认证</b>
+          <p class="da-desc">按工信部要求，上网设备需完成二次实人认证<br/>认证通过后可继续正常上网</p>
+        </div>
+        <div class="fw-row">
+          <span class="fw-lbl">认证设备</span>
+          <span class="fw-val" id="daDevName">--</span>
+        </div>
+        <button class="save-btn da-go-btn" id="btnDaGo">去认证</button>
       </div>
 
       <!-- 购买记录抽屉 -->

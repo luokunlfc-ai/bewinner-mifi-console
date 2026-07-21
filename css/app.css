@@ -430,6 +430,17 @@ body::before {
 }
 .rn-banner-close:hover { color: #92400e; background: rgba(245,158,11,.12); }
 
+/* 设备二次认证横幅：蓝色信息变体（与琥珀色 SIM 实名横幅区分） */
+#daBanners:not(:empty) { margin-bottom: 12px; }
+.rn-banner.info { background: #eff6ff; border-color: #bfdbfe; }
+.rn-banner.info .rn-banner-ico { color: #1f6feb; }
+.rn-banner.info .rn-banner-main b { color: #1e40af; }
+.rn-banner.info .rn-banner-main span { color: #3b6fd4; }
+.rn-banner.info .rn-banner-btn { background: #1f6feb; }
+.rn-banner.info .rn-banner-btn:hover { background: #1a5fd0; }
+.rn-banner.info .rn-banner-close { color: #93b4e8; }
+.rn-banner.info .rn-banner-close:hover { color: #1e40af; background: rgba(31,111,235,.1); }
+
 /* 实名信息抽屉（合并横幅「去实名」入口，逐卡状态列表） */
 .rn-info-desc { font-size: 12px; color: var(--text-3); margin: 4px 0 2px; }
 .rn-info-list { list-style: none; margin: 4px 0; }

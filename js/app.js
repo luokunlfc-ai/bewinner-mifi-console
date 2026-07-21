@@ -70,6 +70,8 @@
 
     // 实名警示横幅（每张未实名内置卡一条，与机型/在线状态无关）
     renderRnBanners();
+    // 设备二次认证横幅（与 SIM 实名独立，所有机型均提示）
+    renderDevAuthBanner();
 
     // 子卡速率（聚合设备）
     var rateSubCards = document.getElementById('rateSubCards');
@@ -573,6 +575,33 @@
     el.querySelector('.rn-banner-close').addEventListener('click', function() {
       pending.forEach(function(name) { rnBannerDismissed[name] = true; });
       renderRnBanners();
+    });
+    box.appendChild(el);
+  }
+
+  // ===== 设备二次认证横幅 =====
+  // 工信部要求：上网设备需完成二次实人认证；与 SIM 实名相互独立，所有机型均提示。
+  // × 关闭仅本次会话有效（不持久化），刷新后重新出现
+  var daBannerDismissed = false;
+
+  function renderDevAuthBanner() {
+    var box = document.getElementById('daBanners');
+    if (!box) return;
+    box.innerHTML = '';
+    if (!MiFiUser.isDeviceBound() || daBannerDismissed) return;
+
+    var el = document.createElement('div');
+    el.className = 'rn-banner info';
+    el.innerHTML = '<svg class="rn-banner-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>'
+      + '<div class="rn-banner-main"><b>上网设备需二次认证</b><span>按工信部要求，完成二次实人认证后可继续上网</span></div>'
+      + '<button class="rn-banner-btn" type="button">去认证</button>'
+      + '<button class="rn-banner-close" type="button" aria-label="关闭">×</button>';
+    el.querySelector('.rn-banner-btn').addEventListener('click', function() {
+      window.open(MiFiDevice.DEV_AUTH_URL || 'https://eca.189.cn/', '_blank');
+    });
+    el.querySelector('.rn-banner-close').addEventListener('click', function() {
+      daBannerDismissed = true;
+      renderDevAuthBanner();
     });
     box.appendChild(el);
   }

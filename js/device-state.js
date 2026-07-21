@@ -160,7 +160,9 @@
     resetToDefaultDevices: resetToDefaultDevices,
     removeDevice: removeDevice,
     sortDrawerItems: sortDrawerItems,
-    CURRENT_KEY: CURRENT_KEY
+    CURRENT_KEY: CURRENT_KEY,
+    // 设备二次实人认证入口（占位地址，联调替换；首页横幅/我的页二次认证管理共用）
+    DEV_AUTH_URL: 'https://eca.189.cn/'
   };
 
   // ========== 用户状态 ==========

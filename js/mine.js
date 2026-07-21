@@ -319,6 +319,28 @@
 
   updateBondLinkEntry();
 
+  // === 二次认证管理 ===
+  var devAuthSheet = document.getElementById('devAuthSheet');
+  var btnDevAuth = document.getElementById('btnDevAuth');
+  var daDevName = document.getElementById('daDevName');
+  var btnDaGo = document.getElementById('btnDaGo');
+
+  if (btnDevAuth && devAuthSheet) {
+    btnDevAuth.addEventListener('click', function () {
+      if (!requireDevice()) return;
+      var dev = MiFiDevice.getCurrent();
+      if (daDevName && dev) {
+        daDevName.textContent = MiFiDevice.getDisplayName(dev) + (dev.sn ? ' · ' + dev.sn : '');
+      }
+      openSheet(devAuthSheet);
+    });
+  }
+  if (btnDaGo) {
+    btnDaGo.addEventListener('click', function () {
+      window.open(MiFiDevice.DEV_AUTH_URL || 'https://eca.189.cn/', '_blank');
+    });
+  }
+
   // === 固件升级（双状态） ===
   var fwSheet = document.getElementById('fwSheet');
   var btnFirmware = document.getElementById('btnFirmware');
