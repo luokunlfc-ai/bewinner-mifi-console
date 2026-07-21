@@ -106,7 +106,6 @@
 .cp-divider { height: 1px; background: var(--line); }
 
 /* ============ 套餐列表抽屉（点击环形图进入） ============ */
-.pl-desc { font-size: 11px; color: var(--text-3); margin: 6px 0 2px; }
 .pl-list {
   list-style: none; margin-top: 6px;
   display: flex; flex-direction: column; gap: 10px;
@@ -128,8 +127,6 @@
 }
 .pl-status.using   { color: var(--brand); background: var(--brand-bg); border: 1px solid #c8def9; }
 .pl-status.pending { color: #b45309; background: #fffbeb; border: 1px solid #fde68a; }
-.pl-status.usedup  { color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; }
-.pl-status.expired { color: var(--text-3); background: #f1f5f9; border: 1px solid var(--line); }
 .pl-row {
   display: flex; gap: 8px; align-items: baseline;
   font-size: 11px; color: var(--text-3); padding: 2px 0;

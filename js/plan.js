@@ -109,23 +109,18 @@
   if (mask) mask.addEventListener('click', closeSheet);
 
   // === 套餐列表抽屉（点击当前套餐环形图进入） ===
-  // 当前卡当前周期内的全部套餐（原型 mock，联调时按设备+卡拉取）
+  // 仅展示当前卡 正使用/待生效 的套餐（原型 mock，联调时按设备+卡拉取）
   var PLAN_STATUS_META = {
     using:   { label: '正使用', cls: 'using' },
-    usedup:  { label: '已用尽', cls: 'usedup' },
-    expired: { label: '已到期', cls: 'expired' },
     pending: { label: '待生效', cls: 'pending' }
   };
   var PLAN_LIST_DATA = {
     flow: [
       { name: '月享100GB年包', status: 'using',   validity: '2025/11/14 至 2026/11/14', total: '80 GB',  remain: '38.2 GB' },
-      { name: '30GB加油包',    status: 'usedup',  validity: '2026/06/01 至 2026/06/30', total: '30 GB',  remain: '0 GB' },
-      { name: '10GB体验月包',  status: 'expired', validity: '2026/04/03 至 2026/05/03', total: '10 GB',  remain: '4.1 GB' },
       { name: '月享100GB年包', status: 'pending', validity: '2026/11/14 至 2027/11/14', total: '80 GB',  remain: '80 GB' }
     ],
     bond: [
       { name: '60G聚合套餐',   status: 'using',   validity: '2026/07/01 至 2026/07/31', total: '60 GB',  remain: '12.6 GB' },
-      { name: '60G聚合月包',   status: 'expired', validity: '2026/06/01 至 2026/06/30', total: '60 GB',  remain: '8.3 GB' },
       { name: '60G聚合套餐',   status: 'pending', validity: '2026/08/01 至 2026/08/31', total: '60 GB',  remain: '60 GB' }
     ]
   };
