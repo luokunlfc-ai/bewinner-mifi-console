@@ -401,10 +401,10 @@ body::before {
 }
 .carrier { font-size: 11px; color: var(--text-2); letter-spacing: 1px; font-weight: 600; }
 
-/* 大号信号格：已实名卡片主视觉
+/* 大号信号格：已实名卡片主视觉（4 格制，同手机状态栏习惯）
    格数与 RSRP 建议映射（联调参考）：
-   5格 ≥-80 极佳 / 4格 -80~-90 良好 / 3格 -90~-100 一般 / 2格 -100~-110 较差 / 1格 <-110 极差
-   未点亮的格加 .off 即可（如 4 格：第 5 根 <i class="off">） */
+   4格 ≥-80 极佳 / 3格 -80~-90 良好 / 2格 -90~-100 一般 / 1格 <-100 较差
+   未点亮的格加 .off 即可（如 3 格：第 4 根 <i class="off">） */
 .sig-main {
   margin-top: 14px;
   display: flex; align-items: center; gap: 12px;
@@ -414,11 +414,10 @@ body::before {
 .sig-bars.lg.m i, .sig-bars.lg.t i { width: 5px; border-radius: 2px; }
 .sig-bars.lg.m i { background: var(--mob); }
 .sig-bars.lg.t i { background: var(--tel); }
-.sig-bars.lg i:nth-child(1) { height: 8px; }
-.sig-bars.lg i:nth-child(2) { height: 13px; }
-.sig-bars.lg i:nth-child(3) { height: 18px; }
-.sig-bars.lg i:nth-child(4) { height: 24px; }
-.sig-bars.lg i:nth-child(5) { height: 30px; }
+.sig-bars.lg i:nth-child(1) { height: 9px; }
+.sig-bars.lg i:nth-child(2) { height: 15px; }
+.sig-bars.lg i:nth-child(3) { height: 21px; }
+.sig-bars.lg i:nth-child(4) { height: 27px; }
 .sig-bars.lg i.off { opacity: .25; }
 
 .sig-detail { display: flex; flex-direction: column; gap: 3px; }
