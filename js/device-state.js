@@ -160,9 +160,7 @@
     resetToDefaultDevices: resetToDefaultDevices,
     removeDevice: removeDevice,
     sortDrawerItems: sortDrawerItems,
-    CURRENT_KEY: CURRENT_KEY,
-    // 设备二次实人认证入口（占位地址，联调替换；首页横幅/我的页二次认证管理共用）
-    DEV_AUTH_URL: 'https://eca.189.cn/'
+    CURRENT_KEY: CURRENT_KEY
   };
 
   // ========== 用户状态 ==========
@@ -231,12 +229,19 @@
     return loadDevices().length > 0;
   }
 
+  // 各设备套餐订购状态默认值（原型 mock）：X9 默认无套餐（首页演示无套餐红色横幅），
+  // X7 已订购（保留流量套餐数据演示），N7 无套餐。
+  // localStorage PLAN_KEY 为全局覆盖（联调时 MiFiUser.setPlanPurchased(true/false) 切换）
+  var PLAN_DEFAULT_MAP = { bwx9: false, bwx7: true, bwn7: false };
+
   function isPlanPurchased() {
-    // N7 设备始终展示无套餐状态
-    var dev = getCurrentDevice();
-    if (dev && dev.id === 'bwn7') return false;
     var v = localStorage.getItem(PLAN_KEY);
-    return v === null ? true : v === '1';
+    if (v !== null) return v === '1';
+    var dev = getCurrentDevice();
+    if (dev && Object.prototype.hasOwnProperty.call(PLAN_DEFAULT_MAP, dev.id)) {
+      return PLAN_DEFAULT_MAP[dev.id];
+    }
+    return true;
   }
 
   function setPlanPurchased(v) {
@@ -308,21 +313,30 @@
   };
 
   // ========== 聚合链路状态（换卡组合 + 卡实名状态，跨页共享） ==========
-  var SLOT_CARDS_KEY = 'mifi_slot_cards';    // {1:'移动',2:'电信'}
-  var VERIFIED_KEY   = 'mifi_card_verified'; // {卡名: bool} 覆盖默认值
+  var SLOT_CARDS_KEY   = 'mifi_slot_cards';       // {1:'移动',2:'电信'}
+  var VERIFIED_KEY     = 'mifi_card_verified';    // {卡名: bool} 覆盖默认值
+  var AUTHED_KEY       = 'mifi_card_authed';      // {卡名: bool} 二次认证覆盖默认值
+  var DEFAULT_CARD_KEY = 'mifi_default_card';     // 数据卡管理选择的默认上网卡
+  var AUTH_EXPIRY_KEY  = 'mifi_card_auth_expiry'; // {卡名: 二次认证剩余天数}
 
-  // 卡元数据：实名状态归属"卡"而非链路（原型中移动/电信默认均未实名）
-  // 联调时模拟实名完成：MiFiBond.setVerified('电信', true)
+  // 卡元数据：实名/二次认证状态归属"卡"而非链路（原型中移动/电信默认均未实名、未二次认证）
+  // 联调时模拟认证完成：MiFiBond.setVerified('电信', true) / MiFiBond.setAuthed('电信', true)
   var BOND_CARD_META = {
-    '移动':    { carrier: 'mob', net: '· 5G', verified: false, builtin: true },
-    '电信':    { carrier: 'tel', net: '· 5G', verified: false, builtin: true },
-    '外置卡1': { carrier: 'ext', net: '· 5G', verified: true },
-    '外置卡2': { carrier: 'ext', net: '· 5G', verified: true },
-    'USB网卡': { carrier: 'ext', net: '· 5G', verified: true }
+    '移动':    { carrier: 'mob', net: '· 5G', verified: false, authed: false, builtin: true },
+    '电信':    { carrier: 'tel', net: '· 5G', verified: false, authed: false, builtin: true },
+    '外置卡1': { carrier: 'ext', net: '· 5G', verified: true, authed: true },
+    '外置卡2': { carrier: 'ext', net: '· 5G', verified: true, authed: true },
+    'USB网卡': { carrier: 'ext', net: '· 5G', verified: true, authed: true }
   };
 
   // 各运营商实名认证入口（占位地址）
   var REALNAME_URL = {
+    '电信': 'https://eca.189.cn/',
+    '移动': 'https://www.10086.cn/'
+  };
+
+  // 各运营商二次实人认证入口（占位地址，工信部要求，按卡认证）
+  var DEV_AUTH_URL = {
     '电信': 'https://eca.189.cn/',
     '移动': 'https://www.10086.cn/'
   };
@@ -377,14 +391,99 @@
     return result;
   }
 
+  // ---- 二次实人认证（卡级，与实名相互独立） ----
+  function loadAuthedOverrides() {
+    try {
+      var raw = localStorage.getItem(AUTHED_KEY);
+      if (raw) { var obj = JSON.parse(raw); if (obj && typeof obj === 'object') return obj; }
+    } catch(e) {}
+    return {};
+  }
+
+  function isCardAuthed(name) {
+    var overrides = loadAuthedOverrides();
+    if (Object.prototype.hasOwnProperty.call(overrides, name)) return !!overrides[name];
+    return getBondMeta(name).authed !== false;
+  }
+
+  function setCardAuthed(name, v) {
+    var overrides = loadAuthedOverrides();
+    overrides[name] = !!v;
+    localStorage.setItem(AUTHED_KEY, JSON.stringify(overrides));
+  }
+
+  // 未二次认证的内置卡（首页横幅 / 二次认证管理用）
+  function getUnauthedBuiltin() {
+    var result = [];
+    Object.keys(BOND_CARD_META).forEach(function(name) {
+      if (BOND_CARD_META[name].builtin && !isCardAuthed(name)) result.push(name);
+    });
+    return result;
+  }
+
+  // ---- 默认上网卡（数据卡管理选择，持久化） ----
+  function getDefaultCard() {
+    return localStorage.getItem(DEFAULT_CARD_KEY) || '移动';
+  }
+
+  function setDefaultCard(name) {
+    localStorage.setItem(DEFAULT_CARD_KEY, name);
+  }
+
+  // ---- 二次认证有效期（剩余天数，联调模拟用） ----
+  // 演示临期提醒：MiFiBond.setAuthed('电信', true); MiFiBond.setAuthExpiry('电信', 2)
+  function loadAuthExpiry() {
+    try {
+      var raw = localStorage.getItem(AUTH_EXPIRY_KEY);
+      if (raw) { var obj = JSON.parse(raw); if (obj && typeof obj === 'object') return obj; }
+    } catch(e) {}
+    return {};
+  }
+
+  function getAuthExpiry(name) {
+    var map = loadAuthExpiry();
+    return Object.prototype.hasOwnProperty.call(map, name) ? map[name] : null;
+  }
+
+  function setAuthExpiry(name, days) {
+    var map = loadAuthExpiry();
+    if (days === null || days === undefined) { delete map[name]; }
+    else { map[name] = days; }
+    localStorage.setItem(AUTH_EXPIRY_KEY, JSON.stringify(map));
+  }
+
+  // ---- 首页横幅关注卡：实际承担上网的卡 ----
+  // （数据卡管理默认上网卡 ∪ 聚合链路 A/B 网卡）∩ 移动/电信内置卡
+  // 默认卡与链路均为外置卡时返回空数组 → 实名/无套餐/二次认证横幅均不弹
+  function getWatchCards() {
+    var set = {};
+    function add(name) {
+      if (BOND_CARD_META[name] && BOND_CARD_META[name].builtin) set[name] = true;
+    }
+    add(getDefaultCard());
+    var slots = getSlotCards();
+    add(slots['1']);
+    add(slots['2']);
+    return ['移动', '电信'].filter(function(name) { return set[name]; });
+  }
+
   global.MiFiBond = {
     getMeta: getBondMeta,
     isVerified: isCardVerified,
     setVerified: setCardVerified,
+    isAuthed: isCardAuthed,
+    setAuthed: setCardAuthed,
+    getAuthExpiry: getAuthExpiry,
+    setAuthExpiry: setAuthExpiry,
     getSlotCards: getSlotCards,
     setSlotCard: setSlotCard,
+    getDefaultCard: getDefaultCard,
+    setDefaultCard: setDefaultCard,
+    getWatchCards: getWatchCards,
     getUnverifiedBuiltin: getUnverifiedBuiltin,
-    REALNAME_URL: REALNAME_URL
+    getUnauthedBuiltin: getUnauthedBuiltin,
+    REALNAME_URL: REALNAME_URL,
+    DEV_AUTH_URL: DEV_AUTH_URL
   };
 
   // ========== UI 工具 ==========

@@ -72,6 +72,8 @@
     renderRnBanners();
     // 设备二次认证横幅（与 SIM 实名独立，所有机型均提示）
     renderDevAuthBanner();
+    // 无套餐提醒横幅（与套餐卡片空状态同源）
+    renderNoPlanBanner();
 
     // 子卡速率（聚合设备）
     var rateSubCards = document.getElementById('rateSubCards');
@@ -169,7 +171,9 @@
   function renderSubCardRows() {
     var list = document.getElementById('rateSubList');
     if (!list) return;
-    var cards = MiFiSim.getActive();
+    var cards = MiFiSim.getActive().filter(function(c) { return c.id !== 'ext1'; });
+    // 注：外置卡1 与移动内置卡共享 Modem 1（互斥规则，见 8.6），链路 A 默认使用移动卡，
+    // 故首页子卡速率不展示外置卡1
     var html = '';
     cards.forEach(function(card) {
       var cls = card.id === 'mob' ? 'mob' : (card.id === 'tel' ? 'tel' : 'ext');
@@ -511,8 +515,8 @@
   // 单卡设备（X7/N7）：仅内置电信卡，单卡横幅「去实名」直达运营商认证页。
   // × 关闭仅本次会话有效（不持久化），刷新后重新出现
   var rnBannerDismissed = {};
-  var BUILTIN_CARDS = ['移动', '电信']; // 聚合设备内置卡，与 MiFiBond 元数据一致
-  var SINGLE_CARD = '电信';            // 单卡设备的内置卡
+  var BUILTIN_CARDS = ['移动', '电信']; // 内置卡，与 MiFiBond 元数据一致（抽屉状态总览用）
+  // 关注卡范围 = MiFiBond.getWatchCards()：（默认上网卡 ∪ 链路A/B网卡）∩ 内置卡
 
   var rnInfoSheet = document.getElementById('rnInfoSheet');
   var rnInfoList = document.getElementById('rnInfoList');
@@ -550,8 +554,8 @@
     box.innerHTML = '';
     if (!MiFiUser.isDeviceBound()) return;
 
-    // 聚合设备关注全部内置卡（移动+电信）；单卡设备只关注内置电信卡
-    var watchCards = MiFiDevice.isBonding() ? BUILTIN_CARDS : [SINGLE_CARD];
+    // 关注卡 = 实际承担上网的内置卡（默认上网卡 ∪ 链路A/B网卡）
+    var watchCards = MiFiBond.getWatchCards();
     var pending = MiFiBond.getUnverifiedBuiltin().filter(function(name) {
       return watchCards.indexOf(name) >= 0 && !rnBannerDismissed[name];
     });
@@ -580,28 +584,123 @@
   }
 
   // ===== 设备二次认证横幅 =====
-  // 工信部要求：上网设备需完成二次实人认证；与 SIM 实名相互独立，所有机型均提示。
+  // 工信部要求：每张内置卡需分别完成二次实人认证；与 SIM 实名相互独立。
+  // 关注卡 = 实际承担上网的内置卡（默认上网卡 ∪ 链路A/B网卡）：
+  //   多张未认证时合并为一条横幅，「去认证」打开二次认证抽屉（各卡状态+分别去认证）；
+  //   单张未认证时直达运营商认证页；已认证但有效期 ≤ 3 天时弹到期提醒（未认证优先）。
   // × 关闭仅本次会话有效（不持久化），刷新后重新出现
-  var daBannerDismissed = false;
+  var daBannerDismissed = {};
+
+  var daInfoSheet = document.getElementById('daInfoSheet');
+  var daInfoList = document.getElementById('daInfoList');
+  var daInfoClose = document.getElementById('daInfoClose');
+  if (daInfoClose) daInfoClose.addEventListener('click', closeSheet);
+
+  // 二次认证抽屉：逐卡展示认证状态，未认证的卡给出去认证入口
+  function renderDaInfoSheet() {
+    if (!daInfoList) return;
+    daInfoList.innerHTML = '';
+    BUILTIN_CARDS.forEach(function(name) {
+      var meta = MiFiBond.getMeta(name);
+      var authed = MiFiBond.isAuthed(name);
+      var expiry = authed ? MiFiBond.getAuthExpiry(name) : null;
+      var statusText = authed
+        ? '已二次认证' + (expiry !== null ? ' · 剩余 ' + expiry + ' 天到期' : '')
+        : '未二次认证';
+      var li = document.createElement('li');
+      li.className = 'rn-info-item';
+      li.innerHTML = '<span class="rn-info-ico ' + meta.carrier + '"></span>'
+        + '<div class="rn-info-main"><b>' + name + '</b>'
+        + '<span>内置卡 ' + meta.net + ' · ' + statusText + '</span></div>'
+        + (authed
+            ? '<span class="realname-tag done">已认证</span>'
+            : '<button class="rn-info-btn" type="button">去认证</button>');
+      var btn = li.querySelector('.rn-info-btn');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          window.open(MiFiBond.DEV_AUTH_URL[name] || 'https://eca.189.cn/', '_blank');
+        });
+      }
+      daInfoList.appendChild(li);
+    });
+  }
 
   function renderDevAuthBanner() {
     var box = document.getElementById('daBanners');
     if (!box) return;
     box.innerHTML = '';
-    if (!MiFiUser.isDeviceBound() || daBannerDismissed) return;
+    if (!MiFiUser.isDeviceBound()) return;
+
+    // 关注卡 = 实际承担上网的内置卡（默认上网卡 ∪ 链路A/B网卡）
+    var watchCards = MiFiBond.getWatchCards();
+    var pending = MiFiBond.getUnauthedBuiltin().filter(function(name) {
+      return watchCards.indexOf(name) >= 0 && !daBannerDismissed[name];
+    });
+
+    // 到期提醒：已认证但有效期 ≤ 3 天（未认证横幅优先，有未认证时不弹到期提醒）
+    var expiring = [];
+    if (!pending.length) {
+      expiring = watchCards.filter(function(name) {
+        var days = MiFiBond.getAuthExpiry(name);
+        return MiFiBond.isAuthed(name) && days !== null && days <= 3 && !daBannerDismissed[name];
+      });
+      if (!expiring.length) return;
+    }
+
+    var cards = pending.length ? pending : expiring;
+    var isExpiry = !pending.length;
+    var merged = cards.length > 1;
+    var minDays = isExpiry
+      ? Math.min.apply(null, cards.map(function(name) { return MiFiBond.getAuthExpiry(name); }))
+      : 0;
 
     var el = document.createElement('div');
     el.className = 'rn-banner info';
     el.innerHTML = '<svg class="rn-banner-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>'
-      + '<div class="rn-banner-main"><b>上网设备需二次认证</b><span>按工信部要求，完成二次实人认证后可继续上网</span></div>'
+      + '<div class="rn-banner-main"><b>' + (merged ? cards.join('、') : cards[0]) + (isExpiry ? '卡二次认证即将到期' : '卡未二次认证') + '</b>'
+      + '<span>' + (isExpiry ? '二次认证有效期仅剩 ' + minDays + ' 天，请及时认证' : '按工信部要求，联网设备需完成二次认证方可上网') + '</span></div>'
       + '<button class="rn-banner-btn" type="button">去认证</button>'
       + '<button class="rn-banner-close" type="button" aria-label="关闭">×</button>';
     el.querySelector('.rn-banner-btn').addEventListener('click', function() {
-      window.open(MiFiDevice.DEV_AUTH_URL || 'https://eca.189.cn/', '_blank');
+      if (merged) {
+        renderDaInfoSheet();
+        if (daInfoSheet) openSheet(daInfoSheet);
+      } else {
+        window.open(MiFiBond.DEV_AUTH_URL[cards[0]] || 'https://eca.189.cn/', '_blank');
+      }
     });
     el.querySelector('.rn-banner-close').addEventListener('click', function() {
-      daBannerDismissed = true;
+      cards.forEach(function(name) { daBannerDismissed[name] = true; });
       renderDevAuthBanner();
+    });
+    box.appendChild(el);
+  }
+
+  // ===== 无套餐提醒横幅 =====
+  // 当前设备无任何可用套餐时无法上网，红色警示横幅（与实名琥珀/二次认证蓝色区分）
+  // 引导购买；「去购买」跳转套餐 Tab。× 关闭仅本次会话有效（不持久化），刷新后重新出现
+  var npBannerDismissed = false;
+
+  function renderNoPlanBanner() {
+    var box = document.getElementById('npBanners');
+    if (!box) return;
+    box.innerHTML = '';
+    // 关注卡为空（默认上网卡与链路均为外置卡，用自有 SIM 流量）时不提醒
+    if (!MiFiUser.isDeviceBound() || MiFiUser.isPlanPurchased() || npBannerDismissed) return;
+    if (MiFiBond.getWatchCards().length === 0) return;
+
+    var el = document.createElement('div');
+    el.className = 'rn-banner err';
+    el.innerHTML = '<svg class="rn-banner-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'
+      + '<div class="rn-banner-main"><b>当前设备无可用套餐</b><span>无套餐无法上网，请尽快购买套餐</span></div>'
+      + '<button class="rn-banner-btn" type="button">去购买</button>'
+      + '<button class="rn-banner-close" type="button" aria-label="关闭">×</button>';
+    el.querySelector('.rn-banner-btn').addEventListener('click', function() {
+      window.location.href = 'plan.html';
+    });
+    el.querySelector('.rn-banner-close').addEventListener('click', function() {
+      npBannerDismissed = true;
+      renderNoPlanBanner();
     });
     box.appendChild(el);
   }

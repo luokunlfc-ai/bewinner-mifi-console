@@ -119,10 +119,23 @@
         dataCardSheet.querySelectorAll('.card-option').forEach(function (o) { o.classList.remove('active'); });
         opt.classList.add('active');
         if (curCardEl) curCardEl.textContent = opt.dataset.card;
+        MiFiBond.setDefaultCard(opt.dataset.card); // 持久化默认上网卡，首页横幅按此评估
         setTimeout(closeSheet, 200);
       });
     });
   }
+
+  // 默认上网卡持久化状态回显（菜单副标题 + 抽屉选中项）
+  function syncDefaultCardUI() {
+    var name = MiFiBond.getDefaultCard();
+    if (curCardEl) curCardEl.textContent = name;
+    if (dataCardSheet) {
+      dataCardSheet.querySelectorAll('.card-option').forEach(function (o) {
+        o.classList.toggle('active', o.dataset.card === name);
+      });
+    }
+  }
+  syncDefaultCardUI();
 
   // === 数据卡管理：内置卡实名状态（副标题 + 去实名按钮） ===
   function renderDataCardStates() {
@@ -319,12 +332,47 @@
 
   updateBondLinkEntry();
 
-  // === 二次认证管理（点击直达认证页） ===
+  // === 二次认证管理（抽屉逐卡认证，与首页二次认证横幅同源） ===
   var btnDevAuth = document.getElementById('btnDevAuth');
-  if (btnDevAuth) {
+  var devAuthSheet = document.getElementById('devAuthSheet');
+  var devAuthList = document.getElementById('devAuthList');
+  var devAuthClose = document.getElementById('devAuthClose');
+  if (devAuthClose) devAuthClose.addEventListener('click', closeSheet);
+
+  // 逐卡展示二次认证状态，未认证的卡给出去认证入口
+  function renderDevAuthList() {
+    if (!devAuthList) return;
+    devAuthList.innerHTML = '';
+    ['移动', '电信'].forEach(function (name) {
+      var meta = MiFiBond.getMeta(name);
+      var authed = MiFiBond.isAuthed(name);
+      var expiry = authed ? MiFiBond.getAuthExpiry(name) : null;
+      var statusText = authed
+        ? '已二次认证' + (expiry !== null ? ' · 剩余 ' + expiry + ' 天到期' : '')
+        : '未二次认证';
+      var li = document.createElement('li');
+      li.className = 'rn-info-item';
+      li.innerHTML = '<span class="rn-info-ico ' + meta.carrier + '"></span>'
+        + '<div class="rn-info-main"><b>' + name + '</b>'
+        + '<span>内置卡 ' + meta.net + ' · ' + statusText + '</span></div>'
+        + (authed
+            ? '<span class="realname-tag done">已认证</span>'
+            : '<button class="rn-info-btn" type="button">去认证</button>');
+      var btn = li.querySelector('.rn-info-btn');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          window.open(MiFiBond.DEV_AUTH_URL[name] || 'https://eca.189.cn/', '_blank');
+        });
+      }
+      devAuthList.appendChild(li);
+    });
+  }
+
+  if (btnDevAuth && devAuthSheet) {
     btnDevAuth.addEventListener('click', function () {
       if (!requireDevice()) return;
-      window.open(MiFiDevice.DEV_AUTH_URL || 'https://eca.189.cn/', '_blank');
+      renderDevAuthList();
+      openSheet(devAuthSheet);
     });
   }
 

@@ -283,6 +283,10 @@
           couponVal.textContent = '暂无可用优惠券';
           couponVal.classList.remove('active');
         }
+        // 支付成功：设备进入有套餐状态（当前套餐概览恢复展示，回首页后无套餐横幅消失、套餐卡片恢复）
+        MiFiUser.setPlanPurchased(true);
+        applyAllStates();
+        MiFiUI.showToast('套餐购买成功');
       }, 1000);
     });
   }

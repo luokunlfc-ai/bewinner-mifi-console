@@ -50,6 +50,9 @@
         <!-- 实名警示横幅（未实名内置卡合并为一条，JS 生成） -->
         <div id="rnBanners"></div>
 
+        <!-- 无套餐提醒横幅（JS 生成） -->
+        <div id="npBanners"></div>
+
         <!-- 设备二次认证提示横幅（JS 生成） -->
         <div id="daBanners"></div>
 
@@ -245,6 +248,19 @@
         </header>
         <p class="rn-info-desc">内置卡需完成实名认证后才能接入网络</p>
         <ul class="rn-info-list" id="rnInfoList">
+          <!-- JS 动态填充 -->
+        </ul>
+      </div>
+
+      <!-- 二次认证信息抽屉（合并横幅「去认证」入口，逐卡状态+分别去认证） -->
+      <div class="sheet" id="daInfoSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>二次认证</h3>
+          <button class="sheet-close" id="daInfoClose">完成</button>
+        </header>
+        <p class="rn-info-desc">按工信部要求，每张内置卡需分别完成二次实人认证</p>
+        <ul class="rn-info-list" id="daInfoList">
           <!-- JS 动态填充 -->
         </ul>
       </div>

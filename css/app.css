@@ -435,6 +435,17 @@ body::before {
 .rn-banner.info .rn-banner-close { color: #93b4e8; }
 .rn-banner.info .rn-banner-close:hover { color: #1e40af; background: rgba(31,111,235,.1); }
 
+/* 无套餐提醒横幅：红色警示变体（阻断上网，比琥珀实名提醒更严重） */
+#npBanners:not(:empty) { margin-bottom: 12px; }
+.rn-banner.err { background: #fef2f2; border-color: #fecaca; }
+.rn-banner.err .rn-banner-ico { color: #ef4444; }
+.rn-banner.err .rn-banner-main b { color: #b91c1c; }
+.rn-banner.err .rn-banner-main span { color: #dc2626; }
+.rn-banner.err .rn-banner-btn { background: #ef4444; }
+.rn-banner.err .rn-banner-btn:hover { background: #dc2626; }
+.rn-banner.err .rn-banner-close { color: #e8a0a0; }
+.rn-banner.err .rn-banner-close:hover { color: #b91c1c; background: rgba(239,68,68,.1); }
+
 /* 实名信息抽屉（合并横幅「去实名」入口，逐卡状态列表） */
 .rn-info-desc { font-size: 12px; color: var(--text-3); margin: 4px 0 2px; }
 .rn-info-list { list-style: none; margin: 4px 0; }

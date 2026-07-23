@@ -94,7 +94,7 @@
             </div>
             <div class="mi-main">
               <b>二次认证管理</b>
-              <span>设备二次实人认证</span>
+              <span>移动/电信卡二次实人认证</span>
             </div>
             <svg class="mi-arr" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
@@ -211,6 +211,19 @@
             <div class="co-main"><b>外置卡 2</b><span>外置插拔卡 · 未插入</span></div>
             <span class="co-check">✓</span>
           </li>
+        </ul>
+      </div>
+
+      <!-- 二次认证管理抽屉（逐卡状态+分别去认证） -->
+      <div class="sheet" id="devAuthSheet">
+        <div class="sheet-handle"></div>
+        <header class="sheet-head">
+          <h3>二次认证管理</h3>
+          <button class="sheet-close" id="devAuthClose">完成</button>
+        </header>
+        <p class="rn-info-desc">按工信部要求，每张内置卡需分别完成二次实人认证</p>
+        <ul class="rn-info-list" id="devAuthList">
+          <!-- JS 动态填充 -->
         </ul>
       </div>
 
